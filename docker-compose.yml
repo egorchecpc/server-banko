@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001" # Фронтенд будет доступен на порту 8080
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Бэкенд будет доступен на порту 3000
+    restart: always
