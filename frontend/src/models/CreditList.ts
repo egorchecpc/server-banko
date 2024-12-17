@@ -10,4 +10,7 @@ export interface CreditListData {
   currency: '$' | '€' | '₽' | string
   PD: string
   LGD: string
+  stage: string
+  firstDate: string
+  lastDate: string
 }

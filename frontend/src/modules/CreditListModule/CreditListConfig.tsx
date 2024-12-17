@@ -1,22 +1,9 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { DataTableColumnHeader } from '@/components/CustomTableComponents/DataTableColumnHeader'
-
-export interface Credit {
-  client_id: string
-  contract_id: string
-  debtor_type: string
-  credit_type: string
-  product_type: string
-  VBS: string
-  RAM: string
-  RTAM: string
-  currency: string
-  PD: string
-  LGD: string
-}
+import { CreditListData } from '@/models/CreditList'
 
 const customFilterFn = (
-  row: Row<Credit>,
+  row: Row<CreditListData>,
   columnId: string,
   filterValue: unknown
 ) => {
@@ -26,7 +13,7 @@ const customFilterFn = (
   return row.getValue(columnId) === filterValue
 }
 
-export const columns: ColumnDef<Credit>[] = [
+export const columns: ColumnDef<CreditListData>[] = [
   {
     accessorKey: 'client_id',
     header: ({ column }) => (
@@ -124,7 +111,7 @@ export const columns: ColumnDef<Credit>[] = [
   {
     accessorKey: 'RTAM',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="СПР" allowHide={true} />
+      <DataTableColumnHeader column={column} title="ПР" allowHide={true} />
     ),
     cell: ({ row }) => (
       <div className="flex h-10 items-center justify-center">
@@ -172,6 +159,53 @@ export const columns: ColumnDef<Credit>[] = [
     ),
     enableSorting: true,
     enableHiding: true,
+  },
+  {
+    accessorKey: 'stage',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Стадия" allowHide={true} />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('stage')}
+      </div>
+    ),
+    enableSorting: true,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'firstDate',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Дата выдачи"
+        allowHide={true}
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('firstDate')}
+      </div>
+    ),
+    enableSorting: true,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'lastDate',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Дата погашения"
+        allowHide={true}
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('lastDate')}
+      </div>
+    ),
+    enableSorting: true,
+    enableHiding: false,
   },
 ]
 

@@ -45,11 +45,7 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
   const handleDelete = (id: string) => {
     setIndicators(indicators.filter((ind) => ind.id !== id))
   }
-  const scenarios = [
-    t('sidebar.macroSettings.modal.subtitles.scenariosShort.worst'),
-    t('sidebar.macroSettings.modal.subtitles.scenariosShort.normal'),
-    t('sidebar.macroSettings.modal.subtitles.scenariosShort.best'),
-  ]
+  const scenarios = ['worst', 'normal', 'best']
 
   return (
     <div className="mx-auto p-0">

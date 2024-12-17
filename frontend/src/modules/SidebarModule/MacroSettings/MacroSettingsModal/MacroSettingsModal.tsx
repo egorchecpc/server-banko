@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -18,8 +18,11 @@ import { useForm, Controller, FieldErrors } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { MacroSettings } from '@/models/MacroSettings'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { toast } from 'sonner'
+import {
+  MacroSettingsErrors,
+  macroSettingsSchema,
+} from '@/modules/SidebarModule/MacroSettings/MacroSettingsModal/MacroSettingsModalConfig'
 
 interface MacroSettingsModalProps {
   isOpen: boolean
@@ -61,36 +64,6 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
     }
   }
 
-  const macroSettingsSchema = z.object({
-    id: z.string().optional(),
-    type: z.string().min(1),
-    values: z.record(
-      z.string(),
-      z
-        .object({
-          Лучш: z.object({
-            value: z.number().nonnegative().min(0),
-            probability: z.number().min(0).max(100),
-          }),
-          Норм: z.object({
-            value: z.number().nonnegative().min(0),
-            probability: z.number().min(0).max(100),
-          }),
-          Худш: z.object({
-            value: z.number().nonnegative().min(0),
-            probability: z.number().min(0).max(100),
-          }),
-        })
-        .refine((data) => {
-          const totalProbability =
-            data['Худш'].probability +
-            data['Норм'].probability +
-            data['Лучш'].probability
-          return totalProbability === 100
-        })
-    ),
-  })
-
   const form = useForm<MacroSettings>({
     defaultValues: createInitialFormState(),
     resolver: zodResolver(macroSettingsSchema),
@@ -121,7 +94,7 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
       toast.error(t('errorsModal.errorTypeMessage'))
     }
 
-    const valuesErrors = errors.values as Record<string, Record<string, any>>
+    const valuesErrors = errors.values as MacroSettingsErrors['values']
     if (valuesErrors) {
       for (const year of Object.keys(valuesErrors)) {
         const yearErrors = valuesErrors[year]
@@ -135,7 +108,10 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
               )
               return
             }
-            if (scenarioErrors?.probability) {
+            if (
+              scenarioErrors?.probability &&
+              typeof scenarioErrors?.probability === 'number'
+            ) {
               totalProbability += scenarioErrors.probability
             }
           }

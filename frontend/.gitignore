@@ -5,6 +5,3 @@ dist-ssr
 *.local
 .vscode
 .prettierignore
-.env
-.idea
-.storybook

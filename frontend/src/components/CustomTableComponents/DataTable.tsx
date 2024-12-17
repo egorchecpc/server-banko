@@ -81,9 +81,8 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
-  // Центральное содержимое таблицы для оборачивания в контейнер
   const TableContent = (
-    <div className="rounded-lg">
+    <div className="overflow-auto rounded-lg">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

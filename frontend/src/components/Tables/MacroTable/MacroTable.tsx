@@ -2,6 +2,7 @@ import { Pencil, Trash } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { MacroSettings } from '@/models/MacroSettings'
+import { useTranslation } from 'react-i18next'
 
 interface MacroTableProps {
   years: (string | number)[]
@@ -22,6 +23,13 @@ export const MacroTable = ({
   postSettings,
   btnText,
 }: MacroTableProps) => {
+  const { t } = useTranslation()
+  const scenarioLabels = {
+    worst: t('sidebar.macroSettings.modal.subtitles.scenariosShort.worst'),
+    normal: t('sidebar.macroSettings.modal.subtitles.scenariosShort.normal'),
+    best: t('sidebar.macroSettings.modal.subtitles.scenariosShort.best'),
+  }
+
   return (
     <>
       {indicators.map((indicator) => (
@@ -59,7 +67,7 @@ export const MacroTable = ({
                 key={scenario}
                 className="text-center text-ssm font-normal leading-14 text-grey-900"
               >
-                {scenario}
+                {scenarioLabels[scenario as keyof typeof scenarioLabels]}
               </div>
             ))}
             {years.map((year) => (
@@ -71,9 +79,9 @@ export const MacroTable = ({
                   <div
                     key={scenario}
                     className={`rounded-lg py-3 text-center ${
-                      scenario === 'Худш'
+                      scenario === 'worst'
                         ? 'bg-lite-orange/5'
-                        : scenario === 'Лучш'
+                        : scenario === 'best'
                           ? 'bg-lite-green'
                           : 'bg-white'
                     }`}

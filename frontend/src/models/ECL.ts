@@ -1,4 +1,4 @@
-interface StageData {
+export interface StageData {
   balance: string
   reserve: string
   percent: string
