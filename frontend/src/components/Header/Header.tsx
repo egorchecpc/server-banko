@@ -16,6 +16,7 @@ export const Header: FC<HeaderProps> = ({ navItems, userData }) => {
         <div className="flex items-center gap-3">
           <SidebarTrigger />
           <Navbar navItems={navItems} />
+          <div>Hello!</div>
         </div>
         <div className="flex gap-5">
           <ImportComponent />
