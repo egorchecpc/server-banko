@@ -13,7 +13,7 @@ export const AppLayout = () => {
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
       />
-      <div className="flex w-[1600px] flex-col overflow-hidden">
+      <div className="flex w-[1920px] flex-col overflow-hidden">
         <HeaderModule />
         <main className="mx-5">
           <div>
