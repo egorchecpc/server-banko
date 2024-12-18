@@ -1,0 +1,26 @@
+name: CICD
+
+on:
+  push:
+      branches: [ "main" ]
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build project
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: jenkins.phoenixfw.net
+          user: jenkins
+          private_key: |-
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+            QyNTUxOQAAACB4kqVoiRK0bP/o6ygSbxoU59Y+ulEKm6gs7C1UIOFZ1QAAAJgyf2kPMn9p
+            DwAAAAtzc2gtZWQyNTUxOQAAACB4kqVoiRK0bP/o6ygSbxoU59Y+ulEKm6gs7C1UIOFZ1Q
+            AAAEAMO1///yl0NAOfUvI2mJvzdzHtFEaiVCeF9rmKp2EB13iSpWiJErRs/+jrKBJvGhTn
+            1j66UQqbqCzsLVQg4VnVAAAAEmdpdGh1YkBleGFtcGxlLmNvbQECAw==
+            -----END OPENSSH PRIVATE KEY-----
+          
+          command: 'cd /var/www/server-banko/ && git pull origin main'
