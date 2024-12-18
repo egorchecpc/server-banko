@@ -1,14 +1,13 @@
 
 FROM node:18-alpine
 
-WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
 
 EXPOSE 5173
 
-CMD ["npm", "run", "dev", "--", "--host"]
+ADD ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+WORKDIR /app
+
+CMD ["/entrypoint.sh"]
