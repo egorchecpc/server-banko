@@ -242,6 +242,21 @@ export const product_types = [
   },
 ]
 
+export const stage_types = [
+  {
+    value: 'I',
+    label: 'I стадия',
+  },
+  {
+    value: 'II',
+    label: 'II стадия',
+  },
+  {
+    value: 'III',
+    label: 'III стадия',
+  },
+]
+
 export const titles = {
   client_id: 'ID клиента',
   contract_id: 'ID договора',
@@ -254,4 +269,7 @@ export const titles = {
   currency: 'Валюта',
   PD: 'PD',
   LGD: 'LGD',
+  stage: 'Стадия',
+  firstDate: 'Дата выдачи',
+  lastDate: 'Дата погашения',
 }

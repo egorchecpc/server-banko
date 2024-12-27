@@ -27,6 +27,7 @@ import {
 interface MacroSettingsModalProps {
   isOpen: boolean
   years: (string | number)[]
+  macroIndicators: string[]
   onClose: () => void
   onSubmitForm: (data: MacroSettings) => void
   editingIndicator: MacroSettings | null
@@ -36,6 +37,7 @@ interface MacroSettingsModalProps {
 export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
   isOpen,
   years,
+  macroIndicators,
   onClose,
   onSubmitForm,
   editingIndicator,
@@ -158,12 +160,11 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {[
-                    t('sidebar.macroSettings.modal.macroTypes.items.rrdn'),
-                    t('sidebar.macroSettings.modal.macroTypes.items.nnzp'),
-                  ].map((item, index) => (
+                  {macroIndicators.map((item, index) => (
                     <SelectItem key={index} value={item}>
-                      {item}
+                      {t(
+                        `sidebar.macroSettings.modal.macroTypes.items.${item}`
+                      )}
                     </SelectItem>
                   ))}
                 </SelectContent>

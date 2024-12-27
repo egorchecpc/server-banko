@@ -11,29 +11,52 @@ import { FormData } from '@/models/FormData'
 import { MacroSettings } from '@/models/MacroSettings'
 import { getYearArray } from '@/utils/getDate'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { usePostMacroSettingsData } from '@/hooks/apiHooks/usePostMacroSettingsData'
+import { formatMacroData } from '@/utils/formatMacroData'
+import { useRouter } from '@tanstack/react-router'
 
 interface SidebarProps {
   isDialogOpen: boolean
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsNavEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const AppSidebar: FC<SidebarProps> = ({
   isDialogOpen,
   setIsDialogOpen,
+  setIsNavEnabled,
 }) => {
   const [debtorData, setDebtorData] = useState<FormData | null>(null)
   const [macroData, setMacroData] = useState<MacroSettings[]>([])
 
-  const postSettings = (
-    debtorData: FormData | null,
-    macroData: MacroSettings[]
-  ) => {
+  const router = useRouter()
+  const mutation = usePostMacroSettingsData()
+
+  const handlePostSettings = () => {
+    const formattedMacroData = formatMacroData(macroData)
+
+    mutation.mutate(
+      { ...formattedMacroData },
+      {
+        onSuccess: () => {
+          console.log('Данные успешно отправлены')
+          setIsNavEnabled(true)
+          router.navigate({ to: '/dashboard' })
+        },
+        onError: (error) => {
+          console.error('Ошибка при отправке:', error)
+        },
+      }
+    )
+  }
+
+  const postSettings = () => {
     return function () {
       console.log('Форма: ', debtorData)
-      console.log('Макро: ', macroData)
+      handlePostSettings()
     }
   }
-  const years = getYearArray(true, true, 3)
+  const years = getYearArray(true, true, 4)
 
   return (
     <Sidebar>
@@ -50,7 +73,7 @@ export const AppSidebar: FC<SidebarProps> = ({
                 <DebtorForm setDebtorData={setDebtorData} />
               </div>
               <MacroSettingsComponent
-                postSettings={postSettings(debtorData, macroData)}
+                postSettings={postSettings()}
                 setMacroData={setMacroData}
                 years={years}
                 isDialogOpen={isDialogOpen}

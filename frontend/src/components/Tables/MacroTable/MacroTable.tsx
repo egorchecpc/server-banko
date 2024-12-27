@@ -39,7 +39,9 @@ export const MacroTable = ({
         >
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-sm font-bold leading-5 text-black-800">
-              {indicator.type}
+              {t(
+                `sidebar.macroSettings.modal.macroTypes.items.${indicator.type}`
+              )}
             </h3>
             <div className="flex space-x-2">
               <Button

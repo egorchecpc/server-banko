@@ -26,14 +26,13 @@ const STAGES: { key: keyof StageKeys; label: string }[] = [
 ]
 
 const TOTAL_LABEL = 'Итого'
-
 const HEADER_LABELS = ['ВБС', 'ОКУ', '%']
 
 const renderStageCells = (stageData: StageData) => (
   <>
-    <TableCell className="border text-center">{stageData.balance}</TableCell>
-    <TableCell className="border text-center">{stageData.reserve}</TableCell>
-    <TableCell className="border text-center">{stageData.percent}</TableCell>
+    <TableCell className="border-x text-center">{stageData.balance}</TableCell>
+    <TableCell className="border-x text-center">{stageData.reserve}</TableCell>
+    <TableCell className="border-x text-center">{stageData.percent}</TableCell>
   </>
 )
 
@@ -41,7 +40,7 @@ const ECLTable: FC<ECLTableProps> = ({ data }) => {
   return (
     <Table className="table-auto bg-white">
       <TableHeader>
-        <TableRow>
+        <TableRow className="border-b">
           <TableHead
             rowSpan={2}
             className="bg-muted w-1/12 border text-left font-bold"
@@ -64,7 +63,7 @@ const ECLTable: FC<ECLTableProps> = ({ data }) => {
             {TOTAL_LABEL}
           </TableHead>
         </TableRow>
-        <TableRow>
+        <TableRow className="border-b">
           {Array.from({ length: STAGES.length }, () => HEADER_LABELS)
             .flat()
             .map((label, i) => (
@@ -75,28 +74,32 @@ const ECLTable: FC<ECLTableProps> = ({ data }) => {
                 {label}
               </TableHead>
             ))}
+          <TableHead className="bg-muted border text-center font-bold">
+            ВБС
+          </TableHead>
+          <TableHead className="bg-muted border text-center font-bold">
+            ОКУ
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {data.map((row, index) => (
           <TableRow
             key={index}
-            className={
-              row.creditType === TOTAL_LABEL ? 'bg-grey-300 shadow' : ''
-            }
+            className={` ${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
           >
             <TableCell
-              className={`border text-left ${
+              className={`border-0 text-left ${
                 row.creditType === TOTAL_LABEL ? 'font-bold' : 'font-medium'
               }`}
             >
               {row.creditType}
             </TableCell>
             {STAGES.map((stage) => renderStageCells(row[stage.key]))}
-            <TableCell className="text-bold border">
+            <TableCell className="border-x text-center font-bold">
               {row.total.balance}
             </TableCell>
-            <TableCell className="border text-center">
+            <TableCell className="border-x text-center font-bold">
               {row.total.reserve}
             </TableCell>
           </TableRow>

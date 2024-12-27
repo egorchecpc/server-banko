@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 export const AuthPage = () => {
   return (
-    <div className="w-full lg:grid lg:min-h-[37rem] lg:grid-cols-2 xl:min-h-[37rem]">
+    <div className="bg-grey-200 overflow-hidden lg:grid lg:min-h-[37rem] lg:grid-cols-2 xl:min-h-[37rem]">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[21.875rem] gap-6">
           <div className="grid gap-2 text-center">
@@ -25,13 +25,11 @@ export const AuthPage = () => {
               />
             </div>
             <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link to="/" className="ml-auto inline-block text-sm underline">
-                  Forgot your password?
-                </Link>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" required />
+              <Link to="/" className="ml-auto inline-block text-sm underline">
+                Forgot your password?
+              </Link>
             </div>
             <Button variant="primary" type="submit" className="w-full">
               Login
@@ -39,7 +37,7 @@ export const AuthPage = () => {
           </div>
         </div>
       </div>
-      <div className="bg-muted hidden lg:block">
+      <div className="bg-muted hidden max-h-screen overflow-hidden lg:block">
         <img
           src="/img/img.jpg"
           alt="Image"

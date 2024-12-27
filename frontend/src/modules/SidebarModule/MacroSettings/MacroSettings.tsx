@@ -29,6 +29,14 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
     setMacroData(indicators)
   }, [indicators])
 
+  const macroIndicators = [
+    'productProfitability',
+    'realWage',
+    'gdp',
+    'realDisposablePopulationIncome',
+    'averageMonthlySalary',
+  ]
+
   const { t } = useTranslation()
   const handleAdd = (newIndicator: MacroSettings) => {
     setIndicators([...indicators, newIndicator])
@@ -48,56 +56,66 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
   const scenarios = ['worst', 'normal', 'best']
 
   return (
-    <div className="mx-auto p-0">
-      <div className="mb-1 mt-6 flex items-center justify-between gap-9">
-        <h2 className="text-base font-bold">
-          {t('sidebar.macroSettings.title')}
-        </h2>
-        <Button
-          className="p-0 text-blue-900 hover:text-charts-60"
-          onClick={() => {
-            setEditingIndicator(null)
-            setIsDialogOpen(true)
-          }}
-        >
-          <PlusCircle className="h-5 w-5" />
-        </Button>
-      </div>
-      {indicators.length === 0 ? (
-        <p className="text-sm font-normal leading-18 text-grey-900">
-          {t('sidebar.macroSettings.subtext')}
-        </p>
-      ) : (
-        <MacroTable
-          years={years}
-          btnText={t('sidebar.macroSettings.modal.buttons.recalculate')}
-          indicators={indicators}
-          scenarios={scenarios}
-          postSettings={postSettings}
-          onEdit={(indicator) => {
-            setEditingIndicator(indicator)
-            setIsDialogOpen(true)
-          }}
-          onDelete={handleDelete}
+    <>
+      {isDialogOpen && (
+        <div
+          className="bg-black/20 fixed inset-0 z-40 backdrop-blur-sm"
+          aria-hidden="true"
         />
       )}
 
-      <MacroSettingsModal
-        years={years}
-        isOpen={isDialogOpen}
-        scenarios={scenarios}
-        onClose={() => setIsDialogOpen(false)}
-        onSubmitForm={(data) => {
-          if (editingIndicator) {
-            handleEdit({ ...data, id: editingIndicator.id })
-          } else {
-            handleAdd({ ...data, id: Date.now().toString() })
-          }
-          setIsDialogOpen(false)
-          setEditingIndicator(null)
-        }}
-        editingIndicator={editingIndicator}
-      />
-    </div>
+      <div className="relative mx-auto p-0">
+        <div className="mb-1 mt-6 flex items-center justify-between gap-9">
+          <h2 className="text-base font-bold">
+            {t('sidebar.macroSettings.title')}
+          </h2>
+          <Button
+            className="p-0 text-blue-900 hover:text-charts-60"
+            onClick={() => {
+              setEditingIndicator(null)
+              setIsDialogOpen(true)
+            }}
+          >
+            <PlusCircle className="h-5 w-5" />
+          </Button>
+        </div>
+        {indicators.length === 0 ? (
+          <p className="text-sm font-normal leading-18 text-grey-900">
+            {t('sidebar.macroSettings.subtext')}
+          </p>
+        ) : (
+          <MacroTable
+            years={years}
+            btnText={t('sidebar.macroSettings.modal.buttons.recalculate')}
+            indicators={indicators}
+            scenarios={scenarios}
+            postSettings={postSettings}
+            onEdit={(indicator) => {
+              setEditingIndicator(indicator)
+              setIsDialogOpen(true)
+            }}
+            onDelete={handleDelete}
+          />
+        )}
+
+        <MacroSettingsModal
+          years={years}
+          isOpen={isDialogOpen}
+          scenarios={scenarios}
+          macroIndicators={macroIndicators}
+          onClose={() => setIsDialogOpen(false)}
+          onSubmitForm={(data) => {
+            if (editingIndicator) {
+              handleEdit({ ...data, id: editingIndicator.id })
+            } else {
+              handleAdd({ ...data, id: Date.now().toString() })
+            }
+            setIsDialogOpen(false)
+            setEditingIndicator(null)
+          }}
+          editingIndicator={editingIndicator}
+        />
+      </div>
+    </>
   )
 }

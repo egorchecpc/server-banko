@@ -6,15 +6,16 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 
 export const AppLayout = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
+  const [isNavEnabled, setIsNavEnabled] = useState(false)
   return (
     <SidebarProvider>
       <AppSidebar
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
+        setIsNavEnabled={setIsNavEnabled}
       />
       <div className="flex w-[1920px] flex-col overflow-hidden">
-        <HeaderModule />
+        <HeaderModule isEnabled={isNavEnabled} />
         <main className="mx-5">
           <div>
             <Outlet />

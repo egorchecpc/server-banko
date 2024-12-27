@@ -10,45 +10,32 @@ import {
 import { PDItem } from '@/models/PD'
 import { calculateDelta, renderCellWithDelta } from '@/utils/calculateDelta'
 
-interface PDYearTableProps {
-  data: PDItem[]
+interface ExtendedPDItem extends PDItem {
+  year: string
+  isYearly: boolean
+}
+
+interface PDTableProps {
+  data: ExtendedPDItem[]
   deltaMode: boolean
   displayQuarterly: boolean
 }
 
-const PDTable: FC<PDYearTableProps> = ({
-  data,
-  deltaMode,
-  displayQuarterly,
-}) => {
+const PDTable: FC<PDTableProps> = ({ data, deltaMode, displayQuarterly }) => {
   const categoryToKey: Record<string, keyof PDItem> = {
-    'Не просроченные': 'without',
+    'Без просрочки': 'without',
     '0-30': 'between1To30',
     '30-60': 'between31To60',
     '60-90': 'between61To90',
-    '90+': 'moreThen90Percent',
+    '90+': 'moreThen90',
   }
 
   const categories = Object.keys(categoryToKey)
-  const years = [...new Set(data.map((item) => item.date.slice(0, 4)))]
+  const years = [...new Set(data.map((item) => item.year))].sort()
 
-  const getPreviousData = (
-    year: string,
-    period: string | null,
-    yearIndex: number,
-    periodIndex: number
-  ) => {
-    if (!displayQuarterly) {
-      return yearIndex > 0
-        ? data.find((item) => item.date === years[yearIndex - 1])
-        : undefined
-    }
-    if (periodIndex === 0 && yearIndex > 0) {
-      return data.find((item) => item.date === `${years[yearIndex - 1]}-Q4`)
-    }
-    return periodIndex > 0
-      ? data.find((item) => item.date === `${year}-Q${periodIndex}`)
-      : undefined
+  const getQuarterFromDate = (date: string): number => {
+    const month = parseInt(date.split('-')[1])
+    return Math.ceil(month / 3)
   }
 
   const renderTableHead = () => (
@@ -57,80 +44,142 @@ const PDTable: FC<PDYearTableProps> = ({
         <TableHead rowSpan={2} className="bg-muted border font-bold">
           Категория
         </TableHead>
-        {years.map((year) => (
-          <TableHead
-            colSpan={displayQuarterly ? 4 : 1}
-            key={year}
-            className="bg-muted border text-center font-bold"
-          >
-            {year}
-          </TableHead>
-        ))}
+        {years.map((year) => {
+          const hasQuarterlyData = data.some(
+            (item) => item.year === year && !item.isYearly
+          )
+          return (
+            <TableHead
+              key={year}
+              colSpan={hasQuarterlyData ? 4 : 1}
+              rowSpan={hasQuarterlyData ? 1 : 2}
+              className="bg-muted border text-center font-bold"
+            >
+              {year}
+            </TableHead>
+          )
+        })}
       </TableRow>
       {displayQuarterly && (
         <TableRow>
-          {years.map(() =>
-            ['I', 'II', 'III', 'IV'].map((quarter) => (
-              <TableHead
-                key={quarter}
-                className="bg-muted border-x text-center font-medium"
-              >
-                {quarter}
-              </TableHead>
-            ))
-          )}
+          {years.map((year) => {
+            const hasQuarterlyData = data.some(
+              (item) => item.year === year && !item.isYearly
+            )
+            return hasQuarterlyData ? (
+              <>
+                {['I', 'II', 'III', 'IV'].map((quarter) => (
+                  <TableHead
+                    key={`${year}-${quarter}`}
+                    className="bg-muted border-x text-center font-medium"
+                  >
+                    {quarter}
+                  </TableHead>
+                ))}
+              </>
+            ) : (
+              ''
+            )
+          })}
         </TableRow>
       )}
     </>
   )
 
-  const renderTableBody = () =>
-    categories.map((category) => (
+  const renderTableBody = () => {
+    return categories.map((category) => (
       <TableRow key={category} className="border-none">
         <TableCell className="text-left font-medium">{category}</TableCell>
-        {years.map((year, yearIndex) =>
-          (displayQuarterly ? ['Q1', 'Q2', 'Q3', 'Q4'] : [null]).map(
-            (period, periodIndex) => {
-              const currentData = data.find((item) =>
-                displayQuarterly
-                  ? item.date === `${year}-${period}`
-                  : item.date === year
+        {years.map((year) => {
+          const yearData = data.filter((item) => item.year === year)
+          const hasQuarterlyData = yearData.some((item) => !item.isYearly)
+
+          if (hasQuarterlyData) {
+            // Получаем данные по кварталам для текущего года
+            const quarters = yearData
+              .filter((item) => !item.isYearly)
+              .sort(
+                (a, b) =>
+                  getQuarterFromDate(a.date) - getQuarterFromDate(b.date)
               )
 
-              const current = currentData
-                ? Number(currentData[categoryToKey[category]])
-                : undefined
+            return Array.from({ length: 4 }, (_, index) => {
+              const quarterData = quarters[index]
+              if (!quarterData) {
+                return (
+                  <TableCell
+                    key={`${year}-Q${index + 1}`}
+                    className="border-l text-center"
+                  >
+                    -
+                  </TableCell>
+                )
+              }
 
-              const previousData = getPreviousData(
-                year,
-                period,
-                yearIndex,
-                periodIndex
-              )
+              const dataIndex = data.findIndex((item) => item === quarterData)
+              const previousData =
+                dataIndex > 0 ? data[dataIndex - 1] : undefined
 
+              const current = Number(quarterData[categoryToKey[category]])
               const previous = previousData
                 ? Number(previousData[categoryToKey[category]])
                 : undefined
 
               const deltaData =
-                deltaMode && (yearIndex > 0 || periodIndex > 0)
+                deltaMode && previousData
                   ? calculateDelta(current, previous)
-                  : { value: current ?? 0, delta: null }
+                  : { value: current, delta: null }
 
               return (
                 <TableCell
-                  key={`${category}-${year}-${period || 'Year'}`}
+                  key={`${year}-Q${index + 1}`}
                   className="border-l text-center"
                 >
                   {deltaData &&
                     renderCellWithDelta(deltaData.value, deltaData.delta)}
                 </TableCell>
               )
+            })
+          } else {
+            const yearlyData = yearData.find((item) => item.isYearly)
+            if (!yearlyData) {
+              return (
+                <TableCell
+                  key={`${year}-yearly`}
+                  className="border-l text-center"
+                >
+                  -
+                </TableCell>
+              )
             }
-          )
-        )}
+
+            const dataIndex = data.findIndex((item) => item === yearlyData)
+            const previousData = dataIndex > 0 ? data[dataIndex - 1] : undefined
+
+            const current = Number(yearlyData[categoryToKey[category]])
+            const previous = previousData
+              ? Number(previousData[categoryToKey[category]])
+              : undefined
+
+            const deltaData =
+              deltaMode && previousData
+                ? calculateDelta(current, previous)
+                : { value: current, delta: null }
+
+            return (
+              <TableCell
+                key={`${year}-yearly`}
+                className="border-l text-center"
+              >
+                {deltaData &&
+                  renderCellWithDelta(deltaData.value, deltaData.delta)}
+              </TableCell>
+            )
+          }
+        })}
       </TableRow>
     ))
+  }
 
   return (
     <Table className="table-auto border border-gray-200 bg-white">

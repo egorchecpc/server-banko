@@ -1,10 +1,14 @@
 import { useMutation } from '@tanstack/react-query'
 import axiosConfig from '@/services/axiosConfig'
 import { API_ENDPOINTS } from '@/services/endpoints'
-import { MacroSettings } from '@/models/MacroSettings'
+import { FormatedMacroSettings } from '@/models/FormatedMacroSettings'
 
 export const usePostMacroSettingsData = () => {
-  return useMutation<MacroSettings, Error, Partial<MacroSettings>>({
+  return useMutation<
+    FormatedMacroSettings,
+    Error,
+    Partial<FormatedMacroSettings>
+  >({
     mutationFn: async (newMacroSettings) => {
       const { data } = await axiosConfig.post(
         API_ENDPOINTS.POST_MACRO_SETTINGS_DATA,

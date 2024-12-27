@@ -4,6 +4,7 @@ import {
   credit_types,
   debtor_types,
   product_types,
+  stage_types,
   titles,
 } from '@/modules/CreditListModule/CreditListConfig'
 import { CreditListData } from '@/models/CreditList'
@@ -37,6 +38,11 @@ export const CreditListModule: FC<CreditListModuleProps> = ({ data }) => {
             title: 'Вид продукта',
             column: 'product_type',
             options: product_types,
+          },
+          {
+            title: 'Стадия',
+            column: 'stage',
+            options: stage_types,
           },
         ]}
         searchPlaceholder="Поиск по клиенту"

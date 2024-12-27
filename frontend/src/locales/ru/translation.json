@@ -39,11 +39,19 @@
     "tables": {
       "pdTable": {
         "cPDTitle": "Probability of Default (cPD) (кумулятивный)",
-        "ranges": {"range1":"0", "range2":"0-30", "range3":"30-60", "range4":"60-90", "range5":"90+"},
-        "types": {"type1": "cPD", "type2":"mPD"},
+        "ranges": {
+          "range1": "0",
+          "range2": "0-30",
+          "range3": "30-60",
+          "range4": "60-90",
+          "range5": "90+"
+        },
+
+        "types": { "type1": "cPD", "type2": "mPD" },
         "buttons": {
           "qBtn": "Квартальное отображение",
-          "deltaBtn": "Отображение разниц"
+          "deltaBtn": "Отображение разниц",
+          "chartBtn": "Графическое отображение"
         }
       },
       "lgdTable": {
@@ -124,17 +132,17 @@
       "debtorType": {
         "title": "Тип должника",
         "default": "Выберите тип должника",
-        "items": {"item1": "Розничный", "item2": "Корпоративный"}
+        "items": { "item1": "Розничный", "item2": "Корпоративный" }
       },
       "creditType": {
         "title": "Вид кредита",
         "default": "Выберите тип кредита",
-        "items": {"item1":"Потребительский", "item2": "Ипотечный"}
+        "items": { "item1": "Потребительский", "item2": "Ипотечный" }
       },
       "productType": {
         "title": "Вид продукта",
         "default": "Выберите тип продукта",
-        "items": {"item1":"Залоговые", "item2":"Беззалоговые"}
+        "items": { "item1": "Залоговые", "item2": "Беззалоговые" }
       },
       "date": {
         "title": "Дата",
@@ -149,14 +157,28 @@
         "editTitle": "Редактировать макро показатель",
         "macroTypes": {
           "default": "Выберите тип",
-          "items": {"rrdn":"РРДН", "nnzp":"ННЗП"}
+          "items": {
+            "productProfitability": "ПП",
+            "realWage": "ННЗП",
+            "gdp": "ВВП",
+            "realDisposablePopulationIncome": "РРДН",
+            "averageMonthlySalary": "СМЗ"
+          }
         },
         "subtitles": {
           "scenario": "Сценарий",
           "value": "Значение",
           "probability": "Вероятность",
-          "scenariosFull": {"worst": "Худший", "normal":"Нормальный", "best": "Лучший"},
-          "scenariosShort": {"worst": "Худш", "normal":"Норм", "best": "Лучш"}
+          "scenariosFull": {
+            "worst": "Худший",
+            "normal": "Нормальный",
+            "best": "Лучший"
+          },
+          "scenariosShort": {
+            "worst": "Худш",
+            "normal": "Норм",
+            "best": "Лучш"
+          }
         },
         "buttons": {
           "saveBtn": "Сохранить",
@@ -177,7 +199,7 @@
       "noResult": "Результат не найден",
       "clearFilter": "Очистить фильтр"
     },
-    "pagination":{
+    "pagination": {
       "page": "Страница"
     },
     "actions": {
@@ -207,7 +229,7 @@
     "option4": "Графики"
   },
   "categories": {
-    "without": "Без задержек",
+    "without": "Без просрочки",
     "between1To30": "1-30 дней",
     "between31To60": "31-60 дней",
     "between61To90": "61-90 дней",

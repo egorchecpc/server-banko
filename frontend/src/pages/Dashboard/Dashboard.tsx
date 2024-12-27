@@ -31,11 +31,12 @@ export const DashboardPage = () => {
           </div>
         </Button>
       </div>
-      {data.yearlyPDData && data.quarterlyPDData && (
+      {data.yearlyPDData && data.quarterlyPDData && data.forecastPDData && (
         <div className="mb-3">
           <PDDisplayModule
             yearlyPDData={data.yearlyPDData}
             quarterlyPDData={data.quarterlyPDData}
+            forecastPDData={data.forecastPDData}
           />
         </div>
       )}
