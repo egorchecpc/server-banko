@@ -1,8 +1,7 @@
 import {LGDData} from "./LGDData.js";
-import { cPDDataYear } from "./PDYearlyData.js";
-import { mPDDataYear } from "./PDYearlyData.js";
-import { mPDQuarterlyData } from "./PDQData.js";
+import { cPDDataYear2 } from "./PDYearlyData.js";
 import { cPDQuarterlyData } from "./PDQData.js";
+import {PDForecastData} from "./PDForecastData.js"
 import {GBVData} from "./GBVChartData.js"
 import {GBVStageData} from "./GBVStageData.js"
 import {RiskMetricData} from "./RiskMetricData.js"
@@ -11,7 +10,7 @@ import { ProfileReportsData } from "./ProfileReportsData.js";
 import { ECLData1,ECLData2 } from "./ECLData.js";
 import express from 'express';
 import cors from 'cors';
-
+import bodyParser from "body-parser";
 const app = express();
 const port = 3000;
 
@@ -42,24 +41,31 @@ app.get('/profilereportsdata', (req, res) => {
   res.json(ProfileReportsData);
 });
 
-app.get('/cpdyears', (req, res) => {
-  res.json(cPDDataYear);
-});
-app.get('/mpdyears', (req, res) => {
-  res.json(mPDDataYear);
+app.get('/probabilityDefault/yearly', (req, res) => {
+  res.json(cPDDataYear2);
 });
 
-app.get('/cpdqdata', (req, res) => {
+app.get('/probabilityDefault/quarterly', (req, res) => {
   res.json(cPDQuarterlyData); 
 });
-app.get('/mpdqdata', (req, res) => {
-  res.json(mPDQuarterlyData);
+
+app.get('/probabilityDefault/forecast', (req, res) => {
+  res.json(PDForecastData);
 });
 app.get('/ecldata1', (req, res) => {
   res.json(ECLData1);
 });
 app.get('/ecldata2', (req, res) => {
   res.json(ECLData2);
+});
+
+app.use(bodyParser.json());
+
+app.post('/macro', (req, res) => {
+  const macroData = req.body;
+  console.log('Полученные макроданные:', macroData);
+
+  res.status(200).json({ message: 'Макроданные успешно получены', data: macroData });
 });
 
 app.listen(port, () => {

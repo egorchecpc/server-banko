@@ -10,10 +10,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -23,10 +26,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -36,10 +42,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -49,10 +58,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -62,10 +74,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -75,10 +90,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -88,10 +106,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -101,10 +122,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -114,10 +138,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -127,10 +154,13 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
     {
-      "client_id": "0123456",
+      "client_id": "654321",
       "contract_id": "0123456",
       "debtor_type": "Розничный",
       "credit_type": "Потребительский",
@@ -140,241 +170,11 @@ export const CreditListData = [
       "RTAM": "123",
       "currency": "$",
       "PD": "123",
-      "LGD": "123"
+      "LGD": "123",
+      "stage": "I",
+      "firstDate":"01.01.2024",
+      "lastDate":"01.06.2024"
     },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    },
-    {
-      "client_id": "0123456",
-      "contract_id": "0123456",
-      "debtor_type": "Розничный",
-      "credit_type": "Потребительский",
-      "product_type": "Залоговый",
-      "VBS": "123",
-      "RAM": "123",
-      "RTAM": "123",
-      "currency": "$",
-      "PD": "123",
-      "LGD": "123"
-    }
   ]
-  
+
+

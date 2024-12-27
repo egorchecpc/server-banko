@@ -11,6 +11,99 @@ export const mockYearlyData = (years) => {
   
 
 export const cPDDataYear = mockYearlyData([2023, 2024, 2025, 2026, 2027])
-export const mPDDataYear = mockYearlyData([2023, 2024, 2025, 2026, 2027])
+
+export const cPDDataYear2 = {
+  "year2023": {
+    "cpd": {
+      "date": "2023-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    },
+    "mpd": {
+      "date": "2023-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    }
+  },
+  "year2024": {
+    "cpd": {
+      "date": "2024-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    },
+    "mpd": {
+      "date": "2024-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    }
+  },
+  "year2025": {
+    "cpd": {
+      "date": "2025-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    },
+    "mpd": {
+      "date": "2025-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    }
+  },
+  "year2026": {
+    "cpd": {
+      "date": "2026-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    },
+    "mpd": {
+      "date": "2026-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    }
+  },
+  "year2027": {
+    "cpd": {
+      "date": "2027-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    },
+    "mpd": {
+      "date": "2027-12-01",
+      "without": 6.29,
+      "between1To30": 6.29,
+      "between31To60": 16.29,
+      "between61To90": 12.09,
+      "moreThen90": 98.49
+    }
+  }
+
+}
 
 console.log(cPDDataYear)
