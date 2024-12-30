@@ -8,6 +8,6 @@ export const API_ENDPOINTS = {
   GET_RISK_METRIC_DATA: '/riskmetricdata',
   GET_CREDIT_LIST_DATA: '/creditlistdata',
   GET_PROFILE_REPORTS_DATA: '/profilereportsdata',
-  POST_MACRO_SETTINGS_DATA: '/macro-set-data',
+  POST_MACRO_SETTINGS_DATA: '/macro',
   POST_FORM_DATA: '/debtor-form-data',
 }
