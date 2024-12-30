@@ -12,7 +12,7 @@ export const usePostMacroSettingsData = () => {
   >({
     mutationFn: async (newMacroSettings) => {
       const { data } = await axios.post(
-        "api/macro",
+        "/api/macro",
         newMacroSettings
       )
       return data

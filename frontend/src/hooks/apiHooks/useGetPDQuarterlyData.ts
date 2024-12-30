@@ -7,7 +7,7 @@ export const useGetPDQuarterlyData = () => {
   return useQuery<QuarterlyDataResponse, Error>({
     queryKey: ['PDQuarterlyData'],
     queryFn: async () => {
-      const { data } = await axios.get('api/probabilityDefault/quarterly')
+      const { data } = await axios.get('/api/probabilityDefault/quarterly')
       return data
     },
   })

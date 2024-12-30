@@ -7,7 +7,7 @@ export const useGetPDForecastData = () => {
   return useQuery<ForecastDataResponse, Error>({
     queryKey: ['PDForecastData'],
     queryFn: async () => {
-      const { data } = await axios.get('api/probabilityDefault/forecast')
+      const { data } = await axios.get('/api/probabilityDefault/forecast')
       return data
     },
   })

@@ -8,7 +8,7 @@ export const useGetPDYearlyData = () => {
     queryKey: ['PDYearlyData'],
     queryFn: async () => {
       const response = await axios.get<YearlyDataResponse>(
-        'api/probabilityDefault/yearly'
+        '/api/probabilityDefault/yearly'
       )
 
       return Object.entries(response.data).reduce((acc, [year, data]) => {
