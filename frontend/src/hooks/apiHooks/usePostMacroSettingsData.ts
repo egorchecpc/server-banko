@@ -11,7 +11,7 @@ export const usePostMacroSettingsData = () => {
   >({
     mutationFn: async (newMacroSettings) => {
       const { data } = await axiosConfig.post(
-          API_ENDPOINTS.POST_MACRO_SETTINGS_DATA,
+          'http://banko.stacklevel.group/api/macro',
           newMacroSettings
       )
       return data
