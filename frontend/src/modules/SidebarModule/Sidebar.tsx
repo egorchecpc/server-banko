@@ -37,7 +37,7 @@ export const AppSidebar: FC<SidebarProps> = ({
     const formattedMacroData = formatMacroData(macroData)
 
     mutation.mutate(
-      { },
+      {},
       {
         onSuccess: () => {
           console.log('Данные успешно отправлены')
