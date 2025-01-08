@@ -45,6 +45,7 @@ export const AppSidebar: FC<SidebarProps> = ({
         },
         onError: (error) => {
           console.error('Ошибка при отправке:', error)
+          console.log("DATA:", formattedMacroData)
         },
       }
     )
@@ -53,6 +54,7 @@ export const AppSidebar: FC<SidebarProps> = ({
   const postSettings = () => {
     return function () {
       console.log('Форма: ', debtorData)
+
       handlePostSettings()
     }
   }

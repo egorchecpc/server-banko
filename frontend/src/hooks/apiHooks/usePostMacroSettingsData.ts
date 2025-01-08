@@ -13,7 +13,6 @@ export const usePostMacroSettingsData = () => {
         "https://banko-r-backend.stacklevel.group/api/macro",
         newMacroSettings
       )
-
       return data
     },
   })
