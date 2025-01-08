@@ -10,7 +10,7 @@ export const usePostMacroSettingsData = () => {
   >({
     mutationFn: async (newMacroSettings) => {
       const { data } = await axios.post(
-        "https://cors-anywhere.herokuapp.com/https://banko-r-backend.stacklevel.group/api/macro",
+        "https://banko-r-backend.stacklevel.group/api/macro",
         newMacroSettings
       )
 
