@@ -32,20 +32,12 @@ export const AppSidebar: FC<SidebarProps> = ({
   const router = useRouter()
   const mutation = usePostMacroSettingsData()
 
-  const testData = {
-    year2024: {
-      gdp: {
-        worst: { value: 999, probability: 0.2 },
-        norm: { value: 555, probability: 0.5 },
-        best: { value: 333, probability: 0.3 },
-      },
-    },
-  };
+
   const handlePostSettings = () => {
     const formattedMacroData = formatMacroData(macroData)
 
     mutation.mutate(
-      { ...testData },
+      { },
       {
         onSuccess: () => {
           console.log('Данные успешно отправлены')
