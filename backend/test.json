@@ -1,0 +1,290 @@
+{
+    "year2024": {
+      "productProfitability": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "realWage": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "gdp": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "realDisposablePopulationIncome": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "averageMonthlySalary": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      }
+    },
+    "year2025": {
+      "productProfitability": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "realWage": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "gdp": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 5,
+          "probability": 0.5
+        }
+      },
+      "realDisposablePopulationIncome": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "averageMonthlySalary": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      }
+    },
+    "year2026": {
+      "productProfitability": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "realWage": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "gdp": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "realDisposablePopulationIncome": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "averageMonthlySalary": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      }
+    },
+    "year2027": {
+      "productProfitability": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "realWage": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "gdp": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "realDisposablePopulationIncome": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      },
+      "averageMonthlySalary": {
+        "worst": {
+          "value": 0,
+          "probability": 0.2
+        },
+        "norm": {
+          "value": 0,
+          "probability": 0.3
+        },
+        "best": {
+          "value": 0,
+          "probability": 0.5
+        }
+      }
+    }
+  }
