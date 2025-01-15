@@ -53,7 +53,7 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
   const handleDelete = (id: string) => {
     setIndicators(indicators.filter((ind) => ind.id !== id))
   }
-  const scenarios = ['worst', 'normal', 'best']
+  const scenarios = ['worst', 'norm', 'best']
 
   return (
     <>

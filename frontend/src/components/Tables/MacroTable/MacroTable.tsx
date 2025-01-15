@@ -26,7 +26,7 @@ export const MacroTable = ({
   const { t } = useTranslation()
   const scenarioLabels = {
     worst: t('sidebar.macroSettings.modal.subtitles.scenariosShort.worst'),
-    normal: t('sidebar.macroSettings.modal.subtitles.scenariosShort.normal'),
+    norm: t('sidebar.macroSettings.modal.subtitles.scenariosShort.normal'),
     best: t('sidebar.macroSettings.modal.subtitles.scenariosShort.best'),
   }
 

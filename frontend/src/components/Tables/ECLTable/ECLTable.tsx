@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import {
   Table,
   TableBody,
@@ -68,7 +68,7 @@ const ECLTable: FC<ECLTableProps> = ({ data }) => {
             .flat()
             .map((label, i) => (
               <TableHead
-                key={i}
+                key={`${label}-${i}`}
                 className="bg-muted border text-center font-bold"
               >
                 {label}
@@ -95,7 +95,11 @@ const ECLTable: FC<ECLTableProps> = ({ data }) => {
             >
               {row.creditType}
             </TableCell>
-            {STAGES.map((stage) => renderStageCells(row[stage.key]))}
+            {STAGES.map((stage) => (
+              <React.Fragment key={stage.key}>
+                {renderStageCells(row[stage.key])}
+              </React.Fragment>
+            ))}
             <TableCell className="border-x text-center font-bold">
               {row.total.balance}
             </TableCell>

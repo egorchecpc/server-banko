@@ -32,10 +32,12 @@ export const AppSidebar: FC<SidebarProps> = ({
   const router = useRouter()
   const mutation = usePostMacroSettingsData()
 
-
   const handlePostSettings = () => {
     const formattedMacroData = formatMacroData(macroData)
-
+    console.log(
+      'Форматированные данные для отправки:',
+      JSON.stringify(formattedMacroData, null, 2)
+    )
     mutation.mutate(
       { ...formattedMacroData },
       {
@@ -45,8 +47,7 @@ export const AppSidebar: FC<SidebarProps> = ({
           router.navigate({ to: '/dashboard' })
         },
         onError: (error) => {
-          console.error('Ошибка при отправке:', error)
-          console.log("DATA:", formattedMacroData)
+          console.error('Ошибка:', error.response?.data || error.message)
         },
       }
     )
@@ -55,7 +56,6 @@ export const AppSidebar: FC<SidebarProps> = ({
   const postSettings = () => {
     return function () {
       console.log('Форма: ', debtorData)
-
       handlePostSettings()
     }
   }

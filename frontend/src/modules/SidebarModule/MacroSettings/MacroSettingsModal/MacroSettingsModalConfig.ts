@@ -9,15 +9,15 @@ export const macroSettingsSchema = z.object({
     z.string(),
     z
       .object({
-        best: z.object({
-          value: z.number().nonnegative().min(0),
-          probability: z.number().min(0).max(100),
-        }),
-        normal: z.object({
-          value: z.number().nonnegative().min(0),
-          probability: z.number().min(0).max(100),
-        }),
         worst: z.object({
+          value: z.number().nonnegative().min(0),
+          probability: z.number().min(0).max(100),
+        }),
+        norm: z.object({
+          value: z.number().nonnegative().min(0),
+          probability: z.number().min(0).max(100),
+        }),
+        best: z.object({
           value: z.number().nonnegative().min(0),
           probability: z.number().min(0).max(100),
         }),
@@ -25,7 +25,7 @@ export const macroSettingsSchema = z.object({
       .refine((data) => {
         const totalProbability =
           data['worst'].probability +
-          data['normal'].probability +
+          data['norm'].probability +
           data['best'].probability
         return totalProbability === 100
       })

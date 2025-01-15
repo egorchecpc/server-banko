@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import {
   Table,
   TableBody,
@@ -67,7 +67,7 @@ const PDTable: FC<PDTableProps> = ({ data, deltaMode, displayQuarterly }) => {
               (item) => item.year === year && !item.isYearly
             )
             return hasQuarterlyData ? (
-              <>
+              <React.Fragment key={year}>
                 {['I', 'II', 'III', 'IV'].map((quarter) => (
                   <TableHead
                     key={`${year}-${quarter}`}
@@ -76,10 +76,8 @@ const PDTable: FC<PDTableProps> = ({ data, deltaMode, displayQuarterly }) => {
                     {quarter}
                   </TableHead>
                 ))}
-              </>
-            ) : (
-              ''
-            )
+              </React.Fragment>
+            ) : null
           })}
         </TableRow>
       )}
@@ -95,7 +93,6 @@ const PDTable: FC<PDTableProps> = ({ data, deltaMode, displayQuarterly }) => {
           const hasQuarterlyData = yearData.some((item) => !item.isYearly)
 
           if (hasQuarterlyData) {
-            // Получаем данные по кварталам для текущего года
             const quarters = yearData
               .filter((item) => !item.isYearly)
               .sort(
@@ -103,43 +100,49 @@ const PDTable: FC<PDTableProps> = ({ data, deltaMode, displayQuarterly }) => {
                   getQuarterFromDate(a.date) - getQuarterFromDate(b.date)
               )
 
-            return Array.from({ length: 4 }, (_, index) => {
-              const quarterData = quarters[index]
-              if (!quarterData) {
-                return (
-                  <TableCell
-                    key={`${year}-Q${index + 1}`}
-                    className="border-l text-center"
-                  >
-                    -
-                  </TableCell>
-                )
-              }
+            return (
+              <React.Fragment key={year}>
+                {Array.from({ length: 4 }, (_, index) => {
+                  const quarterData = quarters[index]
+                  if (!quarterData) {
+                    return (
+                      <TableCell
+                        key={`${year}-Q${index + 1}`}
+                        className="border-l text-center"
+                      >
+                        -
+                      </TableCell>
+                    )
+                  }
 
-              const dataIndex = data.findIndex((item) => item === quarterData)
-              const previousData =
-                dataIndex > 0 ? data[dataIndex - 1] : undefined
+                  const dataIndex = data.findIndex(
+                    (item) => item === quarterData
+                  )
+                  const previousData =
+                    dataIndex > 0 ? data[dataIndex - 1] : undefined
 
-              const current = Number(quarterData[categoryToKey[category]])
-              const previous = previousData
-                ? Number(previousData[categoryToKey[category]])
-                : undefined
+                  const current = Number(quarterData[categoryToKey[category]])
+                  const previous = previousData
+                    ? Number(previousData[categoryToKey[category]])
+                    : undefined
 
-              const deltaData =
-                deltaMode && previousData
-                  ? calculateDelta(current, previous)
-                  : { value: current, delta: null }
+                  const deltaData =
+                    deltaMode && previousData
+                      ? calculateDelta(current, previous)
+                      : { value: current, delta: null }
 
-              return (
-                <TableCell
-                  key={`${year}-Q${index + 1}`}
-                  className="border-l text-center"
-                >
-                  {deltaData &&
-                    renderCellWithDelta(deltaData.value, deltaData.delta)}
-                </TableCell>
-              )
-            })
+                  return (
+                    <TableCell
+                      key={`${year}-Q${index + 1}`}
+                      className="border-l text-center"
+                    >
+                      {deltaData &&
+                        renderCellWithDelta(deltaData.value, deltaData.delta)}
+                    </TableCell>
+                  )
+                })}
+              </React.Fragment>
+            )
           } else {
             const yearlyData = yearData.find((item) => item.isYearly)
             if (!yearlyData) {
