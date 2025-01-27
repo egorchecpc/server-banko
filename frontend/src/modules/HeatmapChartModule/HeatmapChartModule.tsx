@@ -13,9 +13,13 @@ import {
 
 interface PDHeatmapProps {
   data: HeatmapData
+  title?: string
 }
 
-const HeatmapChartModule: FC<PDHeatmapProps> = ({ data }) => {
+const HeatmapChartModule: FC<PDHeatmapProps> = ({
+  data,
+  title = 'Тепловая карта',
+}) => {
   const { categories, periods, values } = data
   const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -64,7 +68,7 @@ const HeatmapChartModule: FC<PDHeatmapProps> = ({ data }) => {
   )
 
   return (
-    <ContainerComponent withBg={true} title="Тепловая карта">
+    <ContainerComponent withBg={true} title={title}>
       <ContainerBody isScrolling={true} orientation="horizontal">
         <div ref={wrapperRef} className="w-full">
           <div className="px-10 py-5">

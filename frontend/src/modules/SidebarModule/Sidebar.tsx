@@ -6,56 +6,54 @@ import {
 } from '@/components/ui/sidebar'
 import { DebtorForm } from '@/modules/SidebarModule/DebtorForm/DebtorForm'
 import { MacroSettingsComponent } from '@/modules/SidebarModule/MacroSettings/MacroSettings'
-import React, { FC, useState } from 'react'
-import { FormData } from '@/models/FormData'
-import { MacroSettings } from '@/models/MacroSettings'
+import { FC, useState } from 'react'
 import { getYearArray } from '@/utils/getDate'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { usePostMacroSettingsData } from '@/hooks/apiHooks/usePostMacroSettingsData'
-import { formatMacroData } from '@/utils/formatMacroData'
-import { useRouter } from '@tanstack/react-router'
+import { formatMacroDataToServer } from '@/utils/formatMacroDataToServer'
+import { useParams, useRouter } from '@tanstack/react-router'
+import { useNavigation } from '@/context/NavigationContext'
+import { DebtorData } from '@/models/DebtorData'
+import { MacroSettings } from '@/models/MacroSettings'
+import { useUpdateReport } from '@/hooks/apiHooks/commonHooks/usePostReportData'
 
-interface SidebarProps {
-  isDialogOpen: boolean
-  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
-  setIsNavEnabled: React.Dispatch<React.SetStateAction<boolean>>
-}
+export const AppSidebar: FC = () => {
+  const [debtorData, setDebtorData] = useState<DebtorData | undefined>()
+  const [macroData, setMacroData] = useState<MacroSettings[] | undefined>()
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
+  const { enableNavigation } = useNavigation()
 
-export const AppSidebar: FC<SidebarProps> = ({
-  isDialogOpen,
-  setIsDialogOpen,
-  setIsNavEnabled,
-}) => {
-  const [debtorData, setDebtorData] = useState<FormData | null>(null)
-  const [macroData, setMacroData] = useState<MacroSettings[]>([])
-
+  const { reportId } = useParams({ strict: false })
   const router = useRouter()
-  const mutation = usePostMacroSettingsData()
 
+  const { mutate } = useUpdateReport()
   const handlePostSettings = () => {
-    const formattedMacroData = formatMacroData(macroData)
-    console.log(
-      'Форматированные данные для отправки:',
-      JSON.stringify(formattedMacroData, null, 2)
-    )
-    mutation.mutate(
-      { ...formattedMacroData },
-      {
-        onSuccess: () => {
-          console.log('Данные успешно отправлены')
-          setIsNavEnabled(true)
-          router.navigate({ to: '/dashboard' })
-        },
-        onError: (error) => {
-          console.error('Ошибка:', error.response?.data || error.message)
-        },
-      }
-    )
+    if (!reportId) {
+      console.error('reportId is missing')
+      return
+    }
+    const formattedMacroData = formatMacroDataToServer(macroData)
+    if (debtorData) {
+      mutate(
+        { id: reportId, debtorData, macroData: formattedMacroData },
+        {
+          onSuccess: () => {
+            console.log('Данные успешно отправлены')
+            enableNavigation()
+            router
+              .navigate({ to: `/reports/${reportId}/dashboard` })
+              .then((r) => console.log(r))
+          },
+          onError: (error) => {
+            console.error('Ошибка:', error.message)
+          },
+        }
+      )
+    }
   }
 
   const postSettings = () => {
     return function () {
-      console.log('Форма: ', debtorData)
       handlePostSettings()
     }
   }
@@ -65,13 +63,13 @@ export const AppSidebar: FC<SidebarProps> = ({
     <Sidebar>
       <SidebarHeader />
       <SidebarContent>
-        <ScrollArea>
-          <div className="flex h-full flex-col items-center p-5">
-            <h2 className="pb-10 pt-8 text-2xl font-extrabold leading-9 text-blue-900">
+        <ScrollArea className="flex-1">
+          <div className="flex h-full flex-col items-center">
+            <h2 className="pb-6 pt-2 text-2xl font-extrabold leading-9 text-blue-900">
               ЛОГО
             </h2>
 
-            <div className="w-full overflow-y-auto overflow-x-hidden">
+            <div className="w-full overflow-y-auto overflow-x-hidden p-5">
               <div className="rounded-lg bg-white p-4">
                 <DebtorForm setDebtorData={setDebtorData} />
               </div>
@@ -81,6 +79,8 @@ export const AppSidebar: FC<SidebarProps> = ({
                 years={years}
                 isDialogOpen={isDialogOpen}
                 setIsDialogOpen={setIsDialogOpen}
+                isTemplateModalOpen={isTemplateModalOpen}
+                setIsTemplateModalOpen={setIsTemplateModalOpen}
               />
             </div>
           </div>

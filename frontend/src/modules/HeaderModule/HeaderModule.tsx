@@ -1,12 +1,25 @@
 import { Header } from '@/components/Header/Header'
 import { FC } from 'react'
-import { navItems, userData } from './index'
+import { navItems, userData } from './HeaderModuleConfig'
 
-interface HeaderModuleProps {
-  isEnabled: boolean
+interface HeaderModule {
+  withoutNav?: boolean
+  withoutSidebar?: boolean
+  withoutExportBtn?: boolean
 }
-export const HeaderModule: FC<HeaderModuleProps> = ({ isEnabled }) => {
+
+export const HeaderModule: FC<HeaderModule> = ({
+  withoutNav = false,
+  withoutSidebar = false,
+  withoutExportBtn = false,
+}) => {
   return (
-    <Header navItems={navItems} userData={userData} isEnabled={isEnabled} />
+    <Header
+      navItems={navItems}
+      userData={userData}
+      withoutNav={withoutNav}
+      withoutSidebar={withoutSidebar}
+      withoutExportBtn={withoutExportBtn}
+    />
   )
 }

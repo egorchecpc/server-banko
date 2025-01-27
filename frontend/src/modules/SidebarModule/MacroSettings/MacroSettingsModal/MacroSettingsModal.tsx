@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react'
+import { FC, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -77,13 +77,12 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
     formState: { errors },
   } = form
 
-  useMemo(() => {
-    if (editingIndicator) {
-      reset(editingIndicator)
-    } else {
-      reset(createInitialFormState())
+  useEffect(() => {
+    if (isOpen) {
+      const initialData = editingIndicator || createInitialFormState()
+      reset(initialData)
     }
-  }, [editingIndicator, reset, years])
+  }, [editingIndicator, isOpen, reset, years])
 
   const onSubmit = (data: MacroSettings) => {
     onSubmitForm(data)
@@ -267,12 +266,9 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
               onClick={form.handleSubmit(
                 (data) => {
                   onSubmit(data)
-                  console.log('Submit data', data)
                 },
                 (errors) => {
                   showToastForErrors(errors)
-                  console.error('Validation errors:', errors)
-                  console.log('Form Values:', form.getValues())
                 }
               )}
               variant="primary"

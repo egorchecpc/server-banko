@@ -1,42 +1,28 @@
 import { Link, useRouter } from '@tanstack/react-router'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FC } from 'react'
+import { useReportId } from '@/context/ReportIdContext'
 
 export interface NavbarProps {
   navItems: { [key: string]: string }
-  isEnabled: boolean
 }
 
-export const Navbar: FC<NavbarProps> = ({ navItems, isEnabled }) => {
+export const Navbar: FC<NavbarProps> = ({ navItems }) => {
   const router = useRouter()
-  const currentPath = router.state.location.pathname.slice(1)
+  const currentPath = router.state.location.pathname.split('/').pop() || ''
+  const { reportId } = useReportId()
 
   return (
-    <nav className={`w-[34rem] transition-all duration-300 ease-in-out`}>
-      <Tabs defaultValue={currentPath || ''} className="w-full">
+    <nav className="w-[34rem] transition-all duration-300 ease-in-out">
+      <Tabs defaultValue={currentPath} className="w-full">
         <TabsList className="flex-start w-full">
           {Object.entries(navItems).map(([key, value]) => (
             <Link
-              onClick={(e) => {
-                if (!isEnabled) {
-                  e.preventDefault()
-                }
-              }}
-              to={`/${key}`}
+              to={`/reports/${reportId}/${key}`}
               key={key}
               className="w-full"
             >
-              <TabsTrigger
-                value={key}
-                disabled={!isEnabled}
-                className={` ${
-                  !isEnabled
-                    ? `disabled-tab hover:bg-transparent hover:text-gray-400 data-[state=active]:bg-transparent data-[state=active]:text-gray-400 data-[state=active]:shadow-none`
-                    : ''
-                } `}
-              >
-                {value}
-              </TabsTrigger>
+              <TabsTrigger value={key}>{value}</TabsTrigger>
             </Link>
           ))}
         </TabsList>

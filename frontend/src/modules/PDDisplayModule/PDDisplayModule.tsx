@@ -93,8 +93,6 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
   )
 
   const prepareTableData = () => {
-    console.log('Raw quarterlyPDData:', quarterlyPDData)
-
     if (!displayQuarterly) {
       return Object.entries(yearlyPDData).map(([year, { cpd }]) => ({
         ...cpd,

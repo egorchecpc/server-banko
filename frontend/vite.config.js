@@ -7,11 +7,7 @@ export default defineConfig({
   plugins: [TanStackRouterVite(), react(), tsconfigPaths()],
   server: {
     proxy: {
-      '/api': {
-        target: 'https://banko-r-backend.stacklevel.group',
-        changeOrigin: true,
-        secure: false,
-      },
+      '/api': 'https://banko-r-backend.stacklevel.group',
     },
   },
 })

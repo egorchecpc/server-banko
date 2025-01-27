@@ -5,13 +5,21 @@ import { MacroTable } from '@/components/Tables/MacroTable/MacroTable'
 import { MacroSettingsModal } from './MacroSettingsModal/MacroSettingsModal'
 import { useTranslation } from 'react-i18next'
 import { MacroSettings } from '@/models/MacroSettings'
+import { useGetReportDataById } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
+import { useParams } from '@tanstack/react-router'
+import { MacroTemplateModal } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
+import { UploadIcon } from '@radix-ui/react-icons'
 
 interface MacroSettingsProps {
-  setMacroData: (data: MacroSettings[]) => void
+  setMacroData: React.Dispatch<
+    React.SetStateAction<MacroSettings[] | undefined>
+  >
   postSettings: () => void
   years: (string | number)[]
   isDialogOpen: boolean
   setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isTemplateModalOpen: boolean
+  setIsTemplateModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
@@ -20,14 +28,35 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
   postSettings,
   isDialogOpen,
   setIsDialogOpen,
+  isTemplateModalOpen,
+  setIsTemplateModalOpen,
 }) => {
-  const [indicators, setIndicators] = useState<MacroSettings[]>([])
+  const { reportId } = useParams({ strict: false })
+  const { macroData, isLoading, error } = useGetReportDataById(
+    reportId ? reportId : ''
+  )
+  const { t } = useTranslation()
+  const [indicators, setIndicators] = useState<MacroSettings[]>(
+    macroData ? macroData : []
+  )
+
+  useEffect(() => {
+    if (macroData) {
+      setIndicators(macroData)
+      setMacroData(macroData)
+    }
+  }, [macroData])
+
   const [editingIndicator, setEditingIndicator] =
     useState<MacroSettings | null>(null)
 
-  useEffect(() => {
-    setMacroData(indicators)
-  }, [indicators])
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
 
   const macroIndicators = [
     'productProfitability',
@@ -37,26 +66,79 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
     'averageMonthlySalary',
   ]
 
-  const { t } = useTranslation()
   const handleAdd = (newIndicator: MacroSettings) => {
-    setIndicators([...indicators, newIndicator])
+    const updatedIndicators = [...indicators, newIndicator]
+    setIndicators(updatedIndicators)
+    setMacroData(updatedIndicators)
   }
 
   const handleEdit = (updatedIndicator: MacroSettings) => {
-    setIndicators(
-      indicators.map((ind) =>
-        ind.id === updatedIndicator.id ? updatedIndicator : ind
-      )
+    const updatedIndicators = indicators.map((ind) =>
+      ind.id === updatedIndicator.id ? updatedIndicator : ind
     )
+    setIndicators(updatedIndicators)
+    setMacroData(updatedIndicators)
   }
 
   const handleDelete = (id: string) => {
-    setIndicators(indicators.filter((ind) => ind.id !== id))
+    const updatedIndicators = indicators.filter((ind) => ind.id !== id)
+    setIndicators(updatedIndicators)
+    setMacroData(updatedIndicators)
   }
+
+  const handleTemplateSelect = (templateIndicators: MacroSettings[]) => {
+    setIndicators(templateIndicators)
+    setMacroData(templateIndicators)
+    setIsTemplateModalOpen(false)
+  }
+
   const scenarios = ['worst', 'norm', 'best']
 
   return (
-    <>
+    <div className="relative mx-auto p-0">
+      <div className="mb-1 mt-6 flex items-center justify-between gap-9">
+        <div className="flex items-center gap-2">
+          <h2 className="text-base font-bold">
+            {t('sidebar.macroSettings.title')}
+          </h2>
+          <Button
+            className="p-0 text-blue-900 hover:text-charts-60"
+            onClick={() => {
+              setIsTemplateModalOpen(true)
+            }}
+          >
+            <UploadIcon className="h-4 w-4" />
+          </Button>
+        </div>
+        <Button
+          className="p-0 text-blue-900 hover:text-charts-60"
+          onClick={() => {
+            setEditingIndicator(null)
+            setIsDialogOpen(true)
+          }}
+        >
+          <PlusCircle className="h-5 w-5" />
+        </Button>
+      </div>
+      {indicators.length === 0 ? (
+        <p className="text-sm font-normal leading-18 text-grey-900">
+          {t('sidebar.macroSettings.subtext')}
+        </p>
+      ) : (
+        <MacroTable
+          years={years}
+          btnText={t('sidebar.macroSettings.modal.buttons.recalculate')}
+          indicators={indicators}
+          scenarios={scenarios}
+          postSettings={postSettings}
+          onEdit={(indicator) => {
+            setEditingIndicator(indicator)
+            setIsDialogOpen(true)
+          }}
+          onDelete={handleDelete}
+        />
+      )}
+
       {isDialogOpen && (
         <div
           className="bg-black/20 fixed inset-0 z-40 backdrop-blur-sm"
@@ -64,58 +146,36 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
         />
       )}
 
-      <div className="relative mx-auto p-0">
-        <div className="mb-1 mt-6 flex items-center justify-between gap-9">
-          <h2 className="text-base font-bold">
-            {t('sidebar.macroSettings.title')}
-          </h2>
-          <Button
-            className="p-0 text-blue-900 hover:text-charts-60"
-            onClick={() => {
-              setEditingIndicator(null)
-              setIsDialogOpen(true)
-            }}
-          >
-            <PlusCircle className="h-5 w-5" />
-          </Button>
-        </div>
-        {indicators.length === 0 ? (
-          <p className="text-sm font-normal leading-18 text-grey-900">
-            {t('sidebar.macroSettings.subtext')}
-          </p>
-        ) : (
-          <MacroTable
-            years={years}
-            btnText={t('sidebar.macroSettings.modal.buttons.recalculate')}
-            indicators={indicators}
-            scenarios={scenarios}
-            postSettings={postSettings}
-            onEdit={(indicator) => {
-              setEditingIndicator(indicator)
-              setIsDialogOpen(true)
-            }}
-            onDelete={handleDelete}
-          />
-        )}
-
-        <MacroSettingsModal
-          years={years}
-          isOpen={isDialogOpen}
-          scenarios={scenarios}
-          macroIndicators={macroIndicators}
-          onClose={() => setIsDialogOpen(false)}
-          onSubmitForm={(data) => {
-            if (editingIndicator) {
-              handleEdit({ ...data, id: editingIndicator.id })
-            } else {
-              handleAdd({ ...data, id: Date.now().toString() })
-            }
-            setIsDialogOpen(false)
-            setEditingIndicator(null)
-          }}
-          editingIndicator={editingIndicator}
+      {isTemplateModalOpen && (
+        <div
+          className="bg-black/20 fixed inset-0 z-40 backdrop-blur-sm"
+          aria-hidden="true"
         />
-      </div>
-    </>
+      )}
+
+      <MacroSettingsModal
+        years={years}
+        isOpen={isDialogOpen}
+        scenarios={scenarios}
+        macroIndicators={macroIndicators}
+        onClose={() => setIsDialogOpen(false)}
+        onSubmitForm={(data) => {
+          if (editingIndicator) {
+            handleEdit({ ...data, id: editingIndicator.id })
+          } else {
+            handleAdd({ ...data, id: Date.now().toString() })
+          }
+          setIsDialogOpen(false)
+          setEditingIndicator(null)
+        }}
+        editingIndicator={editingIndicator}
+      />
+
+      <MacroTemplateModal
+        isOpen={isTemplateModalOpen}
+        onClose={() => setIsTemplateModalOpen(false)}
+        onTemplateSelect={handleTemplateSelect}
+      />
+    </div>
   )
 }

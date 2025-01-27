@@ -39,7 +39,7 @@ interface TotalAmountOverdueChartModuleProps {
 }
 
 const formatAmount = (value: number): string => {
-  return `${(value / 1000000).toFixed(1)}M ₽`
+  return `${(value / 1000000).toFixed(1)}M Br`
 }
 
 const formatPercentage = (value: number): string => {

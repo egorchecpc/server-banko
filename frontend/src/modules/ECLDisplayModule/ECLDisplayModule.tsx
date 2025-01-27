@@ -17,13 +17,11 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
   return (
     <ContainerComponent withBg={false}>
       <ContainerBody isScrolling={true} orientation="horizontal">
-        <ECLTable data={eclDataV1} />
+        <ECLTable data={eclDataV1} isFirst={true} />
       </ContainerBody>
-      <div className="my-8">
-        Анализ кредитного качества по состоянию на __ ОТЧЕТНАЯ ДАТА__{' '}
-      </div>
+      <div className="my-4"></div>
       <ContainerBody isScrolling={true} orientation="horizontal">
-        <ECLTable data={eclDataV2} />
+        <ECLTable data={eclDataV2} isFirst={false} />
       </ContainerBody>
     </ContainerComponent>
   )

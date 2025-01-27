@@ -1,36 +1,120 @@
-import { ProfileReportsModule } from '@/modules/ProfileReportsModule/ProfileReportsModule'
-import { useGetProfileReportsData } from '@/hooks/apiHooks/useGetProfileReportsData'
+import { useState, useEffect } from 'react'
+import { ReportsModule } from '@/modules/ReportsModule/ReportsModule'
+import { Card, CardContent } from '@/components/ui/card'
+import { Tabs, TabsContent } from '@/components/ui/tabs'
+import { useProfile } from '@/hooks/apiHooks/profileHooks/useProfile'
+import { useTemplates } from '@/hooks/apiHooks/commonHooks/useTemplate'
+import { ProfileData } from '@/models/Profile'
+import { ProfileHeader } from '@/pages/Profile/ProfileHeader/ProfileHeader'
+import { ProfileNavigation } from '@/pages/Profile/ProfileNavigation/ProfileNavigation'
+import { TemplatesView } from '@/pages/Profile/TemplatesView/TemplatesView'
+import { ProfileEditDialog } from '@/pages/Profile/ProfileEditDialog/ProfileEditDialog'
+import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { Link } from '@tanstack/react-router'
 
 export const ProfilePage = () => {
-  const {
-    data: ProfileReportsData,
-    isLoading: profileReportsLoading,
-    isError: profileReportsError,
-  } = useGetProfileReportsData()
+  const [activeTab, setActiveTab] = useState('about')
+  const { profile, isProfileLoading, updateProfile } = useProfile()
+  const { templates, isTemplatesLoading, updateTemplate } = useTemplates()
+  const [profileDialogOpen, setProfileDialogOpen] = useState(false)
+  const [editedProfile, setEditedProfile] = useState<ProfileData | null>(null)
+  const { data: ProfileReportsData } = useGetReportsData()
 
-  const isLoading = profileReportsLoading
-  const isError = profileReportsError
+  useEffect(() => {
+    if (profile) {
+      setEditedProfile(profile)
+    }
+  }, [profile])
 
-  if (isLoading) {
+  const handleProfileEdit = () => {
+    if (profile) {
+      setEditedProfile(profile)
+      setProfileDialogOpen(true)
+    }
+  }
+
+  const handleProfileSave = () => {
+    if (editedProfile) {
+      updateProfile(editedProfile)
+      setProfileDialogOpen(false)
+    }
+  }
+
+  if (isProfileLoading) {
     return <div>Loading...</div>
   }
-  if (isError) {
-    return <div>Error occurred while fetching data</div>
+
+  if (!profile) {
+    return <div>Error loading profile</div>
   }
 
-  return (
-    <div className="hidden h-full flex-1 flex-col md:flex">
-      <div className="flex items-center justify-between space-y-2">
-        <div>
-          <h2 className="mb-5 text-2xl font-bold leading-38 text-black-900">
-            С возвращением!
-          </h2>
-          <p className="text-muted-foreground">
-            Вот список доступных вам отчётов!
-          </p>
-        </div>
+  const renderAboutTab = () => (
+    <div className="space-y-8">
+      <ProfileHeader userData={profile} onEdit={handleProfileEdit} />
+
+      <Card>
+        <CardContent className="p-6">
+          <div className="mb-2 text-2xl font-bold">{profile.reportsCount}</div>
+          <div className="text-gray-600">Созданных отчётов</div>
+        </CardContent>
+      </Card>
+
+      <div className="mt-8">
+        <h3 className="mb-4 text-xl font-semibold">Доступные отчёты</h3>
+        {ProfileReportsData && <ReportsModule data={ProfileReportsData} />}
       </div>
-      {ProfileReportsData && <ProfileReportsModule data={ProfileReportsData} />}
+    </div>
+  )
+
+  return (
+    <div className="flex h-full min-h-screen">
+      <div className="mt-[-18px] w-64 border-r bg-gray-50 p-6">
+        <ProfileNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      </div>
+
+      <div className="flex-1 p-8">
+        <Breadcrumb className="mb-8">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/reports">Главная страница</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Профиль</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <Tabs value={activeTab} className="space-y-6">
+          <TabsContent value="about">{renderAboutTab()}</TabsContent>
+          <TabsContent value="templates">
+            <TemplatesView
+              templates={templates || []}
+              isLoading={isTemplatesLoading}
+              onUpdateTemplate={updateTemplate}
+            />
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {editedProfile && (
+        <ProfileEditDialog
+          open={profileDialogOpen}
+          onOpenChange={setProfileDialogOpen}
+          editedProfile={editedProfile}
+          onProfileChange={setEditedProfile}
+          onSave={handleProfileSave}
+        />
+      )}
     </div>
   )
 }

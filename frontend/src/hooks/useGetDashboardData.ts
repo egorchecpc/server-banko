@@ -1,12 +1,18 @@
-import { useGetLGDData } from '@/hooks/apiHooks/useGetLGDData'
-import { useGetPDYearlyData } from '@/hooks/apiHooks/useGetPDYearlyData'
-import { useGetPDQuarterlyData } from '@/hooks/apiHooks/useGetPDQuarterlyData'
-import { useGetECLDataV1 } from '@/hooks/apiHooks/useGetECLDataV1'
-import { useGetECLDataV2 } from '@/hooks/apiHooks/useGetECLDataV2'
-import { useGetPDForecastData } from '@/hooks/apiHooks/useGetPDForecastData'
+import { useGetLGDData } from '@/hooks/apiHooks/dashboardHooks/useGetLGDData'
+import { useGetPDYearlyData } from '@/hooks/apiHooks/dashboardHooks/useGetPDYearlyData'
+import { useGetPDQuarterlyData } from '@/hooks/apiHooks/dashboardHooks/useGetPDQuarterlyData'
+import { useGetECLDataV1 } from '@/hooks/apiHooks/dashboardHooks/useGetECLDataV1'
+import { useGetECLDataV2 } from '@/hooks/apiHooks/dashboardHooks/useGetECLDataV2'
+import { useGetPDForecastData } from '@/hooks/apiHooks/dashboardHooks/useGetPDForecastData'
+import { useGetKPIData } from '@/hooks/apiHooks/dashboardHooks/useGetKPIData'
+import { useGetRiskGroupData } from '@/hooks/apiHooks/dashboardHooks/useGetRiskGroupData'
 
 export const useGetDashboardData = () => {
   const lgdData = useGetLGDData()
+
+  const riskGroupData = useGetRiskGroupData()
+
+  const kpiData = useGetKPIData()
 
   const yearlyPDData = useGetPDYearlyData()
   const quarterlyPDData = useGetPDQuarterlyData()
@@ -22,6 +28,8 @@ export const useGetDashboardData = () => {
     forecastPDData: forecastPDData.data,
     eclDataV1: eclDataV1.data,
     eclDataV2: eclDataV2.data,
+    kpiData: kpiData.data,
+    riskGroupData: riskGroupData.data,
   }
 
   const isLoading =

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 import { MacroSettings } from '@/models/MacroSettings'
 import { useTranslation } from 'react-i18next'
+import { formatNumber } from '@/utils/formatNumber'
 
 interface MacroTableProps {
   years: (string | number)[]
@@ -89,7 +90,7 @@ export const MacroTable = ({
                     }`}
                   >
                     <div className="text-sm font-normal leading-15 text-black-800">
-                      {indicator.values[year][scenario].value}
+                      {formatNumber(indicator.values[year][scenario].value)}
                     </div>
                     <div className="text-sm font-normal leading-15 text-black-800">
                       ({indicator.values[year][scenario].probability}%)

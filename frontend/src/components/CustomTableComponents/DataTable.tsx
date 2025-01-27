@@ -40,9 +40,11 @@ interface DataTableProps<TData, TValue> {
   searchPlaceholder?: string
   searchColumn: string
   withContainer?: boolean
+  withCustomStyle?: boolean
+  onRowClick?: (id: string) => void
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
   titles,
@@ -50,6 +52,8 @@ export function DataTable<TData, TValue>({
   searchPlaceholder = 'Поиск...',
   searchColumn,
   withContainer = false,
+  withCustomStyle = false,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -82,7 +86,9 @@ export function DataTable<TData, TValue>({
   })
 
   const TableContent = (
-    <div className="overflow-auto rounded-lg">
+    <div
+      className={`overflow-auto rounded-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}
+    >
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -106,6 +112,8 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                onClick={() => onRowClick?.(row.original.id)}
+                className="cursor-pointer hover:bg-gray-100"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

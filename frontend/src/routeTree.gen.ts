@@ -11,20 +11,44 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ReportsImport } from './routes/reports'
 import { Route as AuthImport } from './routes/auth'
+import { Route as LayoutWithoutSidebarImport } from './routes/_layout-without-sidebar'
+import { Route as CustomLayoutImport } from './routes/_custom-layout'
+import { Route as ClearLayoutImport } from './routes/_clear-layout'
 import { Route as BasicLayoutImport } from './routes/_basic-layout'
-import { Route as BasicLayoutIndexImport } from './routes/_basic-layout/index'
-import { Route as BasicLayoutStressTestingImport } from './routes/_basic-layout/stress-testing'
-import { Route as BasicLayoutReportsImport } from './routes/_basic-layout/reports'
-import { Route as BasicLayoutProfileImport } from './routes/_basic-layout/profile'
-import { Route as BasicLayoutDashboardImport } from './routes/_basic-layout/dashboard'
-import { Route as BasicLayoutCreditListImport } from './routes/_basic-layout/credit-list'
-import { Route as BasicLayoutBiAnalyticsImport } from './routes/_basic-layout/bi-analytics'
+import { Route as ClearLayoutProfileImport } from './routes/_clear-layout/profile'
+import { Route as CustomLayoutReportIdNewReportImport } from './routes/_custom-layout/$reportId/new-report'
+import { Route as BasicLayoutReportsReportIdIndexImport } from './routes/_basic-layout/reports/$reportId/index'
+import { Route as LayoutWithoutSidebarReportsReportsIdStressTestingImport } from './routes/_layout-without-sidebar/reports/$reportsId/stress-testing'
+import { Route as LayoutWithoutSidebarReportsReportsIdCreditListImport } from './routes/_layout-without-sidebar/reports/$reportsId/credit-list'
+import { Route as LayoutWithoutSidebarReportsReportsIdBiAnalyticsImport } from './routes/_layout-without-sidebar/reports/$reportsId/bi-analytics'
+import { Route as BasicLayoutReportsReportIdDashboardImport } from './routes/_basic-layout/reports/$reportId/dashboard'
 
 // Create/Update Routes
 
+const ReportsRoute = ReportsImport.update({
+  path: '/reports',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthRoute = AuthImport.update({
   path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutWithoutSidebarRoute = LayoutWithoutSidebarImport.update({
+  id: '/_layout-without-sidebar',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CustomLayoutRoute = CustomLayoutImport.update({
+  id: '/_custom-layout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClearLayoutRoute = ClearLayoutImport.update({
+  id: '/_clear-layout',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -33,40 +57,46 @@ const BasicLayoutRoute = BasicLayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const BasicLayoutIndexRoute = BasicLayoutIndexImport.update({
-  path: '/',
-  getParentRoute: () => BasicLayoutRoute,
-} as any)
-
-const BasicLayoutStressTestingRoute = BasicLayoutStressTestingImport.update({
-  path: '/stress-testing',
-  getParentRoute: () => BasicLayoutRoute,
-} as any)
-
-const BasicLayoutReportsRoute = BasicLayoutReportsImport.update({
-  path: '/reports',
-  getParentRoute: () => BasicLayoutRoute,
-} as any)
-
-const BasicLayoutProfileRoute = BasicLayoutProfileImport.update({
+const ClearLayoutProfileRoute = ClearLayoutProfileImport.update({
   path: '/profile',
-  getParentRoute: () => BasicLayoutRoute,
+  getParentRoute: () => ClearLayoutRoute,
 } as any)
 
-const BasicLayoutDashboardRoute = BasicLayoutDashboardImport.update({
-  path: '/dashboard',
-  getParentRoute: () => BasicLayoutRoute,
-} as any)
+const CustomLayoutReportIdNewReportRoute =
+  CustomLayoutReportIdNewReportImport.update({
+    path: '/$reportId/new-report',
+    getParentRoute: () => CustomLayoutRoute,
+  } as any)
 
-const BasicLayoutCreditListRoute = BasicLayoutCreditListImport.update({
-  path: '/credit-list',
-  getParentRoute: () => BasicLayoutRoute,
-} as any)
+const BasicLayoutReportsReportIdIndexRoute =
+  BasicLayoutReportsReportIdIndexImport.update({
+    path: '/reports/$reportId/',
+    getParentRoute: () => BasicLayoutRoute,
+  } as any)
 
-const BasicLayoutBiAnalyticsRoute = BasicLayoutBiAnalyticsImport.update({
-  path: '/bi-analytics',
-  getParentRoute: () => BasicLayoutRoute,
-} as any)
+const LayoutWithoutSidebarReportsReportsIdStressTestingRoute =
+  LayoutWithoutSidebarReportsReportsIdStressTestingImport.update({
+    path: '/reports/$reportsId/stress-testing',
+    getParentRoute: () => LayoutWithoutSidebarRoute,
+  } as any)
+
+const LayoutWithoutSidebarReportsReportsIdCreditListRoute =
+  LayoutWithoutSidebarReportsReportsIdCreditListImport.update({
+    path: '/reports/$reportsId/credit-list',
+    getParentRoute: () => LayoutWithoutSidebarRoute,
+  } as any)
+
+const LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute =
+  LayoutWithoutSidebarReportsReportsIdBiAnalyticsImport.update({
+    path: '/reports/$reportsId/bi-analytics',
+    getParentRoute: () => LayoutWithoutSidebarRoute,
+  } as any)
+
+const BasicLayoutReportsReportIdDashboardRoute =
+  BasicLayoutReportsReportIdDashboardImport.update({
+    path: '/reports/$reportId/dashboard',
+    getParentRoute: () => BasicLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -79,6 +109,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BasicLayoutImport
       parentRoute: typeof rootRoute
     }
+    '/_clear-layout': {
+      id: '/_clear-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ClearLayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/_custom-layout': {
+      id: '/_custom-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof CustomLayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/_layout-without-sidebar': {
+      id: '/_layout-without-sidebar'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutWithoutSidebarImport
+      parentRoute: typeof rootRoute
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -86,53 +137,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
-    '/_basic-layout/bi-analytics': {
-      id: '/_basic-layout/bi-analytics'
-      path: '/bi-analytics'
-      fullPath: '/bi-analytics'
-      preLoaderRoute: typeof BasicLayoutBiAnalyticsImport
-      parentRoute: typeof BasicLayoutImport
-    }
-    '/_basic-layout/credit-list': {
-      id: '/_basic-layout/credit-list'
-      path: '/credit-list'
-      fullPath: '/credit-list'
-      preLoaderRoute: typeof BasicLayoutCreditListImport
-      parentRoute: typeof BasicLayoutImport
-    }
-    '/_basic-layout/dashboard': {
-      id: '/_basic-layout/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof BasicLayoutDashboardImport
-      parentRoute: typeof BasicLayoutImport
-    }
-    '/_basic-layout/profile': {
-      id: '/_basic-layout/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof BasicLayoutProfileImport
-      parentRoute: typeof BasicLayoutImport
-    }
-    '/_basic-layout/reports': {
-      id: '/_basic-layout/reports'
+    '/reports': {
+      id: '/reports'
       path: '/reports'
       fullPath: '/reports'
-      preLoaderRoute: typeof BasicLayoutReportsImport
+      preLoaderRoute: typeof ReportsImport
+      parentRoute: typeof rootRoute
+    }
+    '/_clear-layout/profile': {
+      id: '/_clear-layout/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ClearLayoutProfileImport
+      parentRoute: typeof ClearLayoutImport
+    }
+    '/_custom-layout/$reportId/new-report': {
+      id: '/_custom-layout/$reportId/new-report'
+      path: '/$reportId/new-report'
+      fullPath: '/$reportId/new-report'
+      preLoaderRoute: typeof CustomLayoutReportIdNewReportImport
+      parentRoute: typeof CustomLayoutImport
+    }
+    '/_basic-layout/reports/$reportId/dashboard': {
+      id: '/_basic-layout/reports/$reportId/dashboard'
+      path: '/reports/$reportId/dashboard'
+      fullPath: '/reports/$reportId/dashboard'
+      preLoaderRoute: typeof BasicLayoutReportsReportIdDashboardImport
       parentRoute: typeof BasicLayoutImport
     }
-    '/_basic-layout/stress-testing': {
-      id: '/_basic-layout/stress-testing'
-      path: '/stress-testing'
-      fullPath: '/stress-testing'
-      preLoaderRoute: typeof BasicLayoutStressTestingImport
-      parentRoute: typeof BasicLayoutImport
+    '/_layout-without-sidebar/reports/$reportsId/bi-analytics': {
+      id: '/_layout-without-sidebar/reports/$reportsId/bi-analytics'
+      path: '/reports/$reportsId/bi-analytics'
+      fullPath: '/reports/$reportsId/bi-analytics'
+      preLoaderRoute: typeof LayoutWithoutSidebarReportsReportsIdBiAnalyticsImport
+      parentRoute: typeof LayoutWithoutSidebarImport
     }
-    '/_basic-layout/': {
-      id: '/_basic-layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof BasicLayoutIndexImport
+    '/_layout-without-sidebar/reports/$reportsId/credit-list': {
+      id: '/_layout-without-sidebar/reports/$reportsId/credit-list'
+      path: '/reports/$reportsId/credit-list'
+      fullPath: '/reports/$reportsId/credit-list'
+      preLoaderRoute: typeof LayoutWithoutSidebarReportsReportsIdCreditListImport
+      parentRoute: typeof LayoutWithoutSidebarImport
+    }
+    '/_layout-without-sidebar/reports/$reportsId/stress-testing': {
+      id: '/_layout-without-sidebar/reports/$reportsId/stress-testing'
+      path: '/reports/$reportsId/stress-testing'
+      fullPath: '/reports/$reportsId/stress-testing'
+      preLoaderRoute: typeof LayoutWithoutSidebarReportsReportsIdStressTestingImport
+      parentRoute: typeof LayoutWithoutSidebarImport
+    }
+    '/_basic-layout/reports/$reportId/': {
+      id: '/_basic-layout/reports/$reportId/'
+      path: '/reports/$reportId'
+      fullPath: '/reports/$reportId'
+      preLoaderRoute: typeof BasicLayoutReportsReportIdIndexImport
       parentRoute: typeof BasicLayoutImport
     }
   }
@@ -141,63 +199,103 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface BasicLayoutRouteChildren {
-  BasicLayoutBiAnalyticsRoute: typeof BasicLayoutBiAnalyticsRoute
-  BasicLayoutCreditListRoute: typeof BasicLayoutCreditListRoute
-  BasicLayoutDashboardRoute: typeof BasicLayoutDashboardRoute
-  BasicLayoutProfileRoute: typeof BasicLayoutProfileRoute
-  BasicLayoutReportsRoute: typeof BasicLayoutReportsRoute
-  BasicLayoutStressTestingRoute: typeof BasicLayoutStressTestingRoute
-  BasicLayoutIndexRoute: typeof BasicLayoutIndexRoute
+  BasicLayoutReportsReportIdDashboardRoute: typeof BasicLayoutReportsReportIdDashboardRoute
+  BasicLayoutReportsReportIdIndexRoute: typeof BasicLayoutReportsReportIdIndexRoute
 }
 
 const BasicLayoutRouteChildren: BasicLayoutRouteChildren = {
-  BasicLayoutBiAnalyticsRoute: BasicLayoutBiAnalyticsRoute,
-  BasicLayoutCreditListRoute: BasicLayoutCreditListRoute,
-  BasicLayoutDashboardRoute: BasicLayoutDashboardRoute,
-  BasicLayoutProfileRoute: BasicLayoutProfileRoute,
-  BasicLayoutReportsRoute: BasicLayoutReportsRoute,
-  BasicLayoutStressTestingRoute: BasicLayoutStressTestingRoute,
-  BasicLayoutIndexRoute: BasicLayoutIndexRoute,
+  BasicLayoutReportsReportIdDashboardRoute:
+    BasicLayoutReportsReportIdDashboardRoute,
+  BasicLayoutReportsReportIdIndexRoute: BasicLayoutReportsReportIdIndexRoute,
 }
 
 const BasicLayoutRouteWithChildren = BasicLayoutRoute._addFileChildren(
-  BasicLayoutRouteChildren,
+  BasicLayoutRouteChildren
 )
 
+interface ClearLayoutRouteChildren {
+  ClearLayoutProfileRoute: typeof ClearLayoutProfileRoute
+}
+
+const ClearLayoutRouteChildren: ClearLayoutRouteChildren = {
+  ClearLayoutProfileRoute: ClearLayoutProfileRoute,
+}
+
+const ClearLayoutRouteWithChildren = ClearLayoutRoute._addFileChildren(
+  ClearLayoutRouteChildren
+)
+
+interface CustomLayoutRouteChildren {
+  CustomLayoutReportIdNewReportRoute: typeof CustomLayoutReportIdNewReportRoute
+}
+
+const CustomLayoutRouteChildren: CustomLayoutRouteChildren = {
+  CustomLayoutReportIdNewReportRoute: CustomLayoutReportIdNewReportRoute,
+}
+
+const CustomLayoutRouteWithChildren = CustomLayoutRoute._addFileChildren(
+  CustomLayoutRouteChildren
+)
+
+interface LayoutWithoutSidebarRouteChildren {
+  LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute: typeof LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute
+  LayoutWithoutSidebarReportsReportsIdCreditListRoute: typeof LayoutWithoutSidebarReportsReportsIdCreditListRoute
+  LayoutWithoutSidebarReportsReportsIdStressTestingRoute: typeof LayoutWithoutSidebarReportsReportsIdStressTestingRoute
+}
+
+const LayoutWithoutSidebarRouteChildren: LayoutWithoutSidebarRouteChildren = {
+  LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute:
+    LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute,
+  LayoutWithoutSidebarReportsReportsIdCreditListRoute:
+    LayoutWithoutSidebarReportsReportsIdCreditListRoute,
+  LayoutWithoutSidebarReportsReportsIdStressTestingRoute:
+    LayoutWithoutSidebarReportsReportsIdStressTestingRoute,
+}
+
+const LayoutWithoutSidebarRouteWithChildren =
+  LayoutWithoutSidebarRoute._addFileChildren(LayoutWithoutSidebarRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '': typeof BasicLayoutRouteWithChildren
+  '': typeof LayoutWithoutSidebarRouteWithChildren
   '/auth': typeof AuthRoute
-  '/bi-analytics': typeof BasicLayoutBiAnalyticsRoute
-  '/credit-list': typeof BasicLayoutCreditListRoute
-  '/dashboard': typeof BasicLayoutDashboardRoute
-  '/profile': typeof BasicLayoutProfileRoute
-  '/reports': typeof BasicLayoutReportsRoute
-  '/stress-testing': typeof BasicLayoutStressTestingRoute
-  '/': typeof BasicLayoutIndexRoute
+  '/reports': typeof ReportsRoute
+  '/profile': typeof ClearLayoutProfileRoute
+  '/$reportId/new-report': typeof CustomLayoutReportIdNewReportRoute
+  '/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
+  '/reports/$reportsId/bi-analytics': typeof LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute
+  '/reports/$reportsId/credit-list': typeof LayoutWithoutSidebarReportsReportsIdCreditListRoute
+  '/reports/$reportsId/stress-testing': typeof LayoutWithoutSidebarReportsReportsIdStressTestingRoute
+  '/reports/$reportId': typeof BasicLayoutReportsReportIdIndexRoute
 }
 
 export interface FileRoutesByTo {
+  '': typeof LayoutWithoutSidebarRouteWithChildren
   '/auth': typeof AuthRoute
-  '/bi-analytics': typeof BasicLayoutBiAnalyticsRoute
-  '/credit-list': typeof BasicLayoutCreditListRoute
-  '/dashboard': typeof BasicLayoutDashboardRoute
-  '/profile': typeof BasicLayoutProfileRoute
-  '/reports': typeof BasicLayoutReportsRoute
-  '/stress-testing': typeof BasicLayoutStressTestingRoute
-  '/': typeof BasicLayoutIndexRoute
+  '/reports': typeof ReportsRoute
+  '/profile': typeof ClearLayoutProfileRoute
+  '/$reportId/new-report': typeof CustomLayoutReportIdNewReportRoute
+  '/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
+  '/reports/$reportsId/bi-analytics': typeof LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute
+  '/reports/$reportsId/credit-list': typeof LayoutWithoutSidebarReportsReportsIdCreditListRoute
+  '/reports/$reportsId/stress-testing': typeof LayoutWithoutSidebarReportsReportsIdStressTestingRoute
+  '/reports/$reportId': typeof BasicLayoutReportsReportIdIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_basic-layout': typeof BasicLayoutRouteWithChildren
+  '/_clear-layout': typeof ClearLayoutRouteWithChildren
+  '/_custom-layout': typeof CustomLayoutRouteWithChildren
+  '/_layout-without-sidebar': typeof LayoutWithoutSidebarRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_basic-layout/bi-analytics': typeof BasicLayoutBiAnalyticsRoute
-  '/_basic-layout/credit-list': typeof BasicLayoutCreditListRoute
-  '/_basic-layout/dashboard': typeof BasicLayoutDashboardRoute
-  '/_basic-layout/profile': typeof BasicLayoutProfileRoute
-  '/_basic-layout/reports': typeof BasicLayoutReportsRoute
-  '/_basic-layout/stress-testing': typeof BasicLayoutStressTestingRoute
-  '/_basic-layout/': typeof BasicLayoutIndexRoute
+  '/reports': typeof ReportsRoute
+  '/_clear-layout/profile': typeof ClearLayoutProfileRoute
+  '/_custom-layout/$reportId/new-report': typeof CustomLayoutReportIdNewReportRoute
+  '/_basic-layout/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
+  '/_layout-without-sidebar/reports/$reportsId/bi-analytics': typeof LayoutWithoutSidebarReportsReportsIdBiAnalyticsRoute
+  '/_layout-without-sidebar/reports/$reportsId/credit-list': typeof LayoutWithoutSidebarReportsReportsIdCreditListRoute
+  '/_layout-without-sidebar/reports/$reportsId/stress-testing': typeof LayoutWithoutSidebarReportsReportsIdStressTestingRoute
+  '/_basic-layout/reports/$reportId/': typeof BasicLayoutReportsReportIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -205,45 +303,60 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/auth'
-    | '/bi-analytics'
-    | '/credit-list'
-    | '/dashboard'
-    | '/profile'
     | '/reports'
-    | '/stress-testing'
-    | '/'
+    | '/profile'
+    | '/$reportId/new-report'
+    | '/reports/$reportId/dashboard'
+    | '/reports/$reportsId/bi-analytics'
+    | '/reports/$reportsId/credit-list'
+    | '/reports/$reportsId/stress-testing'
+    | '/reports/$reportId'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | ''
     | '/auth'
-    | '/bi-analytics'
-    | '/credit-list'
-    | '/dashboard'
-    | '/profile'
     | '/reports'
-    | '/stress-testing'
-    | '/'
+    | '/profile'
+    | '/$reportId/new-report'
+    | '/reports/$reportId/dashboard'
+    | '/reports/$reportsId/bi-analytics'
+    | '/reports/$reportsId/credit-list'
+    | '/reports/$reportsId/stress-testing'
+    | '/reports/$reportId'
   id:
     | '__root__'
     | '/_basic-layout'
+    | '/_clear-layout'
+    | '/_custom-layout'
+    | '/_layout-without-sidebar'
     | '/auth'
-    | '/_basic-layout/bi-analytics'
-    | '/_basic-layout/credit-list'
-    | '/_basic-layout/dashboard'
-    | '/_basic-layout/profile'
-    | '/_basic-layout/reports'
-    | '/_basic-layout/stress-testing'
-    | '/_basic-layout/'
+    | '/reports'
+    | '/_clear-layout/profile'
+    | '/_custom-layout/$reportId/new-report'
+    | '/_basic-layout/reports/$reportId/dashboard'
+    | '/_layout-without-sidebar/reports/$reportsId/bi-analytics'
+    | '/_layout-without-sidebar/reports/$reportsId/credit-list'
+    | '/_layout-without-sidebar/reports/$reportsId/stress-testing'
+    | '/_basic-layout/reports/$reportId/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   BasicLayoutRoute: typeof BasicLayoutRouteWithChildren
+  ClearLayoutRoute: typeof ClearLayoutRouteWithChildren
+  CustomLayoutRoute: typeof CustomLayoutRouteWithChildren
+  LayoutWithoutSidebarRoute: typeof LayoutWithoutSidebarRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ReportsRoute: typeof ReportsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   BasicLayoutRoute: BasicLayoutRouteWithChildren,
+  ClearLayoutRoute: ClearLayoutRouteWithChildren,
+  CustomLayoutRoute: CustomLayoutRouteWithChildren,
+  LayoutWithoutSidebarRoute: LayoutWithoutSidebarRouteWithChildren,
   AuthRoute: AuthRoute,
+  ReportsRoute: ReportsRoute,
 }
 
 export const routeTree = rootRoute
@@ -259,50 +372,72 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_basic-layout",
-        "/auth"
+        "/_clear-layout",
+        "/_custom-layout",
+        "/_layout-without-sidebar",
+        "/auth",
+        "/reports"
       ]
     },
     "/_basic-layout": {
       "filePath": "_basic-layout.tsx",
       "children": [
-        "/_basic-layout/bi-analytics",
-        "/_basic-layout/credit-list",
-        "/_basic-layout/dashboard",
-        "/_basic-layout/profile",
-        "/_basic-layout/reports",
-        "/_basic-layout/stress-testing",
-        "/_basic-layout/"
+        "/_basic-layout/reports/$reportId/dashboard",
+        "/_basic-layout/reports/$reportId/"
+      ]
+    },
+    "/_clear-layout": {
+      "filePath": "_clear-layout.tsx",
+      "children": [
+        "/_clear-layout/profile"
+      ]
+    },
+    "/_custom-layout": {
+      "filePath": "_custom-layout.tsx",
+      "children": [
+        "/_custom-layout/$reportId/new-report"
+      ]
+    },
+    "/_layout-without-sidebar": {
+      "filePath": "_layout-without-sidebar.tsx",
+      "children": [
+        "/_layout-without-sidebar/reports/$reportsId/bi-analytics",
+        "/_layout-without-sidebar/reports/$reportsId/credit-list",
+        "/_layout-without-sidebar/reports/$reportsId/stress-testing"
       ]
     },
     "/auth": {
       "filePath": "auth.tsx"
     },
-    "/_basic-layout/bi-analytics": {
-      "filePath": "_basic-layout/bi-analytics.tsx",
+    "/reports": {
+      "filePath": "reports.tsx"
+    },
+    "/_clear-layout/profile": {
+      "filePath": "_clear-layout/profile.tsx",
+      "parent": "/_clear-layout"
+    },
+    "/_custom-layout/$reportId/new-report": {
+      "filePath": "_custom-layout/$reportId/new-report.tsx",
+      "parent": "/_custom-layout"
+    },
+    "/_basic-layout/reports/$reportId/dashboard": {
+      "filePath": "_basic-layout/reports/$reportId/dashboard.tsx",
       "parent": "/_basic-layout"
     },
-    "/_basic-layout/credit-list": {
-      "filePath": "_basic-layout/credit-list.tsx",
-      "parent": "/_basic-layout"
+    "/_layout-without-sidebar/reports/$reportsId/bi-analytics": {
+      "filePath": "_layout-without-sidebar/reports/$reportsId/bi-analytics.tsx",
+      "parent": "/_layout-without-sidebar"
     },
-    "/_basic-layout/dashboard": {
-      "filePath": "_basic-layout/dashboard.tsx",
-      "parent": "/_basic-layout"
+    "/_layout-without-sidebar/reports/$reportsId/credit-list": {
+      "filePath": "_layout-without-sidebar/reports/$reportsId/credit-list.tsx",
+      "parent": "/_layout-without-sidebar"
     },
-    "/_basic-layout/profile": {
-      "filePath": "_basic-layout/profile.tsx",
-      "parent": "/_basic-layout"
+    "/_layout-without-sidebar/reports/$reportsId/stress-testing": {
+      "filePath": "_layout-without-sidebar/reports/$reportsId/stress-testing.tsx",
+      "parent": "/_layout-without-sidebar"
     },
-    "/_basic-layout/reports": {
-      "filePath": "_basic-layout/reports.tsx",
-      "parent": "/_basic-layout"
-    },
-    "/_basic-layout/stress-testing": {
-      "filePath": "_basic-layout/stress-testing.tsx",
-      "parent": "/_basic-layout"
-    },
-    "/_basic-layout/": {
-      "filePath": "_basic-layout/index.tsx",
+    "/_basic-layout/reports/$reportId/": {
+      "filePath": "_basic-layout/reports/$reportId/index.tsx",
       "parent": "/_basic-layout"
     }
   }

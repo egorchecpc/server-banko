@@ -9,28 +9,28 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('public/fonts/Inter-Regular.woff2') format('woff2');
+    src: url('/public/fonts/Inter-Regular.woff2') format('woff2');
   }
   @font-face {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url('public/fonts/Inter-Medium.woff2') format('woff2');
+    src: url('/public/fonts/Inter-Medium.woff2') format('woff2');
   }
   @font-face {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('public/fonts/Inter-Bold.woff2') format('woff2');
+    src: url('/public/fonts/Inter-Bold.woff2') format('woff2');
   }
   @font-face {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 800;
     font-display: swap;
-    src: url('public/fonts/Inter-ExtraBold.woff2') format('woff2');
+    src: url('/public/fonts/Inter-ExtraBold.woff2') format('woff2');
   }
   html {
     font-family: 'Inter', sans-serif;

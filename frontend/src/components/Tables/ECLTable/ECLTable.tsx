@@ -11,6 +11,7 @@ import { ECLData, StageData } from '@/models/ECL'
 
 interface ECLTableProps {
   data: ECLData
+  isFirst: boolean
 }
 
 interface StageKeys {
@@ -36,16 +37,16 @@ const renderStageCells = (stageData: StageData) => (
   </>
 )
 
-const ECLTable: FC<ECLTableProps> = ({ data }) => {
+const ECLTable: FC<ECLTableProps> = ({ data, isFirst }) => {
   return (
     <Table className="table-auto bg-white">
       <TableHeader>
         <TableRow className="border-b">
           <TableHead
             rowSpan={2}
-            className="bg-muted w-1/12 border text-left font-bold"
+            className="bg-muted w-52 min-w-52 max-w-52 border text-left font-bold"
           >
-            Виды кредитов
+            {isFirst ? 'Виды кредитов' : 'Категория'}
           </TableHead>
           {STAGES.map((stage) => (
             <TableHead
@@ -86,10 +87,10 @@ const ECLTable: FC<ECLTableProps> = ({ data }) => {
         {data.map((row, index) => (
           <TableRow
             key={index}
-            className={` ${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
+            className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
           >
             <TableCell
-              className={`border-0 text-left ${
+              className={`w-48 min-w-48 max-w-48 border-0 text-left ${
                 row.creditType === TOTAL_LABEL ? 'font-bold' : 'font-medium'
               }`}
             >

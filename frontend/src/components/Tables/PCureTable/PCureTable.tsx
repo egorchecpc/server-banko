@@ -18,7 +18,7 @@ const PCureTable = () => {
       </TableHeader>
       <TableBody>
         <TableRow className="border-y-0">
-          <TableCell className="border-x font-medium">P_cure</TableCell>
+          <TableCell className="border-x font-medium">P_qure</TableCell>
           <TableCell className="border-x">17%</TableCell>
         </TableRow>
       </TableBody>

@@ -1,3 +1,6 @@
+import { MacroSettings } from '@/models/MacroSettings'
+import { DebtorData } from '@/models/DebtorData'
+
 export interface ProfileReportData {
   id: string
   date: string
@@ -10,4 +13,6 @@ export interface ProfileReportData {
   ECL: string
   LGD: string
   PD: string
+  macroData: MacroSettings
+  debtorData: DebtorData
 }

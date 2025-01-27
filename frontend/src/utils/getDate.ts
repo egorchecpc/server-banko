@@ -6,7 +6,7 @@ export const getYearArray = (
   isString?: boolean,
   count: number = 4
 ): (number | string)[] => {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear() - 1
   const yearArray: (number | string)[] = []
   let i
 

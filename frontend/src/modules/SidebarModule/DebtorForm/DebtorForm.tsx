@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -21,23 +21,47 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { FormData } from '@/models/FormData'
+import { DebtorData } from '@/models/DebtorData'
+import { useParams } from '@tanstack/react-router'
+import { useGetDebtorDataById } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
 
 interface DebtorFormProps {
-  setDebtorData: (debtorData: FormData) => void
+  setDebtorData: React.Dispatch<React.SetStateAction<DebtorData | undefined>>
 }
 
 export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
+  const { reportId } = useParams({ strict: false })
+  const { debtorData } = useGetDebtorDataById(reportId ? reportId : '')
+
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const { t } = useTranslation()
-  const form = useForm<FormData>({
-    defaultValues: {
+
+  const parseInitialData = () => {
+    if (!debtorData) return undefined
+    return debtorData
+  }
+
+  const form = useForm<DebtorData>({
+    defaultValues: parseInitialData() || {
       debtorType: 'default',
       creditType: 'default',
       productType: 'default',
       date: undefined,
     },
   })
+
+  useEffect(() => {
+    if (debtorData) {
+      setDebtorData(debtorData)
+      Object.keys(debtorData).forEach((key) => {
+        form.setValue(
+          key as keyof DebtorData,
+          debtorData[key as keyof DebtorData]
+        )
+      })
+    }
+  }, [debtorData])
+
   const debtorType = {
     title: t('sidebar.debtorForm.debtorType.title'),
     default: t('sidebar.debtorForm.debtorType.default'),
@@ -65,7 +89,7 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
     ],
   }
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: DebtorData) => {
     setDebtorData(data)
   }
 
@@ -80,7 +104,6 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
     setIsCalendarOpen(false)
     onSubmit({ ...form.getValues(), date })
   }
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-md">

@@ -8,17 +8,17 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { FormItem, FormLabel, FormControl } from '@/components/ui/form'
-import { FormData } from '@/models/FormData'
+import { DebtorData } from '@/models/DebtorData'
 
 interface CustomFormFieldProps {
-  name: keyof FormData
-  control: Control<FormData>
+  name: keyof DebtorData
+  control: Control<DebtorData>
   fieldData: {
     title: string
     default: string
     items: string[]
   }
-  onSubmit: (value: Partial<FormData>) => void
+  onSubmit: (value: Partial<DebtorData>) => void
 }
 
 export const CustomFormField: FC<CustomFormFieldProps> = ({
@@ -30,22 +30,32 @@ export const CustomFormField: FC<CustomFormFieldProps> = ({
   const { field } = useController({
     name,
     control,
-    defaultValue: fieldData.default,
   })
 
   return (
     <FormItem className="mb-3">
       <FormLabel>{fieldData.title}</FormLabel>
       <Select
+        disabled={name == 'debtorType'}
+        value={
+          typeof field.value === 'string'
+            ? field.value
+            : field.value?.toISOString() || 'default'
+        }
         onValueChange={(value) => {
           field.onChange(value)
           onSubmit({ [name]: value })
         }}
-        defaultValue={typeof field.value === 'string' ? field.value : undefined}
       >
         <FormControl>
           <SelectTrigger>
-            <SelectValue placeholder={fieldData.default} />
+            <SelectValue
+              placeholder={
+                typeof field.value === 'string'
+                  ? field.value
+                  : field.value?.toISOString() || fieldData.default
+              }
+            />
           </SelectTrigger>
         </FormControl>
         <SelectContent>
@@ -53,7 +63,7 @@ export const CustomFormField: FC<CustomFormFieldProps> = ({
             {fieldData.default}
           </SelectItem>
           {fieldData.items.map((item, index) => (
-            <SelectItem key={index} value={item.toLowerCase()}>
+            <SelectItem key={index} value={item}>
               {item}
             </SelectItem>
           ))}
