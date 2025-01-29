@@ -55,5 +55,6 @@ jobs:
             qSMSdsbAJjq3ZvAAAAFGdpdGh1Yl9hY3Rpb25zX0JhbmtvAQIDBAUG
             -----END OPENSSH PRIVATE KEY-----
           command: |
-            cd /var/www/server-banko
-            git pull origin main
+            [ ! -d /var/www/server-banko ] && git -C /var/www clone git@github.com:egorchecpc/server-banko.git;
+            cd /var/www/server-banko;
+            git pull origin main;
