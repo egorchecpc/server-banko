@@ -58,3 +58,5 @@ jobs:
             [ ! -d /var/www/server-banko ] && git -C /var/www clone git@github.com:egorchecpc/server-banko.git;
             cd /var/www/server-banko;
             git pull origin main;
+            cp -vf .env.dist .env; cp -vf frontend/.env.dist frontend/.env;
+            docker compose up -d --build --force-recreate
