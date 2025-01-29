@@ -24,6 +24,7 @@ export const AXIS_CONFIG = {
 } as const
 
 export const BAR_CONFIG = {
+  barSize: 30,
   dataKey: 'value',
   fill: 'var(--chart80)',
   radius: [0, 4, 4, 0] as [number, number, number, number],

@@ -2,6 +2,7 @@ import { Link, useRouter } from '@tanstack/react-router'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FC } from 'react'
 import { useReportId } from '@/context/ReportIdContext'
+import { motion } from 'framer-motion'
 
 export interface NavbarProps {
   navItems: { [key: string]: string }
@@ -22,7 +23,15 @@ export const Navbar: FC<NavbarProps> = ({ navItems }) => {
               key={key}
               className="w-full"
             >
-              <TabsTrigger value={key}>{value}</TabsTrigger>
+              <TabsTrigger value={key}>
+                <motion.span
+                  initial={{ scale: 1 }}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.1 }}
+                >
+                  {value}
+                </motion.span>
+              </TabsTrigger>
             </Link>
           ))}
         </TabsList>

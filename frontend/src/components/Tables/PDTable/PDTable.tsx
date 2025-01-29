@@ -40,7 +40,7 @@ const PDTable: FC<PDTableProps> = ({ data, deltaMode, displayQuarterly }) => {
 
   const renderTableHead = () => (
     <>
-      <TableRow>
+      <TableRow className="hover:bg-transparent">
         <TableHead rowSpan={2} className="bg-muted border font-bold">
           Категория
         </TableHead>

@@ -27,7 +27,7 @@ const RiskGroupTable: FC<RiskGroupTableProps> = ({
       <ContainerBody isScrolling={true} orientation={'horizontal'}>
         <Table className="table-auto border border-gray-200 bg-white">
           <TableHeader>
-            <TableRow>
+            <TableRow className="hover:bg-transparent">
               <TableHead className="bg-muted w-auto whitespace-nowrap border text-left">
                 Группа риска / Стадии обесценения
               </TableHead>
@@ -50,14 +50,23 @@ const RiskGroupTable: FC<RiskGroupTableProps> = ({
           </TableHeader>
           <TableBody>
             {data.map((row, rowIndex) => (
-              <TableRow key={rowIndex} className="border-y-0">
-                <TableCell className="w-auto whitespace-nowrap border-x text-left font-medium">
+              <TableRow
+                key={rowIndex}
+                className={`border-y-0 last:border-b ${row.category === 'Итого' ? 'border-t bg-grey-300 shadow' : 'border-0'} `}
+              >
+                <TableCell
+                  className={`w-auto whitespace-nowrap border-x text-left font-medium ${row.category === 'Итого' ? 'font-bold' : 'font-medium'}`}
+                >
                   {row.category}
                 </TableCell>
                 {row.stages.map((value, colIndex) => (
                   <TableCell
                     key={colIndex}
-                    className="w-36 border-x text-right"
+                    className={`w-36 border-x text-right ${row.category === 'Итого' ? 'font-bold' : 'font-medium'} ${
+                      colIndex === row.stages.length - 1
+                        ? 'bg-grey-300 font-bold'
+                        : ''
+                    }`}
                   >
                     {value}
                   </TableCell>

@@ -60,7 +60,7 @@ export const DashboardSettings: React.FC<DashboardSettingsProps> = ({
               htmlFor="pd-table"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              PD Tables
+              Таблица PD
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -73,7 +73,7 @@ export const DashboardSettings: React.FC<DashboardSettingsProps> = ({
               htmlFor="lgd-table"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              LGD Table
+              Таблица LGD
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -86,7 +86,7 @@ export const DashboardSettings: React.FC<DashboardSettingsProps> = ({
               htmlFor="pcure-table"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              PCure Table
+              Таблица PCure
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -99,7 +99,7 @@ export const DashboardSettings: React.FC<DashboardSettingsProps> = ({
               htmlFor="ecl-table"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              ECL Tables
+              Таблица ECL
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -112,7 +112,7 @@ export const DashboardSettings: React.FC<DashboardSettingsProps> = ({
               htmlFor="kpi-table"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              KPI Tables
+              Таблица KPI
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -125,7 +125,7 @@ export const DashboardSettings: React.FC<DashboardSettingsProps> = ({
               htmlFor="risk-table"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Risk Tables
+              Таблица рисков
             </label>
           </div>
         </div>

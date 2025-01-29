@@ -14,7 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { ViewVerticalIcon } from '@radix-ui/react-icons'
+import { CircleArrowLeft, CircleArrowRight } from 'lucide-react'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar:state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -260,7 +260,7 @@ const SidebarTrigger = React.forwardRef<
   React.ElementRef<typeof Button>,
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, state } = useSidebar()
 
   return (
     <Button
@@ -275,7 +275,11 @@ const SidebarTrigger = React.forwardRef<
       }}
       {...props}
     >
-      <ViewVerticalIcon />
+      {state === 'expanded' ? (
+        <CircleArrowLeft className="h-5 w-5" />
+      ) : (
+        <CircleArrowRight className="h-5 w-5" />
+      )}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

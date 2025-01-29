@@ -17,5 +17,10 @@ export const chartConfig: ChartConfig = {
     bottom: 20,
     left: 60,
   },
-  defaultColors: ['var(--chart80)', 'var(--chart60)', 'var(--chart40)'],
+  defaultColors: [
+    'var(--chart80)',
+    'var(--chart60)',
+    'var(--chart40)',
+    'var(--chart20)',
+  ],
 }

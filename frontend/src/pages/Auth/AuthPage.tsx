@@ -1,9 +1,10 @@
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 
 export const AuthPage = () => {
+  const navigate = useNavigate()
   return (
     <div className="bg-grey-200 overflow-hidden lg:grid lg:min-h-[37rem] lg:grid-cols-2 xl:min-h-[37rem]">
       <div className="flex items-center justify-center py-12">
@@ -31,7 +32,12 @@ export const AuthPage = () => {
                 Forgot your password?
               </Link>
             </div>
-            <Button variant="primary" type="submit" className="w-full">
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-full"
+              onClick={navigate({ to: `/reports` })}
+            >
               Login
             </Button>
           </div>

@@ -1,6 +1,6 @@
 export const GBVData = [
-    { creditType: 'Беззалоговые', value: 9000000},
-    { creditType: 'Залоговые', value: 3000000},
-    { creditType: 'Автокредит', value: 1000000},
-    { creditType: 'Ипотека', value: 1200000}
+    { creditType: 'Потребительские', value: 9000000},
+    { creditType: 'Ипотечные', value: 3000000},
+    { creditType: 'Овердрафт', value: 1000000},
+    { creditType: 'Другие', value: 1200000}
   ]

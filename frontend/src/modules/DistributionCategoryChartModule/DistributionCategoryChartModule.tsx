@@ -24,9 +24,9 @@ const barData = [
     overdue90: 120,
   },
   { category: 'Ипотека', overdue30: 150, overdue60: 100, overdue90: 80 },
-  { category: 'Автокредиты', overdue30: 100, overdue60: 70, overdue90: 50 },
+  { category: 'Овердрафт', overdue30: 100, overdue60: 70, overdue90: 50 },
   {
-    category: 'Бизнес-кредиты',
+    category: 'Другие',
     overdue30: 200,
     overdue60: 150,
     overdue90: 100,
@@ -63,18 +63,21 @@ export const DistributionCategoryChartModal: FC<
                 name="30-60 дней"
                 fill="var(--chart40)"
                 stackId="a"
+                barSize={30}
               />
               <Bar
                 dataKey="overdue60"
                 name="60-90 дней"
                 fill="var(--chart60)"
                 stackId="a"
+                barSize={30}
               />
               <Bar
                 dataKey="overdue90"
                 name="90+ дней"
                 fill="var(--chart80)"
                 stackId="a"
+                barSize={30}
               />
             </BarChart>
           </ResponsiveContainer>

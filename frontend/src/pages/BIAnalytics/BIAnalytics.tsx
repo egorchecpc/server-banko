@@ -60,7 +60,7 @@ export const BIAnalyticsPage = () => {
   }
 
   return (
-    <div className="max-w-full">
+    <div className="max-w-full px-10">
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -85,12 +85,6 @@ export const BIAnalyticsPage = () => {
             />
           </div>
         </div>
-        <Button variant="export" size="default">
-          <div className="flex items-center gap-1">
-            <DownloadIcon className="h-4 w-4" />
-            <div>{t('biAnalytics.buttons.exportBtn')}</div>
-          </div>
-        </Button>
       </div>
       <div className="mb-3 flex gap-3">
         {chartVisibility.gbv && data.GBVData && (

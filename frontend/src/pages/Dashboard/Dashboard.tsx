@@ -20,6 +20,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { ExportComponent } from '@/modules/ExportModule/ExportModule'
 
 interface VisibilitySettings {
   pd: boolean
@@ -60,7 +61,7 @@ export const DashboardPage = () => {
     return <div>Error occurred while fetching data</div>
   }
   return (
-    <div className="mb-6 max-w-full">
+    <div className="mb-6 max-w-full px-10">
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -85,12 +86,7 @@ export const DashboardPage = () => {
             />
           </div>
         </div>
-        <Button variant="export" size="default" className="mb-3">
-          <div className="flex items-center gap-1">
-            <DownloadIcon className="h-4 w-4" />
-            <div>{t('dashboard.buttons.exportBtn')}</div>
-          </div>
-        </Button>
+        <ExportComponent />
       </div>
       {tableVisibility.pd &&
         data.yearlyPDData &&

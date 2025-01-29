@@ -64,7 +64,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
       </div>
 
       <div className="mb-4 flex items-center justify-between">
-        <span>Публичный отчёт</span>
+        <span>Приватный отчёт</span>
         <Switch
           checked={reportDetails.isPublic}
           onCheckedChange={(checked) =>

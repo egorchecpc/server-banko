@@ -11,7 +11,7 @@ const PRateTable = () => {
   return (
     <Table className="table-auto bg-white">
       <TableHeader>
-        <TableRow className="border-y-0">
+        <TableRow className="border-y-0 hover:bg-transparent">
           <TableHead className="w-1/3 border-x"></TableHead>
           <TableHead className="w-2/3">1 января 2024</TableHead>
         </TableRow>

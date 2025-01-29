@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { PlusCircle } from 'lucide-react'
+import { DownloadIcon, PlusCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MacroTable } from '@/components/Tables/MacroTable/MacroTable'
 import { MacroSettingsModal } from './MacroSettingsModal/MacroSettingsModal'
@@ -8,7 +8,6 @@ import { MacroSettings } from '@/models/MacroSettings'
 import { useGetReportDataById } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
 import { useParams } from '@tanstack/react-router'
 import { MacroTemplateModal } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
-import { UploadIcon } from '@radix-ui/react-icons'
 
 interface MacroSettingsProps {
   setMacroData: React.Dispatch<
@@ -107,7 +106,7 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
               setIsTemplateModalOpen(true)
             }}
           >
-            <UploadIcon className="h-4 w-4" />
+            <DownloadIcon className="h-4 w-4" />
           </Button>
         </div>
         <Button

@@ -64,7 +64,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="gbv-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              GBV Chart
+              График ВБС
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -77,7 +77,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="gbv-stage-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              GBV Stage Chart
+              График ВБС через стадии
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -90,7 +90,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="vbsoku-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              VBSOKU Chart
+              График ВБС/ОКУ
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -103,7 +103,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="average-pd-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Average PD Chart
+              График средневзвешенного PD
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -116,7 +116,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="heatmap-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Heatmap Chart
+              Тепловая карта
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -131,7 +131,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="total-amount-overdue-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Total Amount Overdue Chart
+              График динамики задолженности продукта
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -144,7 +144,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="ageing-amount-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Ageing Amount Chart
+              График распределения по срокам просрочки
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -159,7 +159,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="distribution-category-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Distribution Category Chart
+              График распределения просрочек по категориям
             </label>
           </div>
         </div>

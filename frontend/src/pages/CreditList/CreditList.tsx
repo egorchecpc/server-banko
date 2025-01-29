@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Link } from '@tanstack/react-router'
+import { useReportId } from '@/context/ReportIdContext'
 
 export const CreditListPage = () => {
   const {
@@ -16,7 +17,7 @@ export const CreditListPage = () => {
     isLoading: creditListLoading,
     isError: creditListError,
   } = useGetCreditListData()
-
+  const { reportId } = useReportId()
   const isLoading = creditListLoading
   const isError = creditListError
 
@@ -33,6 +34,14 @@ export const CreditListPage = () => {
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link to="/reports">Главная страница</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to={`/reports/${reportId}/dashboard`}>
+                Основные показатели
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

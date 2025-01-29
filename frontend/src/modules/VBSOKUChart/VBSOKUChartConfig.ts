@@ -1,7 +1,7 @@
 export const VBSOKUChartConfig = {
   margins: { top: 20, right: 30, left: 20, bottom: 20 },
   height: 50,
-  barSize: 40,
+  barSize: 30,
   yAxisRightDomain: [0, 15],
 
   series: {

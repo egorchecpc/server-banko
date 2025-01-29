@@ -1,6 +1,6 @@
 export const LGDData = [
     {
-      category: 'Для 1 и 2й стадии',
+      category: 'Для 1 и 2 стадии',
       quarters: ['34,75%', '34,75%', '34,75%', '34,75%'],
     },
     {

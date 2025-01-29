@@ -1,9 +1,9 @@
 export const CONFIG = {
   colors: {
-    product1: 'var(--chart80)',
-    product2: 'var(--chart60)',
-    product3: 'var(--chart40)',
-    product4: 'var(--chart20)',
+    product1: 'var(--chart20)',
+    product2: 'var(--chart40)',
+    product3: 'var(--chart60)',
+    product4: 'var(--chart80)',
   },
   periods: {
     '30-60': '30-60 дней',
@@ -11,9 +11,9 @@ export const CONFIG = {
     '90plus': '90+ дней',
   },
   chartColors: [
-    'var(--chart80)',
-    'var(--chart60)',
     'var(--chart40)',
+    'var(--chart60)',
+    'var(--chart80)',
     'var(--chart20)',
   ],
 }

@@ -2,49 +2,55 @@ export const amountChart = [
   {
     year: 2020,
     products: [
-      { productName: 'Кредитные карты', amount: 5200000 },
+      { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
-      { productName: 'Ипотека', amount: 3000000 }
+      { productName: 'Ипотечные кредиты', amount: 3000000 },
+      { productName: 'Другие', amount: 3000000 }
     ]
   },
   {
     year: 2021,
     products: [
-      { productName: 'Кредитные карты', amount: 5500000 },
+      { productName: 'Овердрафт', amount: 5500000 },
       { productName: 'Потребительские кредиты', amount: 4800000 },
-      { productName: 'Ипотека', amount: 3500000 }
+      { productName: 'Ипотечные кредиты', amount: 3500000 },
+      { productName: 'Другие', amount: 3500000 }
     ]
   },
   {
     year: 2022,
     products: [
-      { productName: 'Кредитные карты', amount: 5200000 },
+      { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
-      { productName: 'Ипотека', amount: 3000000 }
+      { productName: 'Ипотечные кредиты', amount: 3000000 },
+      { productName: 'Другие', amount: 4000000 }
     ]
   },
   {
     year: 2023,
     products: [
-      { productName: 'Кредитные карты', amount: 5200000 },
+      { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
-      { productName: 'Ипотека', amount: 3000000 }
+      { productName: 'Ипотечные кредиты', amount: 3000000 },
+      { productName: 'Другие', amount: 4500000 }
     ]
   },
   {
     year: 2024,
     products: [
-      { productName: 'Кредитные карты', amount: 5200000 },
+      { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
-      { productName: 'Ипотека', amount: 3000000 }
+      { productName: 'Ипотечные кредиты', amount: 3000000 },
+      { productName: 'Другие', amount: 5000000 }
     ]
   },
   {
     year: 2025,
     products: [
-      { productName: 'Кредитные карты', amount: 5200000 },
+      { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
-      { productName: 'Ипотека', amount: 3000000 }
+      { productName: 'Ипотечные кредиты', amount: 3000000 },
+      { productName: 'Другие', amount: 3000000 }
     ]
   },
 ]
@@ -53,49 +59,55 @@ export const amountChartP = [
     {
         year: 2020,
         products: [
-          { productName: 'Кредитные карты', percentage: 41.6 },
+          { productName: 'Овердрафт', percentage: 41.6 },
           { productName: 'Потребительские кредиты', percentage: 34.4 },
-          { productName: 'Ипотека', percentage: 24.0 },
+          { productName: 'Ипотечные кредиты', percentage: 24.0 },
+          { productName: 'Другие', percentage: 24.0 },
         ],
       },
     {
       year: 2021,
       products: [
-        { productName: 'Кредитные карты', percentage: 41.6 },
+        { productName: 'Овердрафт', percentage: 41.6 },
         { productName: 'Потребительские кредиты', percentage: 34.4 },
-        { productName: 'Ипотека', percentage: 24.0 },
+        { productName: 'Ипотечные кредиты', percentage: 24.0 },
+        { productName: 'Другие', percentage: 41.6 },
       ],
     },
     {
       year: 2022,
       products: [
-        { productName: 'Кредитные карты', percentage: 39.8 },
+        { productName: 'Овердрафт', percentage: 39.8 },
         { productName: 'Потребительские кредиты', percentage: 34.8 },
-        { productName: 'Ипотека', percentage: 25.4 },
+        { productName: 'Ипотечные кредиты', percentage: 25.4 },
+        { productName: 'Другие', percentage: 39.8 },
       ],
     },
     {
         year: 2023,
         products: [
-          { productName: 'Кредитные карты', percentage: 41.6 },
+          { productName: 'Овердрафт', percentage: 41.6 },
           { productName: 'Потребительские кредиты', percentage: 34.4 },
-          { productName: 'Ипотека', percentage: 24.0 },
+          { productName: 'Ипотечные кредиты', percentage: 24.0 },
+          { productName: 'Другие', percentage: 41.6 },
         ],
       },
       {
         year: 2024,
         products: [
-          { productName: 'Кредитные карты', percentage: 39.8 },
+          { productName: 'Овердрафт', percentage: 39.8 },
           { productName: 'Потребительские кредиты', percentage: 34.8 },
-          { productName: 'Ипотека', percentage: 25.4 },
+          { productName: 'Ипотечные кредиты', percentage: 25.4 },
+          { productName: 'Другие', percentage: 39.8 },
         ],
       },
       {
         year: 2025,
         products: [
-          { productName: 'Кредитные карты', percentage: 41.6 },
+          { productName: 'Овердрафт', percentage: 41.6 },
           { productName: 'Потребительские кредиты', percentage: 34.4 },
-          { productName: 'Ипотека', percentage: 24.0 },
+          { productName: 'Ипотечные кредиты', percentage: 24.0 },
+          { productName: 'Другие', percentage: 41.6 },
         ],
       }
   ]

@@ -9,20 +9,12 @@ export const chart4 = {
         "value": 1.20
       },
       {
-        "category": "Автокредитование",
+        "category": "Овердрафт",
         "value": 5.60
       },
       {
-        "category": "Финансовая аренда (лизинг)",
+        "category": "Другие",
         "value": 13.80
-      },
-      {
-        "category": "Овердрафт",
-        "value": 23.90
-      },
-      {
-        "category": "и другие",
-        "value": 15.00
       }
     ]
   }

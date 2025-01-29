@@ -15,7 +15,7 @@ const PCureDisplayModule = () => {
             <ContainerHeader>
               <div className="my-1 flex items-center">
                 <div className="leading-16 text-md font-bold text-black-800">
-                  Вероятность выздоровления (p_qure)
+                  Вероятность выздоровления (p_сure)
                 </div>
               </div>
             </ContainerHeader>

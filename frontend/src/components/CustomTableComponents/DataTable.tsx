@@ -41,6 +41,7 @@ interface DataTableProps<TData, TValue> {
   searchColumn: string
   withContainer?: boolean
   withCustomStyle?: boolean
+  onRowDoubleClick?: (id: string) => void
   onRowClick?: (id: string) => void
 }
 
@@ -53,6 +54,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   searchColumn,
   withContainer = false,
   withCustomStyle = false,
+  onRowDoubleClick,
   onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
@@ -92,7 +94,7 @@ export function DataTable<TData extends { id: string }, TValue>({
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="hover:bg-transparent">
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id} colSpan={header.colSpan}>
                   {header.isPlaceholder
@@ -112,6 +114,7 @@ export function DataTable<TData extends { id: string }, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                onDoubleClick={() => onRowDoubleClick?.(row.original.id)}
                 onClick={() => onRowClick?.(row.original.id)}
                 className="cursor-pointer hover:bg-gray-100"
               >

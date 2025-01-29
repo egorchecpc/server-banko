@@ -1,6 +1,6 @@
 export const ageingAmount = [
     {
-      productName: 'product1',
+      productName: 'Потребительские кредиты',
       periods: {
         '30-60': 1000,
         '60-90': 750,
@@ -8,7 +8,7 @@ export const ageingAmount = [
       }
     },
     {
-      productName: 'product2',
+      productName: 'Ипотечные кредиты',
       periods: {
         '30-60': 800,
         '60-90': 600,
@@ -16,7 +16,7 @@ export const ageingAmount = [
       }
     },
     {
-        productName: 'product3',
+        productName: 'Овердрафт',
         periods: {
           '30-60': 1000,
           '60-90': 750,
@@ -24,7 +24,7 @@ export const ageingAmount = [
         }
       },
       {
-        productName: 'product4',
+        productName: 'Другие',
         periods: {
           '30-60': 1000,
           '60-90': 750,

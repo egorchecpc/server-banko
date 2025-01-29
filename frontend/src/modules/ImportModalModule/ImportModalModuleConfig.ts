@@ -31,11 +31,11 @@ export const ACCEPTED_FILE_TYPES = '.xlsx,.xls,.csv'
 
 export const FILE_UPLOAD_CONFIG = {
   portfolio: {
-    label: 'Портфель',
+    label: 'Кредитный портфель',
     required: true,
   },
   payments: {
-    label: 'Платежи',
+    label: 'График платежей',
     required: true,
   },
   cashflow: {

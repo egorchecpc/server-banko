@@ -197,7 +197,7 @@ export const TemplateDialog: React.FC<TemplateDialogProps> = ({
                             <Label>{scenarioNames[scenario]}</Label>
                             <div className="space-y-2">
                               <Input
-                                type="number"
+                                type="text"
                                 placeholder="Значение"
                                 value={indicator.values[year][scenario].value}
                                 onChange={(e) =>
@@ -211,7 +211,7 @@ export const TemplateDialog: React.FC<TemplateDialogProps> = ({
                                 }
                               />
                               <Input
-                                type="number"
+                                type="text"
                                 placeholder="Вероятность"
                                 value={
                                   indicator.values[year][scenario].probability

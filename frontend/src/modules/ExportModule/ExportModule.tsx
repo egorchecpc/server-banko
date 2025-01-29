@@ -16,9 +16,10 @@ import {
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Download as DownloadIcon } from 'lucide-react'
+import { useReport } from '@/context/DateContext'
 
 interface ExportSettings {
-  reportingPeriod: string
   forecastYears: number
   pdDisplayType: 'yearly' | 'quarterly'
   pdDetailType: 'quarterly' | 'monthly'
@@ -26,8 +27,8 @@ interface ExportSettings {
 }
 
 export const ExportComponent: React.FC = () => {
+  const { selectedData } = useReport()
   const [settings, setSettings] = React.useState<ExportSettings>({
-    reportingPeriod: '',
     forecastYears: 1,
     pdDisplayType: 'yearly',
     pdDetailType: 'quarterly',
@@ -35,15 +36,21 @@ export const ExportComponent: React.FC = () => {
   })
 
   const handleExport = () => {
-    console.log('Export settings:', settings)
-    // Implement your export logic here
+    // Теперь используем selectedDate из контекста вместо settings.reportingPeriod
+    console.log('Export settings:', {
+      ...settings,
+      reportingPeriod: selectedData.date,
+    })
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="primary" className="flex items-center gap-2">
-          Экспортировать
+        <Button variant="export" size="default" className="mb-3">
+          <div className="flex items-center gap-1">
+            <DownloadIcon className="h-4 w-4" />
+            <div>Экспортировать</div>
+          </div>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -54,27 +61,15 @@ export const ExportComponent: React.FC = () => {
           <div>
             <div className="pt-6">
               <div className="grid gap-4">
-                {/* Reporting Period */}
+                {/* Reporting Period - теперь статичное поле */}
                 <div className="grid gap-2">
-                  <Label htmlFor="reportingPeriod">Отчетный период</Label>
-                  <Select
-                    onValueChange={(value) =>
-                      setSettings({ ...settings, reportingPeriod: value })
-                    }
-                  >
-                    <SelectTrigger id="reportingPeriod">
-                      <SelectValue placeholder="Выберите период" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="2024q1">2024 квартал I</SelectItem>
-                      <SelectItem value="2024q2">2024 квартал II</SelectItem>
-                      <SelectItem value="2024q3">2024 квартал III</SelectItem>
-                      <SelectItem value="2024q4">2024 квартал IV</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label>Отчетный период</Label>
+                  <div className="bg-muted rounded-md border p-2">
+                    {selectedData.date}
+                  </div>
                 </div>
 
-                {/* Forecast Years */}
+                {/* Остальные поля остаются без изменений */}
                 <div className="grid gap-2">
                   <Label htmlFor="forecastYears">
                     Количество лет для прогноза PD
@@ -101,7 +96,6 @@ export const ExportComponent: React.FC = () => {
                   </Select>
                 </div>
 
-                {/* Cumulative PD Display */}
                 <div className="grid gap-2">
                   <Label>Кумулятивный PD (cPD)</Label>
                   <RadioGroup
@@ -121,27 +115,6 @@ export const ExportComponent: React.FC = () => {
                   </RadioGroup>
                 </div>
 
-                {/* PD Detail Display */}
-                <div className="grid gap-2">
-                  <Label>Показать PD</Label>
-                  <RadioGroup
-                    defaultValue="quarterly"
-                    onValueChange={(value: 'quarterly' | 'monthly') =>
-                      setSettings({ ...settings, pdDetailType: value })
-                    }
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="quarterly" id="pd-quarterly" />
-                      <Label htmlFor="pd-quarterly">По квартально</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="monthly" id="pd-monthly" />
-                      <Label htmlFor="pd-monthly">По месячно</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                {/* LGD Period */}
                 <div className="grid gap-2">
                   <Label htmlFor="lgdPeriod">Период отображения LGD</Label>
                   <Select

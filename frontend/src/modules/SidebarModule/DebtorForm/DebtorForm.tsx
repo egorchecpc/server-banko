@@ -44,8 +44,8 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
   const form = useForm<DebtorData>({
     defaultValues: parseInitialData() || {
       debtorType: 'default',
-      creditType: 'default',
-      productType: 'default',
+      creditType: [],
+      productType: [],
       date: undefined,
     },
   })

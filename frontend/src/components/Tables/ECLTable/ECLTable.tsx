@@ -41,7 +41,7 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst }) => {
   return (
     <Table className="table-auto bg-white">
       <TableHeader>
-        <TableRow className="border-b">
+        <TableRow className="border-b hover:bg-transparent">
           <TableHead
             rowSpan={2}
             className="bg-muted w-52 min-w-52 max-w-52 border text-left font-bold"
@@ -64,7 +64,7 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst }) => {
             {TOTAL_LABEL}
           </TableHead>
         </TableRow>
-        <TableRow className="border-b">
+        <TableRow className="border-b hover:bg-transparent">
           {Array.from({ length: STAGES.length }, () => HEADER_LABELS)
             .flat()
             .map((label, i) => (

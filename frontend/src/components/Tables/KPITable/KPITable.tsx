@@ -23,7 +23,7 @@ const KPITable: FC<KPITableProps> = ({ data }) => {
       <ContainerBody isScrolling={true} orientation={'horizontal'}>
         <Table className="table-auto border border-gray-200 bg-white">
           <TableHeader>
-            <TableRow>
+            <TableRow className="hover:bg-transparent">
               <TableHead className="bg-muted w-auto whitespace-nowrap border text-left">
                 Установленный KPI
               </TableHead>

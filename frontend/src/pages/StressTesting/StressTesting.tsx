@@ -128,7 +128,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-6 px-10">
       <Breadcrumb className="mb-4">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -143,7 +143,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex items-center justify-between">
-        <div className="mb-3 flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <div className="text-2xl font-bold leading-38 text-black-900">
             {`Стресс-тестирование на ${reportDate}`}
           </div>
@@ -237,7 +237,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="ecl" fill="#8884d8" barSize={70} />
+                  <Bar dataKey="ecl" fill="#8884d8" barSize={30} />
                 </BarChart>
               </ResponsiveContainer>
             </ContainerBody>

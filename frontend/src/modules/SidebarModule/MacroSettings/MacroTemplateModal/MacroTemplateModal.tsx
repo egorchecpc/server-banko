@@ -113,16 +113,16 @@ export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
                         </div>
                         <div className="ml-4 text-gray-600">
                           <div>
-                            Худший: {latestValues.worst.value}% (вер.{' '}
-                            {latestValues.worst.probability})
+                            Худший: {latestValues.worst.value} (вер.{' '}
+                            {latestValues.worst.probability}%)
                           </div>
                           <div>
-                            Базовый: {latestValues.norm.value}% (вер.{' '}
-                            {latestValues.norm.probability})
+                            Базовый: {latestValues.norm.value} (вер.{' '}
+                            {latestValues.norm.probability}%)
                           </div>
                           <div>
-                            Лучший: {latestValues.best.value}% (вер.{' '}
-                            {latestValues.best.probability})
+                            Лучший: {latestValues.best.value} (вер.{' '}
+                            {latestValues.best.probability}%)
                           </div>
                         </div>
                       </div>
