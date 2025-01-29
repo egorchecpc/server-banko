@@ -15,7 +15,6 @@ jobs:
           host: banko.stacklevel.group
           port: 64751
           user: jenkins
-          host_fingerprint: SHA256:xt4IDxm4wlEx7LGLQ4QxGe3KOWnbzHWqJnpzbkrHsAY
           private_key: |-
             -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABCTd5VrdK
