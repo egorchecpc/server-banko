@@ -36,7 +36,7 @@ export const AuthPage = () => {
               variant="primary"
               type="submit"
               className="w-full"
-              onClick={navigate({ to: `/reports` })}
+              onClick={() => navigate({ to: `/reports` })}
             >
               Login
             </Button>

@@ -2,8 +2,8 @@ name: CICD
 
 on:
   push:
-      branches: [ "main" ]
-      
+    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,11 +16,43 @@ jobs:
           user: jenkins
           private_key: |-
             -----BEGIN OPENSSH PRIVATE KEY-----
-            b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-            QyNTUxOQAAACB4kqVoiRK0bP/o6ygSbxoU59Y+ulEKm6gs7C1UIOFZ1QAAAJgyf2kPMn9p
-            DwAAAAtzc2gtZWQyNTUxOQAAACB4kqVoiRK0bP/o6ygSbxoU59Y+ulEKm6gs7C1UIOFZ1Q
-            AAAEAMO1///yl0NAOfUvI2mJvzdzHtFEaiVCeF9rmKp2EB13iSpWiJErRs/+jrKBJvGhTn
-            1j66UQqbqCzsLVQg4VnVAAAAEmdpdGh1YkBleGFtcGxlLmNvbQECAw==
-            -----END OPENSSH PRIVATE KEY-----
-          
-          command: 'cd /var/www/server-banko/ && git pull origin main'
+  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
+  6boYYw==
+  -----END OPENSSH PRIVATE KEY-----
+
+command: 'cd /var/www/server-banko/ && git pull origin main'

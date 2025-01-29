@@ -1,5 +1,5 @@
 {
-  "name": "banko",
+  "name": "banko-server",
   "private": true,
   "type": "module",
   "overrides": {
