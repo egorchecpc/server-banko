@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { Download as DownloadIcon } from 'lucide-react'
 import PDDisplayModule from '@/modules/PDDisplayModule/PDDisplayModule'
 import LGDTable from '@/components/Tables/LGDTable/LGDTable'
 import { Link, useParams } from '@tanstack/react-router'

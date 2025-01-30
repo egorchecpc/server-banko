@@ -10,12 +10,16 @@ export const usePostMacroSettingsData = () => {
     Partial<FormatedMacroSettings>
   >({
     mutationFn: async (newMacroSettings) => {
-      const { data } = await axiosConfig.post('/macro', newMacroSettings, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      })
+      const { data } = await axios.post(
+        'http://192.168.100.18/api/macro',
+        newMacroSettings,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      )
       return data
     },
   })

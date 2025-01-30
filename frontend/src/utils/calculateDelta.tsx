@@ -11,12 +11,15 @@ export const renderCellWithDelta = (
   value: number,
   delta: number | null
 ): JSX.Element | string => {
-  if (delta === null) return `${value.toFixed(2)}%`
+  if (delta === null) return `${(value * 100).toFixed(2)}%`
+  const deltaPercentage = delta * 100
   return (
     <span>
-      {`${value.toFixed(2)}%`}
-      <span className={`ml-1 ${delta > 0 ? 'text-red-500' : 'text-green-500'}`}>
-        ({`${Math.abs(delta).toFixed(2)}%`}
+      {`${(value * 100).toFixed(2)}%`}
+      <span
+        className={`ml-1 ${deltaPercentage > 0 ? 'text-red-500' : 'text-green-500'}`}
+      >
+        ({`${Math.abs(deltaPercentage).toFixed(2)}%`}
         {delta > 0 ? '↑' : '↓'})
       </span>
     </span>

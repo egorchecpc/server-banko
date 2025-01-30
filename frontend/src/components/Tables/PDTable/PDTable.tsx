@@ -29,7 +29,6 @@ const PDTable: FC<PDTableProps> = ({ data, deltaMode, displayQuarterly }) => {
     '60-90': 'between61To90',
     '90+': 'moreThen90',
   }
-
   const categories = Object.keys(categoryToKey)
   const years = [...new Set(data.map((item) => item.year))].sort()
 

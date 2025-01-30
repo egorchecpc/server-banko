@@ -12,6 +12,7 @@ export const ClearAppLayout = () => {
             withoutNav={true}
             withoutSidebar={true}
             withoutExportBtn={true}
+            withBackBtn={true}
           />
           <main className="mx-5">
             <div>

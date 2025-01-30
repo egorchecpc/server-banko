@@ -10,15 +10,6 @@ import { ProfileNavigation } from '@/pages/Profile/ProfileNavigation/ProfileNavi
 import { TemplatesView } from '@/pages/Profile/TemplatesView/TemplatesView'
 import { ProfileEditDialog } from '@/pages/Profile/ProfileEditDialog/ProfileEditDialog'
 import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Link } from '@tanstack/react-router'
 
 export const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('about')
@@ -81,19 +72,6 @@ export const ProfilePage = () => {
       </div>
 
       <div className="flex-1 p-8">
-        <Breadcrumb className="mb-8">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/reports">Главная страница</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Профиль</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
         <Tabs value={activeTab} className="space-y-6">
           <TabsContent value="about">{renderAboutTab()}</TabsContent>
           <TabsContent value="templates">

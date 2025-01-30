@@ -1,6 +1,7 @@
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+import { toast } from 'sonner'
 import {
   Select,
   SelectContent,
@@ -67,9 +68,13 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         <span>Приватный отчёт</span>
         <Switch
           checked={reportDetails.isPublic}
-          onCheckedChange={(checked) =>
+          onCheckedChange={(checked) => {
             onDetailsChange({ ...reportDetails, isPublic: checked })
-          }
+            if (!reportDetails.isPublic)
+              toast.info('Внимание! Данный отчёт будет доступен только вам.')
+            else
+              toast.info('Теперь отчёт опять будет доступен всем пользователям')
+          }}
         />
       </div>
 

@@ -87,7 +87,7 @@ export const CustomFormField: FC<CustomFormFieldProps> = ({
     )
   }
 
-  const selectedValues = (field.value || []) as string[]
+  const selectedValues = Array.isArray(field.value) ? field.value : []
 
   const toggleValue = (value: string) => {
     const newValues = selectedValues.includes(value)

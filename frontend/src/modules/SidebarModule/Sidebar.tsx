@@ -15,6 +15,7 @@ import { useNavigation } from '@/context/NavigationContext'
 import { DebtorData } from '@/models/DebtorData'
 import { MacroSettings } from '@/models/MacroSettings'
 import { useUpdateReport } from '@/hooks/apiHooks/commonHooks/usePostReportData'
+import { usePostMacroSettingsData } from '@/hooks/apiHooks/commonHooks/usePostMacroSettingsData'
 
 export const AppSidebar: FC = () => {
   const [debtorData, setDebtorData] = useState<DebtorData | undefined>()
@@ -26,29 +27,57 @@ export const AppSidebar: FC = () => {
   const { reportId } = useParams({ strict: false })
   const router = useRouter()
 
-  const { mutate } = useUpdateReport()
-  const handlePostSettings = () => {
+  const { mutate: updateReport } = useUpdateReport()
+  const { mutate: postMacroSettings } = usePostMacroSettingsData()
+  const handlePostSettings = async () => {
     if (!reportId) {
       console.error('reportId is missing')
       return
     }
-    const formattedMacroData = formatMacroDataToServer(macroData)
-    if (debtorData) {
-      mutate(
-        { id: reportId, debtorData, macroData: formattedMacroData },
-        {
-          onSuccess: () => {
-            console.log('Данные успешно отправлены')
-            enableNavigation()
-            router
-              .navigate({ to: `/reports/${reportId}/dashboard` })
-              .then((r) => console.log(r))
-          },
-          onError: (error) => {
-            console.error('Ошибка:', error.message)
-          },
-        }
-      )
+
+    try {
+      // Выполняем обе мутации параллельно
+      await Promise.all([
+        // Обновление отчета
+        new Promise<void>((resolve, reject) => {
+          if (!debtorData) {
+            reject('Debtor data is missing')
+            return
+          }
+
+          updateReport(
+            {
+              id: reportId,
+              debtorData,
+              macroData: formatMacroDataToServer(macroData),
+            },
+            {
+              onSuccess: () => resolve(),
+              onError: (error) => reject(error),
+            }
+          )
+        }),
+
+        // Отправка макро-настроек
+        new Promise<void>((resolve, reject) => {
+          if (!macroData) {
+            reject('Macro data is missing')
+            return
+          }
+
+          postMacroSettings(formatMacroDataToServer(macroData), {
+            onSuccess: () => resolve(),
+            onError: (error) => reject(error),
+          })
+        }),
+      ])
+
+      // Общая обработка успеха
+      console.log('Все данные успешно отправлены')
+      enableNavigation()
+      router.navigate({ to: `/reports/${reportId}/dashboard` })
+    } catch (error) {
+      console.error('Ошибка при отправке данных:', error)
     }
   }
 
@@ -66,7 +95,7 @@ export const AppSidebar: FC = () => {
         <ScrollArea className="flex-1">
           <div className="flex h-full flex-col items-center">
             <h2 className="pb-6 pt-2 text-2xl font-extrabold leading-9 text-blue-900">
-              ЛОГОРИФМ
+              ЛОГО
             </h2>
 
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">

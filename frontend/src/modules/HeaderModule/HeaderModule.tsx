@@ -6,12 +6,16 @@ interface HeaderModule {
   withoutNav?: boolean
   withoutSidebar?: boolean
   withoutExportBtn?: boolean
+  withLogo?: boolean
+  withBackBtn?: boolean
 }
 
 export const HeaderModule: FC<HeaderModule> = ({
   withoutNav = false,
   withoutSidebar = false,
   withoutExportBtn = false,
+  withLogo = false,
+  withBackBtn = false,
 }) => {
   return (
     <Header
@@ -20,6 +24,8 @@ export const HeaderModule: FC<HeaderModule> = ({
       withoutNav={withoutNav}
       withoutSidebar={withoutSidebar}
       withoutExportBtn={withoutExportBtn}
+      withLogo={withLogo}
+      withBackBtn={withBackBtn}
     />
   )
 }

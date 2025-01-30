@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { CreditListPage } from '@/pages/CreditList/CreditList'
 
 export const Route = createFileRoute(
-  '/_layout-without-sidebar/reports/$reportsId/credit-list',
+  '/_clear-layout/reports/$reportId/credit-list',
 )({
   component: CreditList,
 })

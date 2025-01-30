@@ -6,7 +6,11 @@ export const AppLayoutWithoutSidebar = () => {
   return (
     <NavigationProvider>
       <div className="flex w-[1920px] flex-col overflow-hidden">
-        <HeaderModule withoutNav={false} withoutSidebar={true} />
+        <HeaderModule
+          withoutNav={false}
+          withoutSidebar={true}
+          withBackBtn={true}
+        />
         <main className="mx-5">
           <div>
             <Outlet />

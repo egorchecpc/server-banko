@@ -28,7 +28,10 @@ export const AuthPage = () => {
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" required />
-              <Link to="/" className="ml-auto inline-block text-sm underline">
+              <Link
+                to="/auth"
+                className="ml-auto inline-block text-sm underline"
+              >
                 Forgot your password?
               </Link>
             </div>

@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Link } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -19,6 +19,9 @@ interface UserNavProps {
 
 const UserNav: FC<UserNavProps> = ({ userData }) => {
   const { t } = useTranslation()
+  const location = useLocation()
+  const reportId = location.pathname.match(/\/reports\/(.+)/)?.[1]
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,7 +45,10 @@ const UserNav: FC<UserNavProps> = ({ userData }) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link to="/profile">
+          <Link
+            to="/profile"
+            search={reportId ? { returnToReport: reportId } : undefined}
+          >
             <DropdownMenuItem>{t('navbar.profile')}</DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>

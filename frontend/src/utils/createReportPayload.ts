@@ -50,7 +50,7 @@ export const createReportPayload = ({
     debtorType: type,
     creditType: '',
     productType: '',
-    date: '',
+    date: '01.01.2025',
   },
   isPublic,
   description,

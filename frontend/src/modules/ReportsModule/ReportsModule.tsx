@@ -14,7 +14,7 @@ export const ReportsModule: FC<ProfileReportsProps> = ({ data }) => {
   const navigate = useNavigate()
   const { setSelectedData } = useReport()
   const [selectedReport, setSelectedReport] =
-    useState<ProfileReportData | null>(null)
+    useState<ProfileReportData | null>(data[0])
 
   const handeRowClick = (reportId: string) => {
     const foundReport = data.find((report) => report.id === reportId)

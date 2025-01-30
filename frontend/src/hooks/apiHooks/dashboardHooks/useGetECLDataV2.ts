@@ -1,14 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
-import axiosConfig from '@/services/axiosConfig'
-import { API_ENDPOINTS } from '@/services/endpoints'
 import { ECLData } from '@/models/ECL'
+import { transformECLDataFromServer } from '@/utils/formatECLFromServer'
+import axios from 'axios'
+import { ECLType } from '@/models/FormatedECL'
 
 export const useGetECLDataV2 = () => {
   return useQuery<ECLData, Error>({
     queryKey: ['ECLDataV2'],
     queryFn: async () => {
-      const { data } = await axiosConfig.get(API_ENDPOINTS.GET_ECL_DATA_V2)
-      return data
+      const { data } = await axios.get(
+        'http://192.168.100.18/api/ecl/portfolio/summary'
+      )
+      return transformECLDataFromServer(data, ECLType.DELAY)
     },
   })
 }
