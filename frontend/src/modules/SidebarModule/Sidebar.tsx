@@ -66,7 +66,7 @@ export const AppSidebar: FC = () => {
         <ScrollArea className="flex-1">
           <div className="flex h-full flex-col items-center">
             <h2 className="pb-6 pt-2 text-2xl font-extrabold leading-9 text-blue-900">
-              ЛОГО
+              ЛОГОРИФМ
             </h2>
 
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">
