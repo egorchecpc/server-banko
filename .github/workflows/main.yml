@@ -10,49 +10,53 @@ jobs:
 
     steps:
       - name: Build project
-        uses: D3rHase/ssh-command-action@v0.2.2
+        uses: D3rHase/ssh-command-action@latest
         with:
-          host: jenkins.phoenixfw.net
+          host: banko.stacklevel.group
+          port: 64751
           user: jenkins
           private_key: |-
             -----BEGIN OPENSSH PRIVATE KEY-----
-  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
-  6boYYw==
-  -----END OPENSSH PRIVATE KEY-----
-
-command: 'cd /var/www/server-banko/ && git pull origin main'
+            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
+            -----END OPENSSH PRIVATE KEY-----
+          command: |
+            [ ! -d /var/www/server-banko ] && git -C /var/www clone git@github.com:egorchecpc/server-banko.git;
+            cd /var/www/server-banko;
+            git pull origin main;
+            cp -vf .env.dist .env; cp -vf frontend/.env.dist frontend/.env;
+            docker compose up -d --build --force-recreate
