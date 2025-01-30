@@ -12,78 +12,6 @@ export const ProfileReportsData = [
       "LGD": "12",
       "PD": "12",
       "macroData":{
-        "year2024": {
-          "productProfitability": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realWage": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "gdp": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realDisposablePopulationIncome": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "averageMonthlySalary": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          }
-        },
         "year2025": {
           "productProfitability": {
             "worst": {
@@ -229,6 +157,78 @@ export const ProfileReportsData = [
           }
         },
         "year2027": {
+          "productProfitability": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realWage": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "gdp": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realDisposablePopulationIncome": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "averageMonthlySalary": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          }
+        },
+        "year2028": {
           "productProfitability": {
             "worst": {
               "value": 0,
@@ -323,78 +323,6 @@ export const ProfileReportsData = [
       "LGD": "12",
       "PD": "12",
       "macroData":{
-        "year2024": {
-          "productProfitability": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realWage": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "gdp": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realDisposablePopulationIncome": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "averageMonthlySalary": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          }
-        },
         "year2025": {
           "productProfitability": {
             "worst": {
@@ -540,6 +468,78 @@ export const ProfileReportsData = [
           }
         },
         "year2027": {
+          "productProfitability": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realWage": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "gdp": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realDisposablePopulationIncome": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "averageMonthlySalary": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          }
+        },
+        "year2028": {
           "productProfitability": {
             "worst": {
               "value": 0,
@@ -634,78 +634,6 @@ export const ProfileReportsData = [
       "LGD": "12",
       "PD": "12",
       "macroData":{
-        "year2024": {
-          "productProfitability": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realWage": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "gdp": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realDisposablePopulationIncome": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "averageMonthlySalary": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          }
-        },
         "year2025": {
           "productProfitability": {
             "worst": {
@@ -851,6 +779,78 @@ export const ProfileReportsData = [
           }
         },
         "year2027": {
+          "productProfitability": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realWage": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "gdp": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realDisposablePopulationIncome": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "averageMonthlySalary": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          }
+        },
+        "year2028": {
           "productProfitability": {
             "worst": {
               "value": 0,
@@ -945,83 +945,11 @@ export const ProfileReportsData = [
       "LGD": "12",
       "PD": "12",
       "macroData":{
-        "year2024": {
+        "year2025": {
           "productProfitability": {
             "worst": {
               "value": 44,
               "probability": 44
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realWage": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "gdp": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "realDisposablePopulationIncome": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          },
-          "averageMonthlySalary": {
-            "worst": {
-              "value": 0,
-              "probability": 0
-            },
-            "norm": {
-              "value": 0,
-              "probability": 0
-            },
-            "best": {
-              "value": 0,
-              "probability": 0
-            }
-          }
-        },
-        "year2025": {
-          "productProfitability": {
-            "worst": {
-              "value": 0,
-              "probability": 0
             },
             "norm": {
               "value": 0,
@@ -1162,6 +1090,78 @@ export const ProfileReportsData = [
           }
         },
         "year2027": {
+          "productProfitability": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realWage": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "gdp": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "realDisposablePopulationIncome": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          },
+          "averageMonthlySalary": {
+            "worst": {
+              "value": 0,
+              "probability": 0
+            },
+            "norm": {
+              "value": 0,
+              "probability": 0
+            },
+            "best": {
+              "value": 0,
+              "probability": 0
+            }
+          }
+        },
+        "year2028": {
           "productProfitability": {
             "worst": {
               "value": 0,
