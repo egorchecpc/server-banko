@@ -138,20 +138,6 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
         />
       )}
 
-      {isDialogOpen && (
-        <div
-          className="bg-black/20 fixed inset-0 z-40 backdrop-blur-sm"
-          aria-hidden="true"
-        />
-      )}
-
-      {isTemplateModalOpen && (
-        <div
-          className="bg-black/20 fixed inset-0 z-40 backdrop-blur-sm"
-          aria-hidden="true"
-        />
-      )}
-
       <MacroSettingsModal
         years={years}
         isOpen={isDialogOpen}
