@@ -3,11 +3,6 @@ import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/CustomTableComponents/DataTableColumnHeader'
 import { DataTableRowActions } from '@/components/CustomTableComponents/DataTableRowActions'
 import { ArrowUpIcon, QuestionMarkCircledIcon } from '@radix-ui/react-icons'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 
 const customFilterFn = (
   row: Row<Task>,
@@ -41,34 +36,13 @@ export const columns: ColumnDef<Task>[] = [
     ),
     cell: ({ row }) => {
       const label = labels.find((label) => label.value === row.original.label)
-      const task = row.original
       return (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div className="flex h-10 items-center justify-center gap-1">
-              {label && <Badge variant="outline">{label.label}</Badge>}
-              <span className="max-w-[31rem] truncate font-medium">
-                {row.getValue('title')}
-              </span>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <div className="text-sm">
-              <p>
-                <strong>RR:</strong> {task.RR || 'N/A'}
-              </p>
-              <p>
-                <strong>ECL:</strong> {task.ECL || 'N/A'}
-              </p>
-              <p>
-                <strong>LGD:</strong> {task.LGD || 'N/A'}
-              </p>
-              <p>
-                <strong>PD:</strong> {task.PD || 'N/A'}
-              </p>
-            </div>
-          </TooltipContent>
-        </Tooltip>
+        <div className="flex h-10 items-center justify-center gap-1">
+          {label && <Badge variant="outline">{label.label}</Badge>}
+          <span className="max-w-[31rem] truncate font-medium">
+            {row.getValue('title')}
+          </span>
+        </div>
       )
     },
     enableSorting: false,

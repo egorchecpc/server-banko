@@ -20,6 +20,12 @@ import { barData } from "./DistributionCategoryChartData.js";
 import express from 'express';
 import cors from 'cors';
 import bodyParser from "body-parser";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const port = 3000;
 
@@ -181,6 +187,37 @@ app.post('/create-report', (req, res) => {
   res.status(201).json({ message: 'Новый отчёт успешно создан', data: newReport });
 });
 
+app.post('/export', (req, res) => {
+  try {
+    const filePath = path.join(__dirname, 'ecl.xlsx');
+    
+    res.download(filePath, 'ecl.xlsx', (err) => {
+      if (err) {
+        console.error('Error sending file:', err);
+      }
+    });
+
+  } catch (error) {
+    console.error('Export error:', error);
+    res.status(500).json({ error: 'Ошибка при экспорте файла' });
+  }
+});
+
+app.post('/exportcredit', (req, res) => {
+  try {
+    const filePath = path.join(__dirname, 'creditList.xlsx');
+    
+    res.download(filePath, 'creditList.xlsx', (err) => {
+      if (err) {
+        console.error('Error sending file:', err);
+      }
+    });
+
+  } catch (error) {
+    console.error('Export error:', error);
+    res.status(500).json({ error: 'Ошибка при экспорте файла' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

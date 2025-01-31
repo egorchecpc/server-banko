@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosConfig = axios.create({
-  baseURL: 'http://banko-backend.stacklevel.group/',
+  baseURL: 'http://banko-backend.stacklevel.group',
   headers: {
     'Content-Type': 'application/json',
   },

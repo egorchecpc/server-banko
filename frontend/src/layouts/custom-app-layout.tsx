@@ -3,6 +3,7 @@ import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { NavigationProvider } from '@/context/NavigationContext'
 import { AppSidebar } from '@/modules/SidebarModule/Sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
+import Footer from '@/components/FooterComponent/Footer'
 
 export const CustomAppLayout = () => {
   return (
@@ -16,6 +17,7 @@ export const CustomAppLayout = () => {
               <Outlet />
             </div>
           </main>
+          <Footer />
         </div>
       </SidebarProvider>
     </NavigationProvider>

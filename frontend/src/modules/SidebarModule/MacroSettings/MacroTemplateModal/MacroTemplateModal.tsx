@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { type FC, useEffect, useRef, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -14,8 +14,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { MacroSettings } from '@/models/MacroSettings'
+import type { MacroSettings } from '@/models/MacroSettings'
 import { useTemplates } from '@/hooks/apiHooks/commonHooks/useTemplate'
+import { formatNumber } from '@/utils/formatNumber'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface MacroTemplateModalProps {
   isOpen: boolean
@@ -29,6 +31,12 @@ export const indicatorNames: { [key: string]: string } = {
   gdp: 'ВВП',
   realDisposablePopulationIncome: 'Реально располагаемые доходы населения',
   averageMonthlySalary: 'Средняя месячная зарплата',
+}
+
+const scenarioLabels = {
+  worst: 'Худший',
+  norm: 'Базовый',
+  best: 'Лучший',
 }
 
 export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
@@ -58,18 +66,15 @@ export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
   }
 
   const selectedTemplateData = templates.find((t) => t.id === selectedTemplate)
-
-  const getLatestYearValues = (indicator: MacroSettings) => {
-    const years = Object.keys(indicator.values)
-    const latestYear = years[years.length - 1]
-    return indicator.values[latestYear]
+  const getYears = (indicator: MacroSettings) => {
+    return Object.keys(indicator.values).sort()
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogPortal>
         <DialogContent
-          className="sm:max-w-[25rem]"
+          className="sm:max-w-[600px]"
           onOpenAutoFocus={(e) => {
             e.preventDefault()
             initialFocusRef.current?.focus()
@@ -99,37 +104,73 @@ export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
             </Select>
 
             {selectedTemplateData && (
-              <div className="mt-4">
-                <h4 className="mb-2 text-sm font-medium">
-                  Макропоказатели в шаблоне (значения с 2024 по 2027 год):
-                </h4>
-                <div className="space-y-3">
+              <ScrollArea className="mt-4 h-[400px]">
+                <div className="space-y-4">
                   {selectedTemplateData.indicators.map((indicator) => {
-                    const latestValues = getLatestYearValues(indicator)
+                    const years = getYears(indicator)
                     return (
-                      <div key={indicator.id} className="text-sm">
-                        <div className="font-medium">
-                          {indicatorNames[indicator.type]}:
-                        </div>
-                        <div className="ml-4 text-gray-600">
-                          <div>
-                            Худший: {latestValues.worst.value} (вер.{' '}
-                            {latestValues.worst.probability}%)
-                          </div>
-                          <div>
-                            Базовый: {latestValues.norm.value} (вер.{' '}
-                            {latestValues.norm.probability}%)
-                          </div>
-                          <div>
-                            Лучший: {latestValues.best.value} (вер.{' '}
-                            {latestValues.best.probability}%)
-                          </div>
+                      <div
+                        key={indicator.id}
+                        className="rounded-lg bg-white p-4 shadow-sm"
+                      >
+                        <h3 className="mb-2 text-sm font-bold leading-5 text-black-800">
+                          {indicatorNames[indicator.type]}
+                        </h3>
+                        <div className="grid grid-cols-4 gap-1">
+                          <div className="col-span-1"></div>
+                          {['worst', 'norm', 'best'].map((scenario, index) => (
+                            <div
+                              key={`${scenario}-${index}`}
+                              className="text-center text-ssm font-normal leading-14 text-grey-900"
+                            >
+                              {
+                                scenarioLabels[
+                                  scenario as keyof typeof scenarioLabels
+                                ]
+                              }
+                            </div>
+                          ))}
+                          {years.map((year) => (
+                            <>
+                              <div className="mt-4 text-sm font-bold leading-4 text-grey-900">
+                                {year} 01.01
+                              </div>
+                              {['worst', 'norm', 'best'].map(
+                                (scenario, index) => (
+                                  <div
+                                    key={`${year}-${scenario}-${index}`}
+                                    className={`rounded-lg py-3 text-center ${
+                                      scenario === 'worst'
+                                        ? 'bg-lite-orange/5'
+                                        : scenario === 'best'
+                                          ? 'bg-lite-green'
+                                          : 'bg-white'
+                                    }`}
+                                  >
+                                    <div className="text-sm font-normal leading-15 text-black-800">
+                                      {formatNumber(
+                                        indicator.values[year][scenario].value
+                                      )}
+                                    </div>
+                                    <div className="text-sm font-normal leading-15 text-black-800">
+                                      (
+                                      {
+                                        indicator.values[year][scenario]
+                                          .probability
+                                      }
+                                      %)
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </>
+                          ))}
                         </div>
                       </div>
                     )
                   })}
                 </div>
-              </div>
+              </ScrollArea>
             )}
 
             <div className="mt-6 flex justify-end">

@@ -15,13 +15,18 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Download as DownloadIcon } from 'lucide-react'
 import { useReport } from '@/context/DateContext'
+import { useExportFile } from '@/hooks/apiHooks/dashboardHooks/useGetReportFile'
+import { toast } from 'sonner'
 
 interface ExportSettings {
   forecastYears: number
-  pdDisplayType: 'yearly' | 'quarterly'
+  pdDisplayTypes: {
+    yearly: boolean
+    quarterly: boolean
+  }
   pdDetailType: 'quarterly' | 'monthly'
   lgdPeriod: string
 }
@@ -30,16 +35,30 @@ export const ExportComponent: React.FC = () => {
   const { selectedData } = useReport()
   const [settings, setSettings] = React.useState<ExportSettings>({
     forecastYears: 1,
-    pdDisplayType: 'yearly',
+    pdDisplayTypes: {
+      yearly: false,
+      quarterly: false,
+    },
     pdDetailType: 'quarterly',
     lgdPeriod: '',
   })
+  const exportMutation = useExportFile()
+  const handleExport = async () => {
+    try {
+      await exportMutation.mutateAsync()
 
-  const handleExport = () => {
-    // Теперь используем selectedDate из контекста вместо settings.reportingPeriod
-    console.log('Export settings:', {
+      toast.success('Файл успешно экспортирован')
+    } catch (error) {
+      toast.error('Не удалось экспортировать файл' + error)
+    }
+  }
+  const handleCheckboxChange = (value: 'yearly' | 'quarterly') => {
+    setSettings({
       ...settings,
-      reportingPeriod: selectedData.date,
+      pdDisplayTypes: {
+        ...settings.pdDisplayTypes,
+        [value]: !settings.pdDisplayTypes[value],
+      },
     })
   }
 
@@ -61,7 +80,6 @@ export const ExportComponent: React.FC = () => {
           <div>
             <div className="pt-6">
               <div className="grid gap-4">
-                {/* Reporting Period - теперь статичное поле */}
                 <div className="grid gap-2">
                   <Label>Отчетный период</Label>
                   <div className="bg-muted rounded-md border p-2">
@@ -69,7 +87,6 @@ export const ExportComponent: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Остальные поля остаются без изменений */}
                 <div className="grid gap-2">
                   <Label htmlFor="forecastYears">
                     Количество лет для прогноза PD
@@ -98,21 +115,26 @@ export const ExportComponent: React.FC = () => {
 
                 <div className="grid gap-2">
                   <Label>Кумулятивный PD (cPD)</Label>
-                  <RadioGroup
-                    defaultValue="yearly"
-                    onValueChange={(value: 'yearly' | 'quarterly') =>
-                      setSettings({ ...settings, pdDisplayType: value })
-                    }
-                  >
+                  <div className="flex flex-col space-y-2">
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yearly" id="yearly" />
+                      <Checkbox
+                        id="yearly"
+                        checked={settings.pdDisplayTypes.yearly}
+                        onCheckedChange={() => handleCheckboxChange('yearly')}
+                      />
                       <Label htmlFor="yearly">По году</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="quarterly" id="quarterly" />
+                      <Checkbox
+                        id="quarterly"
+                        checked={settings.pdDisplayTypes.quarterly}
+                        onCheckedChange={() =>
+                          handleCheckboxChange('quarterly')
+                        }
+                      />
                       <Label htmlFor="quarterly">По кварталу</Label>
                     </div>
-                  </RadioGroup>
+                  </div>
                 </div>
 
                 <div className="grid gap-2">

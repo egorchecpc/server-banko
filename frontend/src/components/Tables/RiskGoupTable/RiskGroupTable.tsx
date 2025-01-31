@@ -52,17 +52,17 @@ const RiskGroupTable: FC<RiskGroupTableProps> = ({
             {data.map((row, rowIndex) => (
               <TableRow
                 key={rowIndex}
-                className={`border-y-0 last:border-b ${row.category === 'Итого' ? 'border-t bg-grey-300 shadow' : 'border-0'} `}
+                className={`group border-y-0 last:border-b ${row.category === 'Итого' ? 'border-t bg-grey-300 shadow hover:bg-grey-300/40' : 'border-0'} `}
               >
                 <TableCell
-                  className={`w-auto whitespace-nowrap border-x text-left font-medium ${row.category === 'Итого' ? 'font-bold' : 'font-medium'}`}
+                  className={`w-auto whitespace-nowrap border-x text-left font-medium group-hover:bg-grey-300/40 ${row.category === 'Итого' ? 'font-bold hover:bg-grey-300/40' : 'font-medium'}`}
                 >
                   {row.category}
                 </TableCell>
                 {row.stages.map((value, colIndex) => (
                   <TableCell
                     key={colIndex}
-                    className={`w-36 border-x text-right ${row.category === 'Итого' ? 'font-bold' : 'font-medium'} ${
+                    className={`w-36 border-x text-right group-hover:bg-grey-300/40 ${row.category === 'Итого' ? 'font-bold' : 'font-medium'} ${
                       colIndex === row.stages.length - 1
                         ? 'bg-grey-300 font-bold'
                         : ''

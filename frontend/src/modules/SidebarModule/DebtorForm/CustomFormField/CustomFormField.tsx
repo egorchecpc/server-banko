@@ -125,7 +125,7 @@ export const CustomFormField: FC<CustomFormFieldProps> = ({
                 <div
                   key={item}
                   className={cn(
-                    'hover:bg-accent hover:text-accent-foreground relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
+                    'hover:text-accent-foreground relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-grey-400',
                     selectedValues.includes(item) && 'bg-accent'
                   )}
                   onClick={() => toggleValue(item)}
@@ -151,7 +151,7 @@ export const CustomFormField: FC<CustomFormFieldProps> = ({
             <Badge
               key={item}
               variant="secondary"
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 hover:bg-grey-600"
             >
               {item}
               <X

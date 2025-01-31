@@ -1,6 +1,7 @@
 import { Outlet } from '@tanstack/react-router'
 import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { NavigationProvider } from '@/context/NavigationContext'
+import Footer from '@/components/FooterComponent/Footer'
 
 export const AppLayoutWithoutSidebar = () => {
   return (
@@ -9,13 +10,14 @@ export const AppLayoutWithoutSidebar = () => {
         <HeaderModule
           withoutNav={false}
           withoutSidebar={true}
-          withBackBtn={true}
+          withBackBtn={false}
         />
         <main className="mx-5">
           <div>
             <Outlet />
           </div>
         </main>
+        <Footer />
       </div>
     </NavigationProvider>
   )

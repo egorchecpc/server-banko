@@ -2,6 +2,7 @@ import { Outlet } from '@tanstack/react-router'
 import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { NavigationProvider } from '@/context/NavigationContext'
+import Footer from '@/components/FooterComponent/Footer'
 
 export const ClearAppLayout = () => {
   return (
@@ -19,6 +20,7 @@ export const ClearAppLayout = () => {
               <Outlet />
             </div>
           </main>
+          <Footer />
         </div>
       </SidebarProvider>
     </NavigationProvider>

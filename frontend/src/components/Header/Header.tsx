@@ -51,9 +51,9 @@ export const Header: FC<HeaderProps> = ({
         </div>
         <div className="flex items-center gap-5">
           {!withoutExportBtn && (
-            <div className="flex gap-4">
-              <div>{selectedData.name}</div>
-              <div>{selectedData.date}</div>
+            <div className="flex flex-col gap-0 rounded-lg border p-2 !py-1 text-sm font-medium">
+              <div>Отчёт: {selectedData.name}</div>
+              <div>Дата: {selectedData.date}</div>
             </div>
           )}
           {!withoutNav && <Button variant="primary">Сохранить отчёт</Button>}

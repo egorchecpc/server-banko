@@ -43,7 +43,11 @@ export const DashboardSettings: React.FC<DashboardSettingsProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="!ring-none rounded-full hover:bg-gray-200"
+        >
           <GearIcon className="h-5 w-5" />
         </Button>
       </PopoverTrigger>

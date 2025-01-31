@@ -128,8 +128,8 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
   }
 
   return (
-    <div className="space-y-6 p-6 px-10">
-      <Breadcrumb className="mb-4">
+    <div className="space-y-4 px-10">
+      <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>

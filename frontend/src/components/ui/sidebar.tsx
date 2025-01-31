@@ -268,7 +268,7 @@ const SidebarTrigger = React.forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn('h-7 w-7', className)}
+      className={cn('h-6 w-6 hover:bg-grey-300/40', className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
@@ -276,9 +276,9 @@ const SidebarTrigger = React.forwardRef<
       {...props}
     >
       {state === 'expanded' ? (
-        <CircleArrowLeft className="h-5 w-5" />
+        <CircleArrowLeft className="h-6 w-6" />
       ) : (
-        <CircleArrowRight className="h-5 w-5" />
+        <CircleArrowRight className="h-6 w-6" />
       )}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>

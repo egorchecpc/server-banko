@@ -37,7 +37,7 @@ const KPITable: FC<KPITableProps> = ({ data }) => {
           </TableHeader>
           <TableBody>
             {data.map((row, rowIndex) => (
-              <TableRow key={rowIndex} className="border-y-0">
+              <TableRow key={rowIndex} className="group border-y-0">
                 <TableCell className="w-auto whitespace-nowrap border-x text-left font-medium">
                   {row.kpiName}
                 </TableCell>
@@ -45,7 +45,7 @@ const KPITable: FC<KPITableProps> = ({ data }) => {
                   {row.currentValue}
                 </TableCell>
                 <TableCell
-                  className={`w-64 border-x text-center ${row.conclusion == 'Выполняется' ? 'bg-lite-green' : 'bg-lite-orange/5'}`}
+                  className={`w-64 border-x text-center ${row.conclusion == 'Выполняется' ? 'bg-lite-green group-hover:bg-grey-300/40' : 'bg-lite-orange/5'}`}
                 >
                   {row.conclusion}
                 </TableCell>

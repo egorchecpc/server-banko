@@ -50,6 +50,7 @@ export const ReportsModule: FC<ProfileReportsProps> = ({ data }) => {
           withCustomStyle={true}
           onRowDoubleClick={handleRowDoubleClick}
           onRowClick={handeRowClick}
+          initialSelectedId={data[0]?.id}
         />
         {selectedReport && <ReportDetails report={selectedReport} />}
       </div>

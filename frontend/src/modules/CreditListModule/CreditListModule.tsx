@@ -9,6 +9,7 @@ import {
 } from '@/modules/CreditListModule/CreditListConfig'
 import { CreditListData } from '@/models/CreditList'
 import { FC } from 'react'
+import { ExportCreditList } from '@/components/ExportCreditListComponent/ExportCreditList'
 
 interface CreditListModuleProps {
   data: CreditListData[]
@@ -16,8 +17,11 @@ interface CreditListModuleProps {
 export const CreditListModule: FC<CreditListModuleProps> = ({ data }) => {
   return (
     <div className="hidden h-full flex-1 flex-col md:flex">
-      <div className="mb-5 text-2xl font-bold leading-38 text-black-900">
-        Список всех кредитов
+      <div className="flex items-center justify-between">
+        <div className="mb-5 text-2xl font-bold leading-38 text-black-900">
+          Список всех кредитов
+        </div>
+        <ExportCreditList />
       </div>
       <DataTable
         columns={columns}
@@ -48,6 +52,7 @@ export const CreditListModule: FC<CreditListModuleProps> = ({ data }) => {
         searchPlaceholder="Поиск по клиенту"
         searchColumn="client_id"
         withContainer={true}
+        initialSelectedId="0"
       />
     </div>
   )

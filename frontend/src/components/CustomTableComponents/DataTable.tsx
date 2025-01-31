@@ -43,6 +43,7 @@ interface DataTableProps<TData, TValue> {
   withCustomStyle?: boolean
   onRowDoubleClick?: (id: string) => void
   onRowClick?: (id: string) => void
+  initialSelectedId?: string
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
@@ -56,6 +57,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   withCustomStyle = false,
   onRowDoubleClick,
   onRowClick,
+  initialSelectedId,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -64,7 +66,20 @@ export function DataTable<TData extends { id: string }, TValue>({
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const [selectedRowId, setSelectedRowId] = React.useState<string | null>(
+    initialSelectedId || null
+  )
   const { t } = useTranslation()
+
+  React.useEffect(() => {
+    // Установка начального выделения при первой загрузке
+    if (initialSelectedId) {
+      setSelectedRowId(initialSelectedId)
+    } else if (data.length > 0) {
+      setSelectedRowId(data[0].id)
+    }
+  }, [])
+
   const table = useReactTable({
     data,
     columns,
@@ -86,6 +101,11 @@ export function DataTable<TData extends { id: string }, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
+  const handleRowClick = (id: string) => {
+    setSelectedRowId(id)
+    onRowClick?.(id)
+  }
 
   const TableContent = (
     <div
@@ -115,8 +135,10 @@ export function DataTable<TData extends { id: string }, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
                 onDoubleClick={() => onRowDoubleClick?.(row.original.id)}
-                onClick={() => onRowClick?.(row.original.id)}
-                className="cursor-pointer hover:bg-gray-100"
+                onClick={() => handleRowClick(row.original.id)}
+                className={`cursor-pointer hover:bg-gray-100 ${
+                  selectedRowId === row.original.id ? 'bg-gray-100' : ''
+                }`}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
