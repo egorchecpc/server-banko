@@ -7,7 +7,7 @@ export const useGetPDYearlyData = () => {
     queryKey: ['PDYearlyData'],
     queryFn: async () => {
       const response = await axios.get<YearlyDataResponse>(
-        'http://192.168.100.18/api/probabilityDefault/yearly'
+        'http://localhost:3000/probabilityDefault/yearly'
       )
 
       return Object.entries(response.data)

@@ -8,8 +8,10 @@ export const useGetECLDataV1 = () => {
   return useQuery<ECLData, Error>({
     queryKey: ['ECLDataV1'],
     queryFn: async () => {
-      const { data } = await axios.get('http://192.168.100.18/api/ecl/summary')
-      return transformECLDataFromServer(data, ECLType.PRODUCT)
+      //const { data } = await axios.get('http://192.168.100.18/api/ecl/summary')
+      // return transformECLDataFromServer(data, ECLType.PRODUCT)
+      const { data } = await axios.get('http://localhost:3000/ecldata1')
+      return data
     },
   })
 }

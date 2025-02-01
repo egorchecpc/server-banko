@@ -8,7 +8,7 @@ export const useGetPDForecastData = () => {
     queryKey: ['PDForecastData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'http://192.168.100.18/api/probabilityDefault/forecast'
+        'http://localhost:3000/probabilityDefault/forecast'
       )
       return data
     },
