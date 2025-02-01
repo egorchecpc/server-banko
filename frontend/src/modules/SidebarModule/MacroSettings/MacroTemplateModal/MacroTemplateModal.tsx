@@ -97,7 +97,7 @@ export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
               <SelectContent>
                 {templates.map((template) => (
                   <SelectItem key={template.id} value={template.id}>
-                    {template.name}
+                    &nbsp;{template.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -113,7 +113,7 @@ export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
                         key={indicator.id}
                         className="rounded-lg bg-white p-4 shadow-sm"
                       >
-                        <h3 className="mb-2 text-sm font-bold leading-5 text-black-800">
+                        <h3 className="mb-8 text-sm font-bold leading-5 text-black-800">
                           {indicatorNames[indicator.type]}
                         </h3>
                         <div className="grid grid-cols-4 gap-1">

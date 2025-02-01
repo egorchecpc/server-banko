@@ -23,13 +23,5 @@ export const ageingAmount = [
           '90plus': 500
         }
       },
-      {
-        productName: 'Другие',
-        periods: {
-          '30-60': 1000,
-          '60-90': 750,
-          '90plus': 500
-        }
-      },
   ];
   

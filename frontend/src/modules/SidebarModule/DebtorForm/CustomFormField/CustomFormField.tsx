@@ -151,7 +151,7 @@ export const CustomFormField: FC<CustomFormFieldProps> = ({
             <Badge
               key={item}
               variant="secondary"
-              className="flex items-center gap-1 hover:bg-grey-600"
+              className="flex cursor-default items-center gap-1 hover:bg-grey-600"
             >
               {item}
               <X

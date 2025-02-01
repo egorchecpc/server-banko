@@ -8,7 +8,7 @@ export const useGetPDForecastData = () => {
     queryKey: ['PDForecastData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'http://banko-backend.stacklevel.group/probabilityDefault/forecast'
+        'http://localhost:3000/probabilityDefault/forecast'
       )
       return data
     },

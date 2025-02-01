@@ -8,7 +8,7 @@ export const useGetPDQuarterlyData = () => {
     queryKey: ['PDQuarterlyData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'http://banko-backend.stacklevel.group/probabilityDefault/quarterly'
+        'http://localhost:3000/probabilityDefault/quarterly'
       )
       return data
     },

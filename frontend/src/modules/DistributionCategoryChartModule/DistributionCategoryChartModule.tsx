@@ -56,7 +56,7 @@ export const DistributionCategoryChartModal: FC<
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="category" />
               <YAxis />
-              <Tooltip />
+              <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
               <Legend />
               <Bar
                 dataKey="overdue30"

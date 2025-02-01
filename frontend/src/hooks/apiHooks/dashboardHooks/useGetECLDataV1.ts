@@ -10,7 +10,7 @@ export const useGetECLDataV1 = () => {
     queryFn: async () => {
       //const { data } = await axios.get('http://192.168.100.18/api/ecl/summary')
       // return transformECLDataFromServer(data, ECLType.PRODUCT)
-      const { data } = await axios.get('http://banko-backend.stacklevel.group/ecldata1')
+      const { data } = await axios.get('http://localhost:3000/ecldata1')
       return data
     },
   })

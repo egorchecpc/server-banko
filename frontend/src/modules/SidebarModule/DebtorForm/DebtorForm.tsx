@@ -185,7 +185,6 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
           name="productType"
           control={form.control}
           fieldData={productType}
-          disabled={!form.watch('creditType')?.length}
           onSubmit={(value) =>
             onSubmit({ ...form.getValues(), productType: value.productType })
           }

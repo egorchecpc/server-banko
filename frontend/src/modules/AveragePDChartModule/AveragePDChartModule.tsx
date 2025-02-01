@@ -45,7 +45,10 @@ const AveragePDChartModule: FC<AveragePDChartModuleProps> = ({ data }) => (
             <CartesianGrid {...GRID_CONFIG} />
             <XAxis {...AXIS_CONFIG.xAxis} />
             <YAxis {...AXIS_CONFIG.yAxis} />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+            />
             <Bar {...BAR_CONFIG} />
           </BarChart>
         </ResponsiveContainer>

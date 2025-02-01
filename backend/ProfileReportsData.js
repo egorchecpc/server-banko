@@ -615,7 +615,7 @@ export const ProfileReportsData = [
       "debtorData":{
         "debtorType":"Розничный",
         "creditType":["Ипотечный", "Потребительский"],
-        "productType":["Залоговые","Беззалоговые"],
+        "productType":["На исполнение желаний","Ипотека 15 лет"],
         "date": "05.01.2024"
       },
       "isPublic": true,

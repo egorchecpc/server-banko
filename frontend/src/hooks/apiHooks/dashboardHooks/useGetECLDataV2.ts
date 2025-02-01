@@ -12,7 +12,7 @@ export const useGetECLDataV2 = () => {
       //   'http://192.168.100.18/api/ecl/portfolio/summary'
       // )
       // return transformECLDataFromServer(data, ECLType.DELAY)
-      const { data } = await axios.get('http://banko-backend.stacklevel.group/ecldata2')
+      const { data } = await axios.get('http://localhost:3000/ecldata2')
       return data
     },
   })
