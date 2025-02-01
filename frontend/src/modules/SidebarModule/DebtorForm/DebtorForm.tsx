@@ -77,17 +77,72 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
     items: [
       t('sidebar.debtorForm.creditType.items.item1'),
       t('sidebar.debtorForm.creditType.items.item2'),
+      t('sidebar.debtorForm.creditType.items.item3'),
     ],
+  }
+
+  const getProductTypeItems = () => {
+    const selectedCreditTypes = form.watch('creditType') || []
+    let availableProducts: string[] = []
+
+    if (
+      selectedCreditTypes.includes(
+        t('sidebar.debtorForm.creditType.items.item1')
+      )
+    ) {
+      availableProducts = [
+        ...availableProducts,
+        t('sidebar.debtorForm.productType.items.consumer1'),
+        t('sidebar.debtorForm.productType.items.consumer2'),
+      ]
+    }
+
+    if (
+      selectedCreditTypes.includes(
+        t('sidebar.debtorForm.creditType.items.item2')
+      )
+    ) {
+      availableProducts = [
+        ...availableProducts,
+        t('sidebar.debtorForm.productType.items.mortgage1'),
+        t('sidebar.debtorForm.productType.items.mortgage2'),
+      ]
+    }
+
+    if (
+      selectedCreditTypes.includes(
+        t('sidebar.debtorForm.creditType.items.item3')
+      )
+    ) {
+      availableProducts = [
+        ...availableProducts,
+        t('sidebar.debtorForm.productType.items.overdraft1'),
+        t('sidebar.debtorForm.productType.items.overdraft2'),
+      ]
+    }
+
+    return availableProducts
   }
 
   const productType = {
     title: t('sidebar.debtorForm.productType.title'),
     default: t('sidebar.debtorForm.productType.default'),
-    items: [
-      t('sidebar.debtorForm.productType.items.item1'),
-      t('sidebar.debtorForm.productType.items.item2'),
-    ],
+    items: getProductTypeItems(),
   }
+
+  useEffect(() => {
+    // Reset product type when credit type changes
+    const currentProductTypes = form.watch('productType') || []
+    const availableProducts = getProductTypeItems()
+
+    // Filter out product types that are no longer available
+    const validProductTypes = currentProductTypes.filter((product) =>
+      availableProducts.includes(product)
+    )
+
+    form.setValue('productType', validProductTypes)
+    onSubmit(form.getValues())
+  }, [form.watch('creditType')])
 
   const onSubmit = (data: DebtorData) => {
     setDebtorData(data)
@@ -104,6 +159,7 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
     setIsCalendarOpen(false)
     onSubmit({ ...form.getValues(), date })
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full max-w-md">
@@ -129,6 +185,7 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
           name="productType"
           control={form.control}
           fieldData={productType}
+          disabled={!form.watch('creditType')?.length}
           onSubmit={(value) =>
             onSubmit({ ...form.getValues(), productType: value.productType })
           }
@@ -147,8 +204,10 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
                       variant={'outline'}
                       className={cn(
                         'w-full pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground'
+                        !field.value && 'text-muted-foreground',
+                        debtorData && 'cursor-not-allowed opacity-50'
                       )}
+                      disabled={!!debtorData}
                     >
                       {field.value ? (
                         format(field.value, 'd MMMM yyyy', { locale: ru })
@@ -159,25 +218,27 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent
-                  side="bottom"
-                  align="start"
-                  className="mx-auto w-full p-0"
-                >
-                  <Calendar
-                    mode="single"
-                    locale={ru}
-                    captionLayout="dropdown-buttons"
-                    selected={field.value}
-                    onSelect={(date) => handleDateSelect(date, field)}
-                    fromYear={1960}
-                    toYear={2030}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date('1900-01-01')
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
+                {!debtorData && (
+                  <PopoverContent
+                    side="bottom"
+                    align="start"
+                    className="mx-auto w-full p-0"
+                  >
+                    <Calendar
+                      mode="single"
+                      locale={ru}
+                      captionLayout="dropdown-buttons"
+                      selected={field.value}
+                      onSelect={(date) => handleDateSelect(date, field)}
+                      fromYear={1960}
+                      toYear={2030}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date('1900-01-01')
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                )}
               </Popover>
             </FormItem>
           )}
