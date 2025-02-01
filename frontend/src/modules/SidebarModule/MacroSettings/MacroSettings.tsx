@@ -8,6 +8,7 @@ import { MacroSettings } from '@/models/MacroSettings'
 import { useGetReportDataById } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
 import { useParams } from '@tanstack/react-router'
 import { MacroTemplateModal } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
 interface MacroSettingsProps {
   setMacroData: React.Dispatch<
@@ -50,7 +51,7 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
     useState<MacroSettings | null>(null)
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
 
   if (error) {

@@ -21,6 +21,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Link } from '@tanstack/react-router'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
 interface visabilitySettings {
   gbv: boolean
@@ -53,7 +54,7 @@ export const BIAnalyticsPage = () => {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
   if (isError) {
     return <div>Error occurred while fetching data</div>

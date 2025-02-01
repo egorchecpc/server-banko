@@ -20,6 +20,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { ExportComponent } from '@/modules/ExportModule/ExportModule'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
 interface VisibilitySettings {
   pd: boolean
@@ -54,7 +55,7 @@ export const DashboardPage = () => {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
   if (isError) {
     return <div>Error occurred while fetching data</div>

@@ -6,6 +6,7 @@ import { MacroTemplate } from '@/models/MacroTemplate'
 import { TemplateDialog } from '@/pages/Profile/TemplateDialog/TemplateDialog'
 import { indicatorNames } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
 import { scenarioNames } from '@/pages/Profile/TemplateDialog/TemplateDialogConfig'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
 interface TemplatesViewProps {
   templates: MacroTemplate[]
@@ -41,7 +42,7 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
   }
 
   if (isLoading) {
-    return <div>Loading templates...</div>
+    return <LoadingSpinner />
   }
 
   const renderIndicatorTable = (indicator: any) => {

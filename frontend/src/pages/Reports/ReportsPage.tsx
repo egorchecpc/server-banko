@@ -5,6 +5,7 @@ import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { NavigationProvider } from '@/context/NavigationContext'
 import { useState } from 'react'
 import ImportModalModule from '@/modules/ImportModalModule/ImportModalModule'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
 export const ReportsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -18,7 +19,7 @@ export const ReportsPage = () => {
   const isError = profileReportsError
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
   if (isError) {
     return <div>Error occurred while fetching data</div>

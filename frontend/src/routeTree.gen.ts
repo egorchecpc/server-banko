@@ -17,6 +17,7 @@ import { Route as LayoutWithoutSidebarImport } from './routes/_layout-without-si
 import { Route as CustomLayoutImport } from './routes/_custom-layout'
 import { Route as ClearLayoutImport } from './routes/_clear-layout'
 import { Route as BasicLayoutImport } from './routes/_basic-layout'
+import { Route as IndexImport } from './routes/index'
 import { Route as ClearLayoutProfileImport } from './routes/_clear-layout/profile'
 import { Route as CustomLayoutReportIdNewReportImport } from './routes/_custom-layout/$reportId/new-report'
 import { Route as BasicLayoutReportsReportIdIndexImport } from './routes/_basic-layout/reports/$reportId/index'
@@ -54,6 +55,11 @@ const ClearLayoutRoute = ClearLayoutImport.update({
 
 const BasicLayoutRoute = BasicLayoutImport.update({
   id: '/_basic-layout',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,6 +108,13 @@ const BasicLayoutReportsReportIdDashboardRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_basic-layout': {
       id: '/_basic-layout'
       path: ''
@@ -210,7 +223,7 @@ const BasicLayoutRouteChildren: BasicLayoutRouteChildren = {
 }
 
 const BasicLayoutRouteWithChildren = BasicLayoutRoute._addFileChildren(
-  BasicLayoutRouteChildren
+  BasicLayoutRouteChildren,
 )
 
 interface ClearLayoutRouteChildren {
@@ -225,7 +238,7 @@ const ClearLayoutRouteChildren: ClearLayoutRouteChildren = {
 }
 
 const ClearLayoutRouteWithChildren = ClearLayoutRoute._addFileChildren(
-  ClearLayoutRouteChildren
+  ClearLayoutRouteChildren,
 )
 
 interface CustomLayoutRouteChildren {
@@ -237,7 +250,7 @@ const CustomLayoutRouteChildren: CustomLayoutRouteChildren = {
 }
 
 const CustomLayoutRouteWithChildren = CustomLayoutRoute._addFileChildren(
-  CustomLayoutRouteChildren
+  CustomLayoutRouteChildren,
 )
 
 interface LayoutWithoutSidebarRouteChildren {
@@ -256,6 +269,7 @@ const LayoutWithoutSidebarRouteWithChildren =
   LayoutWithoutSidebarRoute._addFileChildren(LayoutWithoutSidebarRouteChildren)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '': typeof LayoutWithoutSidebarRouteWithChildren
   '/auth': typeof AuthRoute
   '/reports': typeof ReportsRoute
@@ -269,6 +283,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '': typeof LayoutWithoutSidebarRouteWithChildren
   '/auth': typeof AuthRoute
   '/reports': typeof ReportsRoute
@@ -283,6 +298,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/_basic-layout': typeof BasicLayoutRouteWithChildren
   '/_clear-layout': typeof ClearLayoutRouteWithChildren
   '/_custom-layout': typeof CustomLayoutRouteWithChildren
@@ -301,6 +317,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | ''
     | '/auth'
     | '/reports'
@@ -313,6 +330,7 @@ export interface FileRouteTypes {
     | '/reports/$reportId'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | ''
     | '/auth'
     | '/reports'
@@ -325,6 +343,7 @@ export interface FileRouteTypes {
     | '/reports/$reportId'
   id:
     | '__root__'
+    | '/'
     | '/_basic-layout'
     | '/_clear-layout'
     | '/_custom-layout'
@@ -342,6 +361,7 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   BasicLayoutRoute: typeof BasicLayoutRouteWithChildren
   ClearLayoutRoute: typeof ClearLayoutRouteWithChildren
   CustomLayoutRoute: typeof CustomLayoutRouteWithChildren
@@ -351,6 +371,7 @@ export interface RootRouteChildren {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   BasicLayoutRoute: BasicLayoutRouteWithChildren,
   ClearLayoutRoute: ClearLayoutRouteWithChildren,
   CustomLayoutRoute: CustomLayoutRouteWithChildren,
@@ -371,6 +392,7 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_basic-layout",
         "/_clear-layout",
         "/_custom-layout",
@@ -378,6 +400,9 @@ export const routeTree = rootRoute
         "/auth",
         "/reports"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/_basic-layout": {
       "filePath": "_basic-layout.tsx",
