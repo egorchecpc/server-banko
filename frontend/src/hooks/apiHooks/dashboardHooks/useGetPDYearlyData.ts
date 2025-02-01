@@ -7,7 +7,7 @@ export const useGetPDYearlyData = () => {
     queryKey: ['PDYearlyData'],
     queryFn: async () => {
       const response = await axios.get<YearlyDataResponse>(
-        'http://localhost:3000/probabilityDefault/yearly'
+        'http://banko-backend.stacklevel.group/probabilityDefault/yearly'
       )
 
       return Object.entries(response.data)
