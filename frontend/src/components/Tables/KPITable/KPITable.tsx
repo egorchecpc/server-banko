@@ -45,7 +45,7 @@ const KPITable: FC<KPITableProps> = ({ data }) => {
                   {row.currentValue}
                 </TableCell>
                 <TableCell
-                  className={`w-64 border-x text-center ${row.conclusion == 'Выполняется' ? 'bg-lite-green group-hover:bg-grey-300/40' : 'bg-lite-orange/5'}`}
+                  className={`w-64 border-x text-center ${row.conclusion == 'Выполняется' ? 'bg-green-600/10' : 'bg-lite-orange/5'}`}
                 >
                   {row.conclusion}
                 </TableCell>
