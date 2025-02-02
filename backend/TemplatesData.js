@@ -1,7 +1,7 @@
 export let templates = [
   {
     id: '1',
-    name: 'Макро 25-28',
+    name: 'Базовый шаблон',
     indicators: [
       {
         id: '1',
@@ -134,7 +134,7 @@ export let templates = [
         },
       },
     ],
-  },,
+  },
     {
       id: '2',
       name: 'Расширенный шаблон',
