@@ -201,12 +201,7 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
                   <FormControl>
                     <Button
                       variant={'outline'}
-                      className={cn(
-                        'w-full pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground',
-                        debtorData && 'cursor-not-allowed opacity-50'
-                      )}
-                      disabled={!!debtorData}
+                      className={cn('w-full pl-3 text-left font-normal')}
                     >
                       {field.value ? (
                         format(field.value, 'd MMMM yyyy', { locale: ru })
@@ -217,27 +212,26 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                {!debtorData && (
-                  <PopoverContent
-                    side="bottom"
-                    align="start"
-                    className="mx-auto w-full p-0"
-                  >
-                    <Calendar
-                      mode="single"
-                      locale={ru}
-                      captionLayout="dropdown-buttons"
-                      selected={field.value}
-                      onSelect={(date) => handleDateSelect(date, field)}
-                      fromYear={1960}
-                      toYear={2030}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date('1900-01-01')
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                )}
+
+                <PopoverContent
+                  side="bottom"
+                  align="start"
+                  className="mx-auto w-full p-0"
+                >
+                  <Calendar
+                    mode="single"
+                    locale={ru}
+                    captionLayout="dropdown-buttons"
+                    selected={field.value}
+                    onSelect={(date) => handleDateSelect(date, field)}
+                    fromYear={1960}
+                    toYear={2030}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date('1900-01-01')
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
               </Popover>
             </FormItem>
           )}

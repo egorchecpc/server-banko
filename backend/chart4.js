@@ -12,9 +12,5 @@ export const chart4 = {
         "category": "Овердрафт",
         "value": 5.60
       },
-      {
-        "category": "Другие",
-        "value": 13.80
-      }
     ]
   }

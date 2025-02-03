@@ -16,6 +16,7 @@ import { DebtorData } from '@/models/DebtorData'
 import { MacroSettings } from '@/models/MacroSettings'
 import { useUpdateReport } from '@/hooks/apiHooks/commonHooks/usePostReportData'
 import { usePostMacroSettingsData } from '@/hooks/apiHooks/commonHooks/usePostMacroSettingsData'
+import { usePostSummary } from '@/hooks/apiHooks/dashboardHooks/usePostCalculateECLSummary'
 
 export const AppSidebar: FC = () => {
   const [debtorData, setDebtorData] = useState<DebtorData | undefined>()
@@ -29,6 +30,8 @@ export const AppSidebar: FC = () => {
 
   const { mutate: updateReport } = useUpdateReport()
   const { mutate: postMacroSettings } = usePostMacroSettingsData()
+  const { mutate: postSummary } = usePostSummary()
+
   const handlePostSettings = async () => {
     if (!reportId) {
       console.error('reportId is missing')
@@ -36,7 +39,6 @@ export const AppSidebar: FC = () => {
     }
 
     try {
-      // Выполняем обе мутации параллельно
       await Promise.all([
         // Обновление отчета
         new Promise<void>((resolve, reject) => {
@@ -57,8 +59,6 @@ export const AppSidebar: FC = () => {
             }
           )
         }),
-
-        // Отправка макро-настроек
         new Promise<void>((resolve, reject) => {
           if (!macroData) {
             reject('Macro data is missing')
@@ -72,7 +72,16 @@ export const AppSidebar: FC = () => {
         }),
       ])
 
-      // Общая обработка успеха
+      await new Promise<void>((resolve, reject) => {
+        postSummary(undefined, {
+          onSuccess: () => {
+            console.log('Summary successfully posted')
+            resolve()
+          },
+          onError: (error) => reject(error),
+        })
+      })
+
       console.log('Все данные успешно отправлены')
       enableNavigation()
       router.navigate({ to: `/reports/${reportId}/dashboard` })
@@ -86,6 +95,7 @@ export const AppSidebar: FC = () => {
       handlePostSettings()
     }
   }
+
   const years = getYearArray(true, true, 4)
 
   return (

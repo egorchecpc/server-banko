@@ -13,7 +13,7 @@ import { Download as DownloadIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { useCreditListFile } from '@/hooks/apiHooks/dashboardHooks/useCreditListFile'
 
-const productTypes = ['Овердрафт', 'Ипотечный', 'Потребительский', 'Другие']
+const productTypes = ['Овердрафт', 'Ипотечный', 'Потребительский']
 
 export const ExportCreditList: React.FC = () => {
   const [selectedProducts, setSelectedProducts] = React.useState<string[]>([])

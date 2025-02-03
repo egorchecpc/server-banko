@@ -9,16 +9,18 @@ import { Badge } from '@/components/ui/badge'
 import { ProfileReportData } from '@/models/ProfileReport'
 import { scenarioNames } from '@/pages/Profile/TemplateDialog/TemplateDialogConfig'
 import { indicatorNames } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
+import { Button } from '@/components/ui/button'
 
 interface ReportDetailsProps {
   report: ProfileReportData
+  onBtnClick?: (id: string) => void
 }
 interface ScenarioValues {
   value: number
   probability: number
 }
 
-export const ReportDetails = ({ report }: ReportDetailsProps) => {
+export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
   const formatIndicatorName = (indicatorKey: string) => {
     return (
       indicatorNames[indicatorKey as keyof typeof indicatorNames] ||
@@ -29,7 +31,20 @@ export const ReportDetails = ({ report }: ReportDetailsProps) => {
   return (
     <div className="mt-4 rounded-lg border bg-white p-6 shadow-sm">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">{report.title}</h2>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">{report.title}</h2>
+          </div>
+          <Button
+            variant="primary"
+            onClick={() =>
+              onBtnClick ? onBtnClick(report.id) : console.log('no btn')
+            }
+          >
+            Открыть отчёт
+          </Button>
+        </div>
+
         <div className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
           <span>{report.date}</span>
           <Badge variant="outline">{report.label}</Badge>
@@ -119,7 +134,7 @@ export const ReportDetails = ({ report }: ReportDetailsProps) => {
                                 {values.value}
                               </td>
                               <td className="px-3 py-2 text-sm">
-                                {values.probability}%
+                                {values.probability * 100}%
                               </td>
                             </tr>
                           ))}

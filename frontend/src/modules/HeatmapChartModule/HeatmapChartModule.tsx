@@ -18,7 +18,7 @@ interface PDHeatmapProps {
 
 const HeatmapChartModule: FC<PDHeatmapProps> = ({
   data,
-  title = 'Тепловая карта',
+  title = 'Тепловая карта процента резервирования',
 }) => {
   const { categories, periods, values } = data
   const containerRef = useRef<HTMLDivElement>(null)

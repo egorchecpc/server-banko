@@ -5,7 +5,6 @@ export const amountChart = [
       { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
       { productName: 'Ипотечные кредиты', amount: 3000000 },
-      { productName: 'Другие', amount: 3000000 }
     ]
   },
   {
@@ -14,7 +13,6 @@ export const amountChart = [
       { productName: 'Овердрафт', amount: 5500000 },
       { productName: 'Потребительские кредиты', amount: 4800000 },
       { productName: 'Ипотечные кредиты', amount: 3500000 },
-      { productName: 'Другие', amount: 3500000 }
     ]
   },
   {
@@ -23,7 +21,6 @@ export const amountChart = [
       { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
       { productName: 'Ипотечные кредиты', amount: 3000000 },
-      { productName: 'Другие', amount: 4000000 }
     ]
   },
   {
@@ -32,7 +29,6 @@ export const amountChart = [
       { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
       { productName: 'Ипотечные кредиты', amount: 3000000 },
-      { productName: 'Другие', amount: 4500000 }
     ]
   },
   {
@@ -41,7 +37,6 @@ export const amountChart = [
       { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
       { productName: 'Ипотечные кредиты', amount: 3000000 },
-      { productName: 'Другие', amount: 5000000 }
     ]
   },
   {
@@ -50,7 +45,6 @@ export const amountChart = [
       { productName: 'Овердрафт', amount: 5200000 },
       { productName: 'Потребительские кредиты', amount: 4300000 },
       { productName: 'Ипотечные кредиты', amount: 3000000 },
-      { productName: 'Другие', amount: 3000000 }
     ]
   },
 ]
@@ -62,7 +56,6 @@ export const amountChartP = [
           { productName: 'Овердрафт', percentage: 41.6 },
           { productName: 'Потребительские кредиты', percentage: 34.4 },
           { productName: 'Ипотечные кредиты', percentage: 24.0 },
-          { productName: 'Другие', percentage: 24.0 },
         ],
       },
     {
@@ -71,7 +64,6 @@ export const amountChartP = [
         { productName: 'Овердрафт', percentage: 41.6 },
         { productName: 'Потребительские кредиты', percentage: 34.4 },
         { productName: 'Ипотечные кредиты', percentage: 24.0 },
-        { productName: 'Другие', percentage: 41.6 },
       ],
     },
     {
@@ -80,7 +72,6 @@ export const amountChartP = [
         { productName: 'Овердрафт', percentage: 39.8 },
         { productName: 'Потребительские кредиты', percentage: 34.8 },
         { productName: 'Ипотечные кредиты', percentage: 25.4 },
-        { productName: 'Другие', percentage: 39.8 },
       ],
     },
     {
@@ -89,7 +80,6 @@ export const amountChartP = [
           { productName: 'Овердрафт', percentage: 41.6 },
           { productName: 'Потребительские кредиты', percentage: 34.4 },
           { productName: 'Ипотечные кредиты', percentage: 24.0 },
-          { productName: 'Другие', percentage: 41.6 },
         ],
       },
       {
@@ -98,7 +88,6 @@ export const amountChartP = [
           { productName: 'Овердрафт', percentage: 39.8 },
           { productName: 'Потребительские кредиты', percentage: 34.8 },
           { productName: 'Ипотечные кредиты', percentage: 25.4 },
-          { productName: 'Другие', percentage: 39.8 },
         ],
       },
       {
@@ -107,7 +96,6 @@ export const amountChartP = [
           { productName: 'Овердрафт', percentage: 41.6 },
           { productName: 'Потребительские кредиты', percentage: 34.4 },
           { productName: 'Ипотечные кредиты', percentage: 24.0 },
-          { productName: 'Другие', percentage: 41.6 },
         ],
       }
   ]

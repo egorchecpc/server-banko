@@ -19,17 +19,27 @@ import { FC } from 'react'
 const barData = [
   {
     category: 'Потреб. кредиты',
+    without: 50,
+    overdue0: 100,
     overdue30: 250,
     overdue60: 180,
     overdue90: 120,
   },
-  { category: 'Ипотека', overdue30: 150, overdue60: 100, overdue90: 80 },
-  { category: 'Овердрафт', overdue30: 100, overdue60: 70, overdue90: 50 },
   {
-    category: 'Другие',
-    overdue30: 200,
-    overdue60: 150,
-    overdue90: 100,
+    category: 'Ипотека',
+    without: 50,
+    overdue0: 100,
+    overdue30: 150,
+    overdue60: 100,
+    overdue90: 80,
+  },
+  {
+    category: 'Овердрафт',
+    without: 50,
+    overdue0: 100,
+    overdue30: 100,
+    overdue60: 70,
+    overdue90: 50,
   },
 ]
 interface DistributionCategoryChartModalProps {
@@ -58,6 +68,20 @@ export const DistributionCategoryChartModal: FC<
               <YAxis />
               <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
               <Legend />
+              <Bar
+                dataKey="without"
+                name="без просрочки"
+                fill="var(--chart20)"
+                stackId="a"
+                barSize={30}
+              />
+              <Bar
+                dataKey="overdue0"
+                name="0-30 дней"
+                fill="var(--chart20)"
+                stackId="a"
+                barSize={30}
+              />
               <Bar
                 dataKey="overdue30"
                 name="30-60 дней"

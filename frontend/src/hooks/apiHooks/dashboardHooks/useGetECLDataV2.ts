@@ -8,12 +8,12 @@ export const useGetECLDataV2 = () => {
   return useQuery<ECLData, Error>({
     queryKey: ['ECLDataV2'],
     queryFn: async () => {
-      // const { data } = await axios.get(
-      //   'http://192.168.100.18/api/ecl/portfolio/summary'
-      // )
-      // return transformECLDataFromServer(data, ECLType.DELAY)
-      const { data } = await axios.get('http://banko-backend.stacklevel.group/ecldata2')
-      return data
+      const { data } = await axios.get(
+        'https://banko-r-backend.stacklevel.group/api/ecl/portfolio/summary'
+      )
+      return transformECLDataFromServer(data, ECLType.DELAY)
+      //const { data } = await axios.get('http://localhost:3000/ecldata2')
+      //return data
     },
   })
 }

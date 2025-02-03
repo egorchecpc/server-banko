@@ -52,7 +52,12 @@ export const ReportsModule: FC<ProfileReportsProps> = ({ data }) => {
           onRowClick={handeRowClick}
           initialSelectedId={data[0]?.id}
         />
-        {selectedReport && <ReportDetails report={selectedReport} />}
+        {selectedReport && (
+          <ReportDetails
+            report={selectedReport}
+            onBtnClick={handleRowDoubleClick}
+          />
+        )}
       </div>
     </TooltipProvider>
   )

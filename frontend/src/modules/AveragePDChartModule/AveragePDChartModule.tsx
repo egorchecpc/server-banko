@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useMemo } from 'react'
 import {
   BarChart,
   Bar,
@@ -36,25 +36,34 @@ const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload }) => {
   )
 }
 
-const AveragePDChartModule: FC<AveragePDChartModuleProps> = ({ data }) => (
-  <ContainerComponent withBg={true} title="Средневзвешанный PD">
-    <ContainerBody isScrolling={true} orientation="horizontal">
-      <div className="h-[25rem] w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} layout="vertical" margin={CHART_MARGINS}>
-            <CartesianGrid {...GRID_CONFIG} />
-            <XAxis {...AXIS_CONFIG.xAxis} />
-            <YAxis {...AXIS_CONFIG.yAxis} />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
-            />
-            <Bar {...BAR_CONFIG} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </ContainerBody>
-  </ContainerComponent>
-)
+const AveragePDChartModule: FC<AveragePDChartModuleProps> = ({ data }) => {
+  const chartHeight = useMemo(() => {
+    const baseHeight = 100
+    const itemHeight = 50
+    const calculatedHeight = baseHeight + data.length * itemHeight
+    return Math.min(Math.max(calculatedHeight, 250), 800)
+  }, [data.length])
+
+  return (
+    <ContainerComponent withBg={true} title="Средневзвешенный PD">
+      <ContainerBody isScrolling={true} orientation="horizontal">
+        <div style={{ height: `${chartHeight}px` }} className="w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data} layout="vertical" margin={CHART_MARGINS}>
+              <CartesianGrid {...GRID_CONFIG} />
+              <XAxis {...AXIS_CONFIG.xAxis} />
+              <YAxis {...AXIS_CONFIG.yAxis} />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+              />
+              <Bar {...BAR_CONFIG} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </ContainerBody>
+    </ContainerComponent>
+  )
+}
 
 export default memo(AveragePDChartModule)

@@ -192,7 +192,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartModuleProps> = ({
       <ContainerHeader>
         <div className="mb-2 flex items-center gap-2">
           <div className="text-xl font-bold leading-24 text-black-800">
-            Распределение по срокам просрочки {showPercentage ? ' (%)' : ''}
+            Распределение ВБС по срокам просрочки {showPercentage ? ' (%)' : ''}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

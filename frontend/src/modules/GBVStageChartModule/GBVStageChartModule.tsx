@@ -88,28 +88,11 @@ export const GBVStageChartModule: FC<GBVStageChartProps> = ({ data }) => {
               'offset4',
               'stage4',
             ].map((key, index) => (
-              // <Bar
-              //   key={key}
-              //   dataKey={key}
-              //   stackId="name"
-              //   barSize={key.startsWith('offset') ? 30 : 2}
-              //   fill={
-              //     key.startsWith('offset')
-              //       ? 'transparent'
-              //       : colors[(index / 2) | 0]
-              //   }
-              //   radius={key.startsWith('offset') ? undefined : [5, 5, 5, 5]}
-              //   style={
-              //     key.startsWith('offset')
-              //       ? {}
-              //       : { stroke: '#fff', strokeWidth: 2 }
-              //   }
-              // />
               <Bar
                 key={key}
                 dataKey={key}
-                stackId="name" // ОДИН stackId
-                barSize={30} // Главный параметр (будет переопределён стилем)
+                stackId="name"
+                barSize={key.startsWith('offset') ? 30 : 2}
                 fill={
                   key.startsWith('offset')
                     ? 'transparent'
@@ -118,11 +101,7 @@ export const GBVStageChartModule: FC<GBVStageChartProps> = ({ data }) => {
                 radius={key.startsWith('offset') ? undefined : [5, 5, 5, 5]}
                 style={
                   key.startsWith('offset')
-                    ? {
-                        stroke: '#ccc', // Цвет тонкой линии
-                        strokeWidth: 2, // Толщина линии
-                        strokeDasharray: '4 4', // Делаем пунктирную линию
-                      }
+                    ? {}
                     : { stroke: '#fff', strokeWidth: 2 }
                 }
               />

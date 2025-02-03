@@ -137,7 +137,7 @@ export const DashboardPage = () => {
         <div className="">
           <RiskGroupTable
             data={data.riskGroupData}
-            title="Сумма задолженности"
+            title="Сумма задолженности ВБС по МСФО"
           />
           <div className="mt-3" />
           <RiskGroupTable
