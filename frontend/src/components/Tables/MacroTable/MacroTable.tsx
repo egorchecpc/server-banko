@@ -30,7 +30,6 @@ export const MacroTable = ({
     norm: t('sidebar.macroSettings.modal.subtitles.scenariosShort.normal'),
     best: t('sidebar.macroSettings.modal.subtitles.scenariosShort.best'),
   }
-  console.log('Macro: ', indicators)
   return (
     <>
       {indicators.map((indicator) => (

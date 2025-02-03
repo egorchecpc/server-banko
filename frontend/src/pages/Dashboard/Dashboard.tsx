@@ -44,6 +44,7 @@ export const DashboardPage = () => {
   })
   const { setReportId } = useReportId()
   const { reportId } = useParams({ strict: false })
+
   useEffect(() => {
     if (reportId) {
       setReportId(reportId)

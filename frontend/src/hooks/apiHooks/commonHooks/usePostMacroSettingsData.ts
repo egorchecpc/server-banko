@@ -1,9 +1,11 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FormatedMacroSettings } from '@/models/FormatedMacroSettings'
 import axios from 'axios'
 import axiosConfig from '@/services/axiosConfig'
 
 export const usePostMacroSettingsData = () => {
+  const queryClient = useQueryClient()
+
   return useMutation<
     FormatedMacroSettings,
     Error,
@@ -21,6 +23,11 @@ export const usePostMacroSettingsData = () => {
         }
       )
       return data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['PDForecastData'] })
+      queryClient.invalidateQueries({ queryKey: ['PDQuarterlyData'] })
+      queryClient.invalidateQueries({ queryKey: ['PDYearlyData'] })
     },
   })
 }

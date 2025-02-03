@@ -17,6 +17,8 @@ import { MacroSettings } from '@/models/MacroSettings'
 import { useUpdateReport } from '@/hooks/apiHooks/commonHooks/usePostReportData'
 import { usePostMacroSettingsData } from '@/hooks/apiHooks/commonHooks/usePostMacroSettingsData'
 import { usePostSummary } from '@/hooks/apiHooks/dashboardHooks/usePostCalculateECLSummary'
+import { useQueryClient } from '@tanstack/react-query'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
 export const AppSidebar: FC = () => {
   const [debtorData, setDebtorData] = useState<DebtorData | undefined>()
@@ -30,7 +32,9 @@ export const AppSidebar: FC = () => {
 
   const { mutate: updateReport } = useUpdateReport()
   const { mutate: postMacroSettings } = usePostMacroSettingsData()
-  const { mutate: postSummary } = usePostSummary()
+  const { mutate: postSummary, isPending } = usePostSummary()
+  const queryClient = useQueryClient()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePostSettings = async () => {
     if (!reportId) {
@@ -38,9 +42,10 @@ export const AppSidebar: FC = () => {
       return
     }
 
+    setIsLoading(true)
+
     try {
       await Promise.all([
-        // Обновление отчета
         new Promise<void>((resolve, reject) => {
           if (!debtorData) {
             reject('Debtor data is missing')
@@ -83,10 +88,16 @@ export const AppSidebar: FC = () => {
       })
 
       console.log('Все данные успешно отправлены')
+
+      // 🔄 Перезапрашиваем данные дашборда
+      queryClient.invalidateQueries({ queryKey: ['dashboardData'] })
+
       enableNavigation()
       router.navigate({ to: `/reports/${reportId}/dashboard` })
     } catch (error) {
       console.error('Ошибка при отправке данных:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -107,7 +118,7 @@ export const AppSidebar: FC = () => {
             <h2 className="pb-6 pt-2 text-2xl font-extrabold leading-9 text-blue-900">
               ЛОГО
             </h2>
-
+            {isPending && <LoadingSpinner />}
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">
               <div className="rounded-lg bg-white p-4">
                 <DebtorForm setDebtorData={setDebtorData} />

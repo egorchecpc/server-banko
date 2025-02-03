@@ -13,7 +13,6 @@ export const useGetReportsData = () => {
       const { data } = await axiosConfig.get(
         API_ENDPOINTS.GET_PROFILE_REPORTS_DATA
       )
-      console.log(data)
       return data
     },
   })
