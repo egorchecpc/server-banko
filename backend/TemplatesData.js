@@ -7,22 +7,22 @@ export let templates = [
         id: '1',
         type: 'productProfitability',
         values: {
-          2024: {
+          2025: {
             worst: { value: 6.2, probability: 30 },
             norm: { value: 6.3, probability: 50 },
             best: { value: 6.4, probability: 20 },
           },
-          2025: {
+          2026: {
             worst: { value: 6.3, probability: 30 },
             norm: { value: 6.4, probability: 50 },
             best: { value: 6.5, probability: 20 },
           },
-          2026: {
+          2027: {
             worst: { value: 6.5, probability: 30 },
             norm: { value: 6.6, probability: 50 },
             best: { value: 6.7, probability: 20 },
           },
-          2027: {
+          2028: {
             worst: { value: 6.6, probability: 30 },
             norm: { value: 6.7, probability: 50 },
             best: { value: 6.8, probability: 20 },
@@ -72,7 +72,7 @@ export let templates = [
           2026: {
             worst: { value: 221880.0, probability: 30 },
             norm: { value: 221890.0, probability: 50 },
-            best: { value: 221900, probability: 20 },
+            best: { value: 221900.0, probability: 20 },
           },
           2027: {
             worst: { value: 223981.0, probability: 30 },
