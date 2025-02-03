@@ -11,7 +11,7 @@ export const usePostMacroSettingsData = () => {
   >({
     mutationFn: async (newMacroSettings) => {
       const { data } = await axios.post(
-        'http://192.168.100.18/api/macro',
+        'banko-r-backend.stacklevel.group/api/macro',
         newMacroSettings,
         {
           headers: {
