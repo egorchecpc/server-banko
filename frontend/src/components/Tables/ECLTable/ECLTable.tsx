@@ -7,15 +7,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { Switch } from '@/components/ui/switch'
-import { Settings } from 'lucide-react'
 import { ECLData, StageData } from '@/models/ECL'
+import { GearIcon } from '@radix-ui/react-icons'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 interface ECLTableProps {
   data: ECLData
@@ -64,7 +63,6 @@ const renderCellWithDelta = (
   )
 }
 
-// В основном компоненте ECLTable изменяем только параметр isPercentage в вызове renderCellWithDelta
 const renderStageCells = (
   stageData: StageData,
   diffData: StageData | undefined,
@@ -98,25 +96,20 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff }) => {
           >
             <div className="flex items-center justify-between">
               <span>{isFirst ? 'Виды кредитов' : 'Категория'}</span>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button className="rounded-full p-1 hover:bg-gray-100">
-                      <Settings className="h-4 w-4" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="right"
-                    className="flex items-center gap-2"
-                  >
-                    <span>Показать изменения</span>
-                    <Switch
-                      checked={showDelta}
-                      onCheckedChange={setShowDelta}
-                    />
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
+                    <GearIcon />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  side="right"
+                  className="flex items-center gap-2 p-3"
+                >
+                  <div className="text-[14px]">Отображение разниц</div>
+                  <Switch checked={showDelta} onCheckedChange={setShowDelta} />
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </TableHead>
           {STAGES.map((stage) => (
