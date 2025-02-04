@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import {
   Table,
   TableBody,
@@ -7,20 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Switch } from '@/components/ui/switch'
 import { ECLData, StageData } from '@/models/ECL'
-import { GearIcon } from '@radix-ui/react-icons'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { toast } from 'sonner'
 
 interface ECLTableProps {
   data: ECLData
   isFirst: boolean
   eclDiff: ECLData
+  showDelta: boolean
 }
 
 interface StageKeys {
@@ -84,15 +77,7 @@ const renderStageCells = (
     </>
 )
 
-const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff }) => {
-  const [showDelta, setShowDelta] = useState(false)
-
-  const handleSwitchChange = () => {
-    setShowDelta((prevShowDelta) => !prevShowDelta)
-    toast.info(
-        'Обратите внимание, что для отображения ECL разниц, необходимо ввести новые макропоказатели.'
-    )
-  }
+const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
   return (
       <Table className="table-auto bg-white">
         <TableHeader>
@@ -103,23 +88,6 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff }) => {
             >
               <div className="flex items-center justify-between">
                 <span>{isFirst ? 'Виды кредитов' : 'Категория'}</span>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
-                      <GearIcon />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                      side="right"
-                      className="flex items-center gap-2 p-3"
-                  >
-                    <div className="text-[14px]">Отображение разниц</div>
-                    <Switch
-                        checked={showDelta}
-                        onCheckedChange={handleSwitchChange}
-                    />
-                  </DropdownMenuContent>
-                </DropdownMenu>
               </div>
             </TableHead>
             {STAGES.map((stage) => (
