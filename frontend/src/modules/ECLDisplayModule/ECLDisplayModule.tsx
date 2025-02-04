@@ -17,12 +17,12 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
 }) => {
   const queryClient = useQueryClient()
   const { data: eclDiff1 } = useQuery({
-    queryKey: ['eclDiff'],
+    queryKey: ['eclDiff1'],
     queryFn: () => queryClient.getQueryData(['eclDiff1']),
     enabled: !!queryClient.getQueryData(['eclDiff1']),
   })
   const { data: eclDiff2 } = useQuery({
-    queryKey: ['eclDiff'],
+    queryKey: ['eclDiff2'],
     queryFn: () => queryClient.getQueryData(['eclDiff2']),
     enabled: !!queryClient.getQueryData(['eclDiff2']),
   })
