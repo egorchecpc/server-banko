@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import {
   Table,
   TableBody,
@@ -7,11 +7,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { Switch } from '@/components/ui/switch'
+import { Settings } from 'lucide-react'
 import { ECLData, StageData } from '@/models/ECL'
 
 interface ECLTableProps {
   data: ECLData
   isFirst: boolean
+  eclDiff: ECLData
 }
 
 interface StageKeys {
@@ -29,15 +38,56 @@ const STAGES: { key: keyof StageKeys; label: string }[] = [
 const TOTAL_LABEL = 'Итого'
 const HEADER_LABELS = ['ВБС', 'ОКУ', '%']
 
-const renderStageCells = (stageData: StageData) => (
+const renderCellWithDelta = (
+  value: string,
+  delta: string | undefined
+): JSX.Element | string => {
+  if (delta === undefined) return value
+  const deltaNum = parseFloat(delta)
+  if (isNaN(deltaNum)) return value
+
+  const getArrowAndColor = (delta: number) => {
+    if (delta === 0) return { color: 'text-yellow-500', arrow: '→' }
+    return delta > 0
+      ? { color: 'text-red-500', arrow: '↑' }
+      : { color: 'text-green-500', arrow: '↓' }
+  }
+
+  const { color, arrow } = getArrowAndColor(deltaNum)
+  return (
+    <span>
+      {value}
+      <span className={`ml-1 ${color}`}>
+        ({Math.abs(deltaNum).toFixed(2)}%{arrow})
+      </span>
+    </span>
+  )
+}
+
+// В основном компоненте ECLTable изменяем только параметр isPercentage в вызове renderCellWithDelta
+const renderStageCells = (
+  stageData: StageData,
+  diffData: StageData | undefined,
+  showDelta: boolean
+) => (
   <>
     <TableCell className="border-x text-center">{stageData.balance}</TableCell>
-    <TableCell className="border-x text-center">{stageData.reserve}</TableCell>
-    <TableCell className="border-x text-center">{stageData.percent}</TableCell>
+    <TableCell className="border-x text-center">
+      {showDelta && diffData
+        ? renderCellWithDelta(stageData.reserve, diffData.reserve)
+        : stageData.reserve}
+    </TableCell>
+    <TableCell className="border-x text-center">
+      {showDelta && diffData
+        ? renderCellWithDelta(stageData.percent, diffData.percent)
+        : stageData.percent}
+    </TableCell>
   </>
 )
 
-const ECLTable: FC<ECLTableProps> = ({ data, isFirst }) => {
+const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff }) => {
+  const [showDelta, setShowDelta] = useState(false)
+
   return (
     <Table className="table-auto bg-white">
       <TableHeader>
@@ -46,7 +96,28 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst }) => {
             rowSpan={2}
             className="bg-muted w-52 min-w-52 max-w-52 border text-left font-bold"
           >
-            {isFirst ? 'Виды кредитов' : 'Категория'}
+            <div className="flex items-center justify-between">
+              <span>{isFirst ? 'Виды кредитов' : 'Категория'}</span>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="rounded-full p-1 hover:bg-gray-100">
+                      <Settings className="h-4 w-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="right"
+                    className="flex items-center gap-2"
+                  >
+                    <span>Показать изменения</span>
+                    <Switch
+                      checked={showDelta}
+                      onCheckedChange={setShowDelta}
+                    />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </TableHead>
           {STAGES.map((stage) => (
             <TableHead
@@ -84,31 +155,43 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((row, index) => (
-          <TableRow
-            key={index}
-            className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
-          >
-            <TableCell
-              className={`w-48 min-w-48 max-w-48 border-0 text-left ${
-                row.creditType === TOTAL_LABEL ? 'font-bold' : 'font-medium'
-              }`}
+        {data.map((row, index) => {
+          const diffRow = eclDiff?.[index]
+          return (
+            <TableRow
+              key={index}
+              className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
             >
-              {row.creditType}
-            </TableCell>
-            {STAGES.map((stage) => (
-              <React.Fragment key={stage.key}>
-                {renderStageCells(row[stage.key])}
-              </React.Fragment>
-            ))}
-            <TableCell className="border-x text-center font-bold">
-              {row.total.balance}
-            </TableCell>
-            <TableCell className="border-x text-center font-bold">
-              {row.total.reserve}
-            </TableCell>
-          </TableRow>
-        ))}
+              <TableCell
+                className={`w-48 min-w-48 max-w-48 border-0 text-left ${
+                  row.creditType === TOTAL_LABEL ? 'font-bold' : 'font-medium'
+                }`}
+              >
+                {row.creditType}
+              </TableCell>
+              {STAGES.map((stage) => (
+                <React.Fragment key={stage.key}>
+                  {renderStageCells(
+                    row[stage.key],
+                    diffRow?.[stage.key],
+                    showDelta
+                  )}
+                </React.Fragment>
+              ))}
+              <TableCell className="border-x text-center font-bold">
+                {row.total.balance}
+              </TableCell>
+              <TableCell className="border-x text-center font-bold">
+                {showDelta && diffRow
+                  ? renderCellWithDelta(
+                      row.total.reserve,
+                      diffRow.total.reserve
+                    )
+                  : row.total.reserve}
+              </TableCell>
+            </TableRow>
+          )
+        })}
       </TableBody>
     </Table>
   )

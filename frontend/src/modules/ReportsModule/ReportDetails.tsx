@@ -67,13 +67,13 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
             <p className="font-medium">{report.debtorData.debtorType}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">Тип кредита</p>
+            <p className="text-muted-foreground">Вид кредита</p>
             <p className="font-medium">
               {report.debtorData.creditType?.join(', ')}
             </p>
           </div>
           <div>
-            <p className="text-muted-foreground">Тип продукта</p>
+            <p className="text-muted-foreground">Вид продукта</p>
             <p className="font-medium">
               {report.debtorData.productType?.join(', ')}
             </p>

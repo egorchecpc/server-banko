@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -7,6 +6,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Checkbox } from '@/components/ui/checkbox'
+import { GearIcon } from '@radix-ui/react-icons'
 
 interface BIAnalyticsSettingsProps {
   onVisibilityChange: (visibleCharts: {
@@ -47,8 +47,12 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Settings className="h-5 w-5" />
+        <Button
+          variant="ghost"
+          size="icon"
+          className="!ring-none rounded-full hover:bg-gray-200"
+        >
+          <GearIcon className="h-5 w-5" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64 p-4">

@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axiosConfig from '@/services/axiosConfig'
+import { calculateECLDiff } from '@/utils/calculateECLDif'
+import { ECLData } from '@/models/ECL'
 
 interface SummaryResponse {
   success: boolean
@@ -7,6 +9,7 @@ interface SummaryResponse {
 
 export const usePostSummary = () => {
   const queryClient = useQueryClient()
+  const previousECLData = queryClient.getQueryData(['ECLDataV1']) as ECLData
 
   const { mutate, isPending, isSuccess, isError, error } = useMutation<
     SummaryResponse,
@@ -18,18 +21,21 @@ export const usePostSummary = () => {
       )
       return data
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['ECLDataV1'] })
-      queryClient.invalidateQueries({ queryKey: ['ECLDataV2'] })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['ECLDataV1'] })
+      const newECLData = queryClient.getQueryData(['ECLDataV1']) as ECLData
+      if (previousECLData && newECLData) {
+        const diff = calculateECLDiff(previousECLData, newECLData)
+        queryClient.setQueryData(['eclDiff1'], diff)
+      }
     },
   })
 
-  // Возвращаем все необходимые данные
   return {
     mutate,
-    isPending, // Состояние загрузки
-    isSuccess, // Успешное завершение мутации
-    isError, // Ошибка при мутации
-    error, // Текст ошибки (если есть)
+    isPending,
+    isSuccess,
+    isError,
+    error,
   }
 }

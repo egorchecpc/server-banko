@@ -8,13 +8,17 @@ interface ExportResponse {
 export const useExportFile = () => {
   return useMutation<ExportResponse, Error>({
     mutationFn: async () => {
-      const response = await axios.post('http://localhost:3000/export', null, {
-        responseType: 'blob',
-        headers: {
-          Accept:
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        },
-      })
+      const response = await axios.post(
+        'https://banko-backend.stacklevel.group/export',
+        null,
+        {
+          responseType: 'blob',
+          headers: {
+            Accept:
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          },
+        }
+      )
 
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement('a')

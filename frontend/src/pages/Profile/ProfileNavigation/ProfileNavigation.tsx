@@ -11,7 +11,7 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
   onTabChange,
 }) => {
   return (
-    <nav className="mt-16 space-y-2">
+    <nav className="mt-9 space-y-2">
       <Button
         variant={activeTab === 'about' ? 'secondary' : 'ghost'}
         className="w-full justify-start"

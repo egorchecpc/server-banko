@@ -5,7 +5,6 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import { useReport } from '@/context/DateContext'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
-
 export interface HeaderProps {
   navItems?: { [key: string]: string }
   userData: { [key: string]: string }

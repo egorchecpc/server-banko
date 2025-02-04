@@ -9,7 +9,7 @@ export const useGetLGDData = () => {
     queryFn: async () => {
       const { data } = await axiosConfig.get(API_ENDPOINTS.GET_LGD_DATA)
 
-      await new Promise((resolve) => setTimeout(resolve, 5000))
+      await new Promise((resolve) => setTimeout(resolve, 50))
 
       return data
     },
