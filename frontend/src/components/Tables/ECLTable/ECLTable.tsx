@@ -15,6 +15,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { toast } from 'sonner'
 
 interface ECLTableProps {
   data: ECLData
@@ -38,8 +39,8 @@ const TOTAL_LABEL = 'Итого'
 const HEADER_LABELS = ['ВБС', 'ОКУ', '%']
 
 const renderCellWithDelta = (
-  value: string,
-  delta: string | undefined
+    value: string,
+    delta: string | undefined
 ): JSX.Element | string => {
   if (delta === undefined) return value
   const deltaNum = parseFloat(delta)
@@ -48,15 +49,15 @@ const renderCellWithDelta = (
   const getArrowAndColor = (delta: number) => {
     if (delta === 0) return { color: 'text-yellow-500', arrow: '→' }
     return delta > 0
-      ? { color: 'text-red-500', arrow: '↑' }
-      : { color: 'text-green-500', arrow: '↓' }
+        ? { color: 'text-red-500', arrow: '↑' }
+        : { color: 'text-green-500', arrow: '↓' }
   }
 
   const { color, arrow } = getArrowAndColor(deltaNum)
   return (
-    <span>
+      <span>
       {value}
-      <span className={`ml-1 ${color}`}>
+        <span className={`ml-1 ${color}`}>
         ({Math.abs(deltaNum).toFixed(2)}%{arrow})
       </span>
     </span>
@@ -64,129 +65,138 @@ const renderCellWithDelta = (
 }
 
 const renderStageCells = (
-  stageData: StageData,
-  diffData: StageData | undefined,
-  showDelta: boolean
+    stageData: StageData,
+    diffData: StageData | undefined,
+    showDelta: boolean
 ) => (
-  <>
-    <TableCell className="border-x text-center">{stageData.balance}</TableCell>
-    <TableCell className="border-x text-center">
-      {showDelta && diffData
-        ? renderCellWithDelta(stageData.reserve, diffData.reserve)
-        : stageData.reserve}
-    </TableCell>
-    <TableCell className="border-x text-center">
-      {showDelta && diffData
-        ? renderCellWithDelta(stageData.percent, diffData.percent)
-        : stageData.percent}
-    </TableCell>
-  </>
+    <>
+      <TableCell className="border-x text-center">{stageData.balance}</TableCell>
+      <TableCell className="border-x text-center">
+        {showDelta && diffData
+            ? renderCellWithDelta(stageData.reserve, diffData.reserve)
+            : stageData.reserve}
+      </TableCell>
+      <TableCell className="border-x text-center">
+        {showDelta && diffData
+            ? renderCellWithDelta(stageData.percent, diffData.percent)
+            : stageData.percent}
+      </TableCell>
+    </>
 )
 
 const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff }) => {
   const [showDelta, setShowDelta] = useState(false)
 
+  const handleSwitchChange = () => {
+    setShowDelta((prevShowDelta) => !prevShowDelta)
+    toast.info(
+        'Обратите внимание, что для отображения ECL разниц, необходимо ввести новые макропоказатели.'
+    )
+  }
   return (
-    <Table className="table-auto bg-white">
-      <TableHeader>
-        <TableRow className="border-b hover:bg-transparent">
-          <TableHead
-            rowSpan={2}
-            className="bg-muted w-52 min-w-52 max-w-52 border text-left font-bold"
-          >
-            <div className="flex items-center justify-between">
-              <span>{isFirst ? 'Виды кредитов' : 'Категория'}</span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
-                    <GearIcon />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  side="right"
-                  className="flex items-center gap-2 p-3"
-                >
-                  <div className="text-[14px]">Отображение разниц</div>
-                  <Switch checked={showDelta} onCheckedChange={setShowDelta} />
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </TableHead>
-          {STAGES.map((stage) => (
+      <Table className="table-auto bg-white">
+        <TableHeader>
+          <TableRow className="border-b hover:bg-transparent">
             <TableHead
-              key={stage.key}
-              colSpan={3}
-              className="bg-muted w-1/4 border text-center font-bold"
+                rowSpan={2}
+                className="bg-muted w-52 min-w-52 max-w-52 border text-left font-bold"
             >
-              {stage.label}
+              <div className="flex items-center justify-between">
+                <span>{isFirst ? 'Виды кредитов' : 'Категория'}</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
+                      <GearIcon />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                      side="right"
+                      className="flex items-center gap-2 p-3"
+                  >
+                    <div className="text-[14px]">Отображение разниц</div>
+                    <Switch
+                        checked={showDelta}
+                        onCheckedChange={handleSwitchChange}
+                    />
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </TableHead>
-          ))}
-          <TableHead
-            colSpan={2}
-            className="bg-muted w-1/5 border text-center font-bold"
-          >
-            {TOTAL_LABEL}
-          </TableHead>
-        </TableRow>
-        <TableRow className="border-b hover:bg-transparent">
-          {Array.from({ length: STAGES.length }, () => HEADER_LABELS)
-            .flat()
-            .map((label, i) => (
-              <TableHead
-                key={`${label}-${i}`}
-                className="bg-muted border text-center font-bold"
-              >
-                {label}
-              </TableHead>
+            {STAGES.map((stage) => (
+                <TableHead
+                    key={stage.key}
+                    colSpan={3}
+                    className="bg-muted w-1/4 border text-center font-bold"
+                >
+                  {stage.label}
+                </TableHead>
             ))}
-          <TableHead className="bg-muted border text-center font-bold">
-            ВБС
-          </TableHead>
-          <TableHead className="bg-muted border text-center font-bold">
-            ОКУ
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {data.map((row, index) => {
-          const diffRow = eclDiff?.[index]
-          return (
-            <TableRow
-              key={index}
-              className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
+            <TableHead
+                colSpan={2}
+                className="bg-muted w-1/5 border text-center font-bold"
             >
-              <TableCell
-                className={`w-48 min-w-48 max-w-48 border-0 text-left ${
-                  row.creditType === TOTAL_LABEL ? 'font-bold' : 'font-medium'
-                }`}
-              >
-                {row.creditType}
-              </TableCell>
-              {STAGES.map((stage) => (
-                <React.Fragment key={stage.key}>
-                  {renderStageCells(
-                    row[stage.key],
-                    diffRow?.[stage.key],
-                    showDelta
-                  )}
-                </React.Fragment>
-              ))}
-              <TableCell className="border-x text-center font-bold">
-                {row.total.balance}
-              </TableCell>
-              <TableCell className="border-x text-center font-bold">
-                {showDelta && diffRow
-                  ? renderCellWithDelta(
-                      row.total.reserve,
-                      diffRow.total.reserve
-                    )
-                  : row.total.reserve}
-              </TableCell>
-            </TableRow>
-          )
-        })}
-      </TableBody>
-    </Table>
+              {TOTAL_LABEL}
+            </TableHead>
+          </TableRow>
+          <TableRow className="border-b hover:bg-transparent">
+            {Array.from({ length: STAGES.length }, () => HEADER_LABELS)
+                .flat()
+                .map((label, i) => (
+                    <TableHead
+                        key={`${label}-${i}`}
+                        className="bg-muted border text-center font-bold"
+                    >
+                      {label}
+                    </TableHead>
+                ))}
+            <TableHead className="bg-muted border text-center font-bold">
+              ВБС
+            </TableHead>
+            <TableHead className="bg-muted border text-center font-bold">
+              ОКУ
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((row, index) => {
+            const diffRow = eclDiff?.[index]
+            return (
+                <TableRow
+                    key={index}
+                    className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
+                >
+                  <TableCell
+                      className={`w-48 min-w-48 max-w-48 border-0 text-left ${
+                          row.creditType === TOTAL_LABEL ? 'font-bold' : 'font-medium'
+                      }`}
+                  >
+                    {row.creditType}
+                  </TableCell>
+                  {STAGES.map((stage) => (
+                      <React.Fragment key={stage.key}>
+                        {renderStageCells(
+                            row[stage.key],
+                            diffRow?.[stage.key],
+                            showDelta
+                        )}
+                      </React.Fragment>
+                  ))}
+                  <TableCell className="border-x text-center font-bold">
+                    {row.total.balance}
+                  </TableCell>
+                  <TableCell className="border-x text-center font-bold">
+                    {showDelta && diffRow
+                        ? renderCellWithDelta(
+                            row.total.reserve,
+                            diffRow.total.reserve
+                        )
+                        : row.total.reserve}
+                  </TableCell>
+                </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
   )
 }
 
