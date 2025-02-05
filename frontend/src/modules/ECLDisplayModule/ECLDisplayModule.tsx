@@ -24,10 +24,10 @@ interface ECLDisplayModuleProps {
   reportId: string
 }
 const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
-                                                       eclDataV1,
-                                                       eclDataV2,
-                                                       reportId,
-                                                     }) => {
+  eclDataV1,
+  eclDataV2,
+  reportId,
+}) => {
   const [showDelta, setShowDelta] = useState(false)
 
   const queryClient = useQueryClient()
@@ -45,63 +45,63 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
   const handleSwitchChange = () => {
     setShowDelta((prevShowDelta) => !prevShowDelta)
     toast.info(
-        'Обратите внимание, что для отображения ECL разниц, необходимо ввести новые макропоказатели.'
+      'Обратите внимание, что для отображения ECL разниц, необходимо ввести новые макропоказатели.'
     )
   }
 
   return (
-      <ContainerComponent withBg={true}>
-        <ContainerHeader>
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="text-xl font-bold leading-24 text-black-800">
-                Ожидаемые кредитные убытки (ОКУ, ECL)
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
-                    <GearIcon />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                    side="right"
-                    className="flex items-center gap-2 p-3"
-                >
-                  <div className="text-[14px]">Отображение разниц</div>
-                  <Switch
-                      checked={showDelta}
-                      onCheckedChange={handleSwitchChange}
-                  />
-                </DropdownMenuContent>
-              </DropdownMenu>
+    <ContainerComponent withBg={true}>
+      <ContainerHeader>
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="text-xl font-bold leading-24 text-black-800">
+              Ожидаемые кредитные убытки (ОКУ, ECL)
             </div>
-            <div>
-              <Button variant="export" size="default">
-                <Link to={`/reports/${reportId}/credit-list`}>
-                  См. все кредиты
-                </Link>
-              </Button>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
+                  <GearIcon />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="right"
+                className="flex items-center gap-2 p-3"
+              >
+                <div className="text-[14px]">Отображение разниц</div>
+                <Switch
+                  checked={showDelta}
+                  onCheckedChange={handleSwitchChange}
+                />
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-        </ContainerHeader>
-        <ContainerBody isScrolling={true} orientation="horizontal">
-          <ECLTable
-              data={eclDataV1}
-              isFirst={true}
-              eclDiff={eclDiff1 as ECLData}
-              showDelta={showDelta}
-          />
-        </ContainerBody>
-        <div className="my-4"></div>
-        <ContainerBody isScrolling={true} orientation="horizontal">
-          <ECLTable
-              data={eclDataV2}
-              isFirst={false}
-              eclDiff={eclDiff2 as ECLData}
-              showDelta={showDelta}
-          />
-        </ContainerBody>
-      </ContainerComponent>
+          <div>
+            <Button variant="export" size="default">
+              <Link to={`/reports/${reportId}/credit-list`}>
+                См. все кредиты
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </ContainerHeader>
+      <ContainerBody isScrolling={true} orientation="horizontal">
+        <ECLTable
+          data={eclDataV1}
+          isFirst={true}
+          eclDiff={eclDiff1 as ECLData}
+          showDelta={showDelta}
+        />
+      </ContainerBody>
+      <div className="my-4"></div>
+      <ContainerBody isScrolling={true} orientation="horizontal">
+        <ECLTable
+          data={eclDataV2}
+          isFirst={false}
+          eclDiff={eclDiff2 as ECLData}
+          showDelta={showDelta}
+        />
+      </ContainerBody>
+    </ContainerComponent>
   )
 }
 

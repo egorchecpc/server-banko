@@ -1,4 +1,3 @@
-import { DataTable } from '@/components/CustomTableComponents/DataTable'
 import {
   columns,
   credit_types,
@@ -7,14 +6,20 @@ import {
   stage_types,
   titles,
 } from '@/modules/CreditListModule/CreditListConfig'
-import { CreditListData } from '@/models/CreditList'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { ExportCreditList } from '@/components/ExportCreditListComponent/ExportCreditList'
+import { useGetCreditListData } from '@/hooks/apiHooks/commonHooks/useGetCreditListData'
+import { DataTable } from '@/components/CustomTableComponentTimeless/DataTable'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
-interface CreditListModuleProps {
-  data: CreditListData[]
-}
-export const CreditListModule: FC<CreditListModuleProps> = ({ data }) => {
+export const CreditListModule: FC = () => {
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
+
+  const { data, isLoading } = useGetCreditListData(page, pageSize)
+  if (isLoading) {
+    return <LoadingSpinner />
+  }
   return (
     <div className="hidden h-full flex-1 flex-col md:flex">
       <div className="flex items-center justify-between">
@@ -25,22 +30,22 @@ export const CreditListModule: FC<CreditListModuleProps> = ({ data }) => {
       </div>
       <DataTable
         columns={columns}
-        data={data}
+        data={data?.content ?? []}
         titles={titles}
         filters={[
           {
             title: 'Тип должника',
-            column: 'debtor_type',
+            column: 'ownerType',
             options: debtor_types,
           },
           {
             title: 'Вид кредита',
-            column: 'credit_type',
+            column: 'creditType',
             options: credit_types,
           },
           {
             title: 'Вид продукта',
-            column: 'product_type',
+            column: 'product',
             options: product_types,
           },
           {
@@ -50,9 +55,13 @@ export const CreditListModule: FC<CreditListModuleProps> = ({ data }) => {
           },
         ]}
         searchPlaceholder="Поиск по клиенту"
-        searchColumn="client_id"
+        searchColumn="clientId"
         withContainer={true}
-        initialSelectedId="0"
+        currentPage={page}
+        pageSize={pageSize}
+        totalPages={data?.totalPages ?? 0}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
       />
     </div>
   )

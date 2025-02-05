@@ -1,6 +1,6 @@
 import { MacroSettings } from '@/models/MacroSettings'
 
-export const YEARS = [2024, 2025, 2026, 2027]
+export const YEARS = [2025, 2026, 2027, 2028]
 export const SCENARIOS = ['worst', 'norm', 'best'] as const
 
 export const INDICATOR_TYPES = [

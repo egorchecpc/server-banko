@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { Edit, Plus, ChevronDown } from 'lucide-react'
 import { MacroTemplate } from '@/models/MacroTemplate'
 import { TemplateDialog } from '@/pages/Profile/TemplateDialog/TemplateDialog'
 import { indicatorNames } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
 import { scenarioNames } from '@/pages/Profile/TemplateDialog/TemplateDialogConfig'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { MacroSettings } from '@/models/MacroSettings'
 
 interface TemplatesViewProps {
   templates: MacroTemplate[]
@@ -45,10 +45,8 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
     return <LoadingSpinner />
   }
 
-  const renderIndicatorTable = (indicator: any) => {
-    // Получаем все годы из данных
+  const renderIndicatorTable = (indicator: MacroSettings) => {
     const years = Object.keys(indicator.values).sort()
-    // Получаем все сценарии из первого года (структура одинакова для всех лет)
     const scenarios = Object.keys(indicator.values[years[0]])
 
     return (
@@ -116,61 +114,61 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="flex flex-wrap gap-4">
         {templates.map((template) => {
           const [firstIndicator, ...otherIndicators] =
             template.indicators.slice(0, 5)
+          const isExpanded = expandedTemplateId === template.id
 
           return (
-            <Card key={template.id} className="relative overflow-hidden">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold">{template.name}</h3>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleEditTemplate(template)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                {firstIndicator && renderIndicatorTable(firstIndicator)}
-
-                {otherIndicators.length > 0 && (
-                  <>
+            <div
+              key={template.id}
+              className="flex w-full flex-col md:w-[calc(50%-8px)]"
+            >
+              <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+                <div className="p-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-semibold">{template.name}</h3>
                     <Button
                       variant="ghost"
-                      className="mt-4 w-full"
-                      onClick={() => toggleCardExpansion(template.id)}
+                      size="icon"
+                      onClick={() => handleEditTemplate(template)}
                     >
-                      <div className="flex items-center gap-2">
-                        <ChevronDown
-                          className={`h-4 w-4 transition-transform duration-200 ${
-                            expandedTemplateId === template.id
-                              ? 'rotate-180'
-                              : ''
-                          }`}
-                        />
-                        <span>Показать еще ({otherIndicators.length})</span>
-                      </div>
+                      <Edit className="h-4 w-4" />
                     </Button>
+                  </div>
 
-                    <div
-                      className={`overflow-hidden transition-all duration-200 ${
-                        expandedTemplateId === template.id
-                          ? 'max-h-[2000px]'
-                          : 'max-h-0'
-                      }`}
-                    >
-                      {otherIndicators.map((indicator) =>
-                        renderIndicatorTable(indicator)
+                  {firstIndicator && renderIndicatorTable(firstIndicator)}
+
+                  {otherIndicators.length > 0 && (
+                    <>
+                      <Button
+                        variant="ghost"
+                        className="mt-4 w-full"
+                        onClick={() => toggleCardExpansion(template.id)}
+                      >
+                        <div className="flex items-center gap-2">
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform duration-200 ${
+                              isExpanded ? 'rotate-180' : ''
+                            }`}
+                          />
+                          <span>Показать еще ({otherIndicators.length})</span>
+                        </div>
+                      </Button>
+
+                      {isExpanded && (
+                        <div className="mt-4">
+                          {otherIndicators.map((indicator) =>
+                            renderIndicatorTable(indicator)
+                          )}
+                        </div>
                       )}
-                    </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
           )
         })}
       </div>
@@ -184,3 +182,5 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
     </div>
   )
 }
+
+export default TemplatesView

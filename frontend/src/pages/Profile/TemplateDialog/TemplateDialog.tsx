@@ -251,7 +251,9 @@ export const TemplateDialog: React.FC<TemplateDialogProps> = ({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Отмена
           </Button>
-          <Button onClick={handleSave}>Сохранить</Button>
+          <Button variant="primary" onClick={handleSave}>
+            Сохранить
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

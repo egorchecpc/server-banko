@@ -15,111 +15,30 @@ const customFilterFn = (
 
 export const columns: ColumnDef<CreditListData>[] = [
   {
-    accessorKey: 'client_id',
+    accessorKey: 'clientId',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ID клиента" />
     ),
     cell: ({ row }) => (
       <div className="flex h-10 items-center justify-center">
-        {row.getValue('client_id')}
+        {row.getValue('clientId')}
       </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'contract_id',
+    accessorKey: 'id',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ID договора" />
     ),
     cell: ({ row }) => (
       <div className="flex h-10 items-center justify-center">
-        {row.getValue('contract_id')}
+        {row.getValue('id')}
       </div>
     ),
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    accessorKey: 'debtor_type',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Тип должника" />
-    ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('debtor_type')}
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: true,
-    filterFn: customFilterFn,
-  },
-  {
-    accessorKey: 'credit_type',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Вид кредита" />
-    ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('credit_type')}
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: true,
-    filterFn: customFilterFn,
-  },
-  {
-    accessorKey: 'product_type',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Вид продукта" />
-    ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('product_type')}
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: true,
-    filterFn: customFilterFn,
-  },
-  {
-    accessorKey: 'VBS',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ВБС" allowHide={true} />
-    ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('VBS')}
-      </div>
-    ),
-    enableSorting: true,
-    enableHiding: true,
-  },
-  {
-    accessorKey: 'RAM',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="СР" allowHide={true} />
-    ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('RAM')}
-      </div>
-    ),
-    enableSorting: true,
-    enableHiding: true,
-  },
-  {
-    accessorKey: 'RTAM',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ПР" allowHide={true} />
-    ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('RTAM')}
-      </div>
-    ),
-    enableSorting: true,
-    enableHiding: true,
   },
   {
     accessorKey: 'currency',
@@ -131,33 +50,53 @@ export const columns: ColumnDef<CreditListData>[] = [
         {row.getValue('currency')}
       </div>
     ),
-    enableHiding: true,
     enableSorting: false,
-  },
-  {
-    accessorKey: 'PD',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="PD" allowHide={true} />
-    ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('PD')}
-      </div>
-    ),
-    enableSorting: true,
     enableHiding: true,
+    filterFn: customFilterFn,
   },
   {
-    accessorKey: 'LGD',
+    accessorKey: 'ownerType',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="LGD" allowHide={true} />
+      <DataTableColumnHeader column={column} title="Тип должника" />
     ),
     cell: ({ row }) => (
       <div className="flex h-10 items-center justify-center">
-        {row.getValue('LGD')}
+        {row.getValue('ownerType')}
       </div>
     ),
-    enableSorting: true,
+    enableSorting: false,
+    enableHiding: true,
+    filterFn: customFilterFn,
+  },
+  {
+    accessorKey: 'product',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Вид продукта" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('product')}
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: true,
+    filterFn: customFilterFn,
+  },
+  {
+    accessorKey: 'creditType',
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Вид кредита"
+        allowHide={true}
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('creditType')}
+      </div>
+    ),
+    enableSorting: false,
     enableHiding: true,
   },
   {
@@ -170,11 +109,11 @@ export const columns: ColumnDef<CreditListData>[] = [
         {row.getValue('stage')}
       </div>
     ),
-    enableSorting: true,
-    enableHiding: false,
+    enableSorting: false,
+    enableHiding: true,
   },
   {
-    accessorKey: 'firstDate',
+    accessorKey: 'date',
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -183,28 +122,106 @@ export const columns: ColumnDef<CreditListData>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('firstDate')}
+      <div className="flex h-10 items-center justify-center whitespace-nowrap">
+        {row.getValue('date')}
       </div>
     ),
     enableSorting: true,
-    enableHiding: false,
+    enableHiding: true,
   },
   {
-    accessorKey: 'lastDate',
+    accessorKey: 'loanRepaymentDate',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Дата погашения"
-        allowHide={true}
-      />
+      <DataTableColumnHeader column={column} title="Дата выдачи" />
     ),
     cell: ({ row }) => (
       <div className="flex h-10 items-center justify-center">
-        {row.getValue('lastDate')}
+        {row.getValue('loanRepaymentDate')}
       </div>
     ),
+    enableHiding: false,
     enableSorting: true,
+  },
+  {
+    accessorKey: 'grossCarryingAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ВБС" allowHide={true} />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('grossCarryingAmount')}
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: true,
+  },
+  {
+    accessorKey: 'lgd',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="LGD" allowHide={true} />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('lgd')}
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: true,
+  },
+  {
+    accessorKey: 'prepaymentRate',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="PR" allowHide={true} />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('prepaymentRate')}
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'expectedCreditLossesAmount',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ECL" allowHide={true} />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('expectedCreditLossesAmount')}
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'reservationPercentage',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="%" allowHide={true} />
+    ),
+    cell: ({ row }) => {
+      const value = row.getValue<number>('reservationPercentage')
+      const formattedValue = (value * 100).toFixed(2)
+      return (
+        <div className="flex h-10 items-center justify-center">
+          {formattedValue}%
+        </div>
+      )
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'mpd',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="mpd" allowHide={true} />
+    ),
+    cell: ({ row }) => (
+      <div className="flex h-10 items-center justify-center">
+        {row.getValue('mpd')}
+      </div>
+    ),
+    enableSorting: false,
     enableHiding: false,
   },
 ]
@@ -215,61 +232,74 @@ export const debtor_types = [
     label: 'Розничный',
   },
   {
-    value: 'Другой',
-    label: 'Другой',
+    value: 'Корпоративный',
+    label: 'Корпоративный',
   },
 ]
 
 export const credit_types = [
   {
-    value: 'Потребительский',
-    label: 'Потребительский',
+    value: 'Потребительские кредиты',
+    label: 'Потребительский кредиты',
   },
   {
-    value: 'Автокредит',
-    label: 'Автокредит',
+    value: 'Ипотечные кредиты',
+    label: 'Ипотечные кредиты',
+  },
+  {
+    value: 'Овердрафт',
+    label: 'Овердрафт',
   },
 ]
 
 export const product_types = [
   {
-    value: 'Залоговый',
-    label: 'Залоговый',
+    value: 'Ипотека 10 лет',
+    label: 'Ипотека 10 лет',
   },
   {
-    value: 'Беззалоговый',
-    label: 'Беззалоговый',
+    value: 'Ипотека 20 лет',
+    label: 'Ипотека 20 лет',
+  },
+  {
+    value: 'На самое важное',
+    label: 'На самое важное',
+  },
+  {
+    value: 'Овердрафт 100 дней',
+    label: 'Овердрафт 100 дней',
   },
 ]
 
 export const stage_types = [
   {
-    value: 'I',
-    label: 'I стадия',
+    value: '1',
+    label: '1 стадия',
   },
   {
-    value: 'II',
-    label: 'II стадия',
+    value: '2',
+    label: '2 стадия',
   },
   {
-    value: 'III',
-    label: 'III стадия',
+    value: '3',
+    label: '3 стадия',
   },
 ]
 
 export const titles = {
-  client_id: 'ID клиента',
-  contract_id: 'ID договора',
-  debtor_type: 'Тип должника',
-  credit_type: 'Вид кредита',
-  product_type: 'Вид продукта',
-  VBS: 'ВБС',
-  RAM: 'ПР',
-  RTAM: 'СПР',
+  clientId: 'ID клиента',
+  id: 'ID договора',
   currency: 'Валюта',
-  PD: 'PD',
-  LGD: 'LGD',
+  ownerType: 'Тип должника',
+  product: 'Вид продукта',
+  creditType: 'Вид кредита',
   stage: 'Стадия',
-  firstDate: 'Дата выдачи',
-  lastDate: 'Дата погашения',
+  date: 'Дата выдачи',
+  loanRepaymentDate: 'Дата погашения',
+  grossCarryingAmount: 'ВБС',
+  lgd: 'LGD',
+  prepaymentRate: 'PR',
+  expectedCreditLossesAmount: 'ECL',
+  reservationPercentage: '%',
+  mpd: 'MPD',
 }
