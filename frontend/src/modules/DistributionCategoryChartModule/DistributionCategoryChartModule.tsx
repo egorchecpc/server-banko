@@ -53,7 +53,7 @@ export const DistributionCategoryChartModal: FC<
     <ContainerComponent withBg={true}>
       <ContainerHeader>
         <div className="mb-3 mt-1 text-xl font-bold leading-24 text-black-800">
-          Распределение просрочек по категориям
+          Распределение ВБС по категориям
         </div>
       </ContainerHeader>
       <ContainerBody isScrolling={true} orientation="horizontal">
