@@ -19,17 +19,13 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CONFIG } from '@/modules/AgeingAmountsChartModule/AgeingAmountChartConfig'
-import { ProductData } from '@/models/AgeingAmount'
 import {
   ContainerBody,
   ContainerComponent,
   ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
 import { GearIcon } from '@radix-ui/react-icons'
-
-type AgeingAmountChartModuleProps = {
-  data: ProductData[]
-}
+import { ProductData } from '@/models/AgeingAmount'
 
 type DetailedPeriodData = {
   name: string
@@ -43,17 +39,41 @@ type DetailedPeriodData = {
   }[]
 }
 
-const AgeingAmountChartModule: React.FC<AgeingAmountChartModuleProps> = ({
-  data,
+interface AgeingAmountChartProps {
+  amountData: ProductData[]
+  countData: ProductData[]
+}
+
+const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
+  amountData,
+  countData,
 }) => {
   const [showPercentage, setShowPercentage] = useState(false)
-  const [productSettings, setProductSettings] = useState(
-    data.map((product) => ({
-      productName: product.productName,
-      isVisible: true,
-      color: CONFIG.colors[product.productName as keyof typeof CONFIG.colors],
-    }))
-  )
+  const [isAmountMode, setIsAmountMode] = useState(true)
+
+  const data = isAmountMode ? amountData : countData
+
+  const [productSettings, setProductSettings] = useState<
+    {
+      productName: string
+      isVisible: boolean
+      color: string
+    }[]
+  >([])
+
+  // Инициализация productSettings при загрузке данных
+  React.useEffect(() => {
+    if (data) {
+      setProductSettings(
+        data.map((product) => ({
+          productName: product.productName,
+          isVisible: true,
+          color:
+            CONFIG.colors[product.productName as keyof typeof CONFIG.colors],
+        }))
+      )
+    }
+  }, [data])
 
   const toggleProduct = (productName: string) => {
     setProductSettings((prev) =>
@@ -66,6 +86,8 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartModuleProps> = ({
   }
 
   const pieData = useMemo(() => {
+    if (!data) return []
+
     const visibleProducts = productSettings.filter(
       (setting) => setting.isVisible
     )
@@ -74,25 +96,21 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartModuleProps> = ({
       return []
     }
 
-    // Сначала собираем все данные по периодам
     const periodTotals: { [key: string]: number } = {}
     const periodDetails: { [key: string]: { [productName: string]: number } } =
       {}
 
-    // Инициализируем структуры данных
     Object.keys(data[0].periods).forEach((period) => {
       periodTotals[period] = 0
       periodDetails[period] = {}
     })
 
-    // Собираем данные по всем продуктам (включая невидимые) для общего числа
     data.forEach((product) => {
       Object.entries(product.periods).forEach(([period, value]) => {
         periodTotals[period] += value
       })
     })
 
-    // Собираем детальные данные только по видимым продуктам
     visibleProducts.forEach((setting) => {
       const productData = data.find(
         (p) => p.productName === setting.productName
@@ -104,7 +122,6 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartModuleProps> = ({
       }
     })
 
-    // Формируем итоговые данные
     const result: DetailedPeriodData[] = Object.entries(periodDetails).map(
       ([period, products]) => {
         const periodTotal = periodTotals[period]
@@ -192,7 +209,8 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartModuleProps> = ({
       <ContainerHeader>
         <div className="mb-2 flex items-center gap-2">
           <div className="text-xl font-bold leading-24 text-black-800">
-            Распределение ВБС по срокам просрочки {showPercentage ? ' (%)' : ''}
+            Распределение {isAmountMode ? 'ВБС' : 'количества'} по срокам
+            просрочки {showPercentage ? ' (%)' : ''}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -212,6 +230,17 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartModuleProps> = ({
                   id="percentage-mode"
                   checked={showPercentage}
                   onCheckedChange={setShowPercentage}
+                />
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                className="flex items-center justify-between p-3"
+              >
+                <Label htmlFor="data-mode">Показывать суммы</Label>
+                <Switch
+                  id="data-mode"
+                  checked={isAmountMode}
+                  onCheckedChange={setIsAmountMode}
                 />
               </DropdownMenuItem>
               <DropdownMenuSeparator />

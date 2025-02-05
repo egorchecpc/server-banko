@@ -23,7 +23,7 @@ export const Navbar: FC<NavbarProps> = ({ navItems }) => {
               key={key}
               className="w-full"
             >
-              <TabsTrigger value={key}>
+              <TabsTrigger value={key} className="select-none">
                 <motion.span
                   initial={{ scale: 1 }}
                   whileHover={{ scale: 1.04 }}

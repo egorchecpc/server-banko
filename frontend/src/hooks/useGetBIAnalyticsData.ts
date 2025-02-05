@@ -5,8 +5,8 @@ import { useGetAveragePDData } from '@/hooks/apiHooks/biHooks/useGetAvaragePDDat
 import { useGetHeatmapData } from '@/hooks/apiHooks/biHooks/useGetHeatmapData'
 import { useGetYearlyAmountData } from '@/hooks/apiHooks/biHooks/useGetAmountData'
 import { useGetAmountPercentData } from '@/hooks/apiHooks/biHooks/useGetAmountPercentData'
-import { useGetAgeingAmountData } from '@/hooks/apiHooks/biHooks/useGetAgeingAmountData'
-import { useGetDistributionCategoryChartData } from '@/hooks/apiHooks/biHooks/useGetDistributionCategoryChartData'
+import { useGetAgeingData } from '@/hooks/apiHooks/biHooks/useGetAgeingAmountData'
+import { useGetCategoryChartData } from '@/hooks/apiHooks/biHooks/useGetDistributionCategoryChartData'
 
 export const useGetBIAnalyticsData = () => {
   const gbv = useGetGBVData()
@@ -16,8 +16,10 @@ export const useGetBIAnalyticsData = () => {
   const heatmap = useGetHeatmapData()
   const amountData = useGetYearlyAmountData()
   const amountPercentData = useGetAmountPercentData()
-  const ageingAmountData = useGetAgeingAmountData()
-  const categoryItemsData = useGetDistributionCategoryChartData()
+  const { amountData: ageingAmountData, countData: ageingCountData } =
+    useGetAgeingData()
+  const { amountData: categoryAmountData, countData: categoryCountData } =
+    useGetCategoryChartData()
 
   const data = {
     GBVData: gbv.data,
@@ -27,11 +29,18 @@ export const useGetBIAnalyticsData = () => {
     HeatmapData: heatmap.data,
     AmountData: amountData.data,
     AmountPercentData: amountPercentData.data,
-    AgeingAmountData: ageingAmountData.data,
-    CategoryItemsData: categoryItemsData.data,
+    AgeingAmountData: ageingAmountData,
+    AgeingCountData: ageingCountData,
+    CategoryAmountData: categoryAmountData,
+    CategoryCountData: categoryCountData,
   }
 
-  const isLoading = gbv.isLoading || gbvStage.isLoading
+  const isLoading =
+    gbv.isLoading ||
+    gbvStage.isLoading ||
+    vbsOku.isLoading ||
+    averagePd.isLoading ||
+    heatmap.isLoading
   const isError = gbv.isError || gbvStage.isError
 
   return {

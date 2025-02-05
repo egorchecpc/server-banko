@@ -163,7 +163,7 @@ export const BIAnalyticsSettings: React.FC<BIAnalyticsSettingsProps> = ({
               htmlFor="distribution-category-chart"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              График распределения просрочек по категориям
+              График распределения ВБС по категориям
             </label>
           </div>
         </div>

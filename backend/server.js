@@ -11,12 +11,12 @@ import {test} from './VBSOKU.js '
 import {chart4} from './chart4.js'
 import {heatmapData} from './heatmap.js'
 import { amountChart, amountChartP } from "./AmountChart.js";
-import { ageingAmount } from "./AgeingAmount.js";
+import { ageingAmount, ageingCount } from "./AgeingAmount.js";
 import {profile} from "./ProfileData.js"
 import {templates} from "./TemplatesData.js"
 import { KPI_DATA } from "./KPIData.js";
 import {RISK_GROUP_DATA} from "./RiskGroupData.js"
-import { barData } from "./DistributionCategoryChartData.js";
+import { barData, barDataCount } from "./CategoryChart.js";
 import express from 'express';
 import cors from 'cors';
 import bodyParser from "body-parser";
@@ -104,6 +104,18 @@ app.get('/amount-chart-p', (req, res) => {
 
 app.get('/ageing-amount-chart', (req, res) => {
   res.json(ageingAmount);
+});
+
+app.get('/ageing-count-chart', (req, res) => {
+  res.json(ageingCount);
+});
+
+app.get('/category-amount-chart', (req, res) => {
+  res.json(barData);
+});
+
+app.get('/category-count-chart', (req, res) => {
+  res.json(barDataCount);
 });
 
 app.get('/profile', (req, res) => {

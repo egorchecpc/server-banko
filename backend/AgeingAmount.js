@@ -30,4 +30,37 @@ export const ageingAmount = [
         }
       },
   ];
-  
+
+
+export const ageingCount = [
+  {
+    productName: 'Потребительские кредиты',
+    periods: {
+      'without':10,
+      '0-30':20,
+      '30-60': 30,
+      '60-90': 40,
+      '90plus': 50
+    }
+  },
+  {
+    productName: 'Ипотечные кредиты',
+    periods: {
+      'without':10,
+      '0-30':20,
+      '30-60': 30,
+      '60-90': 40,
+      '90plus': 50
+    }
+  },
+  {
+      productName: 'Овердрафт',
+      periods: {
+        'without':10,
+        '0-30':20,
+        '30-60': 30,
+        '60-90': 40,
+        '90plus': 50
+      }
+    },
+];

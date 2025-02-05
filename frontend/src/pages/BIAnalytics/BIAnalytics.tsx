@@ -1,15 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { Download as DownloadIcon } from 'lucide-react'
 import { GBVStageChartModule } from '@/modules/GBVStageChartModule/GBVStageChartModule'
 import { GBVChartModule } from '@/modules/GBVChartModule/GBVChartModule'
-import { useTranslation } from 'react-i18next'
 import { useGetBIAnalyticsData } from '@/hooks/useGetBIAnalyticsData'
 import VBSOKUChartModule from '@/modules/VBSOKUChart/VBSOKUChartModule'
 import AveragePDChartModule from '@/modules/AveragePDChartModule/AveragePDChartModule'
 import HeatmapChartModule from '@/modules/HeatmapChartModule/HeatmapChartModule'
 import TotalAmountOverdueChartModule from '@/modules/TotalAmountOverdueChartModule/TotalAmountOverdueChartModule'
 import AgeingAmountChartModule from '@/modules/AgeingAmountsChartModule/AgeingAmountChartModule'
-import { DistributionCategoryChartModal } from '@/modules/DistributionCategoryChartModule/DistributionCategoryChartModule'
 import { useState } from 'react'
 import { BIAnalyticsSettings } from '@/modules/BISettings/BISettings'
 import {
@@ -22,6 +18,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Link } from '@tanstack/react-router'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { DistributionCategoryChartModule } from '@/modules/DistributionCategoryChartModule/DistributionCategoryChartModule'
 
 interface visabilitySettings {
   gbv: boolean
@@ -35,7 +32,6 @@ interface visabilitySettings {
 }
 
 export const BIAnalyticsPage = () => {
-  const { t } = useTranslation()
   const { data, isLoading, isError } = useGetBIAnalyticsData()
 
   const [chartVisibility, setChartVisibility] = useState({
@@ -127,16 +123,26 @@ export const BIAnalyticsPage = () => {
         )}
       <div className="mb-3"></div>
       <div className="mb-3 flex gap-3">
-        {chartVisibility.ageingAmount && data.AgeingAmountData && (
-          <div className="flex-1">
-            <AgeingAmountChartModule data={data.AgeingAmountData} />
-          </div>
-        )}
-        {chartVisibility.distributionCategory && data.CategoryItemsData && (
-          <div className="flex-1">
-            <DistributionCategoryChartModal data={data.CategoryItemsData} />
-          </div>
-        )}
+        {chartVisibility.ageingAmount &&
+          data.AgeingAmountData &&
+          data.AgeingCountData && (
+            <div className="flex-1">
+              <AgeingAmountChartModule
+                amountData={data.AgeingAmountData}
+                countData={data.AgeingCountData}
+              />
+            </div>
+          )}
+        {chartVisibility.distributionCategory &&
+          data.CategoryAmountData &&
+          data.CategoryCountData && (
+            <div className="flex-1">
+              <DistributionCategoryChartModule
+                amountData={data.CategoryAmountData}
+                countData={data.CategoryCountData}
+              />
+            </div>
+          )}
       </div>
       <div className="mb-3"></div>
     </div>
