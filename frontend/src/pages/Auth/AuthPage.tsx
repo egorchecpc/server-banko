@@ -14,7 +14,7 @@ export const AuthPage = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await axios.post('https://banko-backend.stacklevel.group/api/login', {
+      const response = await axios.post('http://localhost:3000/api/login', {
         email,
         password,
       })

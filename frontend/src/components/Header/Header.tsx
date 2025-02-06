@@ -2,9 +2,11 @@ import { FC } from 'react'
 import { Navbar } from '@/components/Navbar/Navbar'
 import UserNav from '@/components/UserNav/UserNav'
 import { SidebarTrigger } from '@/components/ui/sidebar'
-import { useReport } from '@/context/DateContext'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
+import { useReportId } from '@/context/ReportIdContext'
+import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 export interface HeaderProps {
   navItems?: { [key: string]: string }
   userData: { [key: string]: string }
@@ -24,8 +26,12 @@ export const Header: FC<HeaderProps> = ({
   withLogo,
   withBackBtn,
 }) => {
-  const { selectedData } = useReport()
-
+  const { reportId } = useReportId()
+  const { report } = useReportDataWithValidation(reportId || '')
+  const reportName = report?.title || 'Название не найдено'
+  const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
+  const reportDate =
+    basicReportDate.toLocaleDateString('ru-RU') || 'Дата не найдена'
   return (
     <header className="mb-5 w-[100%] bg-white shadow">
       <div className="mx-5 flex items-center justify-between p-5">
@@ -51,8 +57,8 @@ export const Header: FC<HeaderProps> = ({
         <div className="flex items-center gap-5">
           {!withoutExportBtn && (
             <div className="flex flex-col gap-0 rounded-lg border p-2 !py-1 text-sm font-medium">
-              <div>Отчёт: {selectedData.name}</div>
-              <div>Дата: {selectedData.date}</div>
+              <div>Отчёт: {reportName}</div>
+              <div>Дата: {reportDate}</div>
             </div>
           )}
           {!withoutNav && <Button variant="primary">Сохранить отчёт</Button>}

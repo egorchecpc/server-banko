@@ -8,7 +8,7 @@ export const useGetCategoryChartData = () => {
     queryKey: ['categoryAmountChartData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'https://banko-backend.stacklevel.group/category-amount-chart'
+        'http://localhost:3000/category-amount-chart'
       )
       return data
     },
@@ -18,7 +18,7 @@ export const useGetCategoryChartData = () => {
     queryKey: ['categoryCountChartData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'https://banko-backend.stacklevel.group/category-count-chart'
+        'http://localhost:3000/category-count-chart'
       )
       return data
     },

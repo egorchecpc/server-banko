@@ -131,11 +131,9 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
   }
 
   useEffect(() => {
-    // Reset product type when credit type changes
     const currentProductTypes = form.watch('productType') || []
     const availableProducts = getProductTypeItems()
 
-    // Filter out product types that are no longer available
     const validProductTypes = currentProductTypes.filter((product) =>
       availableProducts.includes(product)
     )

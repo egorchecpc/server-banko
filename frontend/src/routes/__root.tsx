@@ -1,9 +1,8 @@
 import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Toaster } from 'sonner'
+import ScrollToTop from '@/components/ScrollToTopComponent/ScrollToTop'
 import { ReportIdProvider } from '@/context/ReportIdContext'
 import { ReportProvider } from '@/context/DateContext'
-import ScrollToTop from '@/components/ScrollToTopComponent/ScrollToTop'
 
 export const Route = createRootRoute({
   component: RootComponent,

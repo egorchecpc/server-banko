@@ -1,6 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { ReportsPage } from '@/pages/Reports/ReportsPage'
-import { ProtectedRoute } from '@/utils/ProtectedRoute'
 import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute('/reports')({
@@ -18,9 +17,5 @@ export const Route = createFileRoute('/reports')({
 })
 
 export default function Reports() {
-  return (
-    <ProtectedRoute>
-      <ReportsPage />
-    </ProtectedRoute>
-  )
+  return <ReportsPage />
 }

@@ -46,8 +46,8 @@ export const useGetDebtorDataById = (reportId: string) => {
 
     return {
       debtorType: report.debtorData.debtorType || 'default',
-      creditType: report.debtorData.creditType || 'default',
-      productType: report.debtorData.productType || 'default',
+      creditType: report.debtorData.creditType || [],
+      productType: report.debtorData.productType || [],
       date: report.debtorData.date
         ? new Date(report.debtorData.date)
         : undefined,

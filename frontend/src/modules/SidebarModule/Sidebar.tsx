@@ -11,7 +11,6 @@ import { getYearArray } from '@/utils/getDate'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatMacroDataToServer } from '@/utils/formatMacroDataToServer'
 import { useParams, useRouter } from '@tanstack/react-router'
-import { useNavigation } from '@/context/NavigationContext'
 import { DebtorData } from '@/models/DebtorData'
 import { MacroSettings } from '@/models/MacroSettings'
 import { useUpdateReport } from '@/hooks/apiHooks/commonHooks/usePostReportData'
@@ -26,26 +25,25 @@ export const AppSidebar: FC = () => {
   const [macroData, setMacroData] = useState<MacroSettings[] | undefined>()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
-  const { enableNavigation } = useNavigation()
 
   const { reportId } = useParams({ strict: false })
   const router = useRouter()
 
-  const { mutate: updateReport } = useUpdateReport()
-  const { mutate: postMacroSettings } = usePostMacroSettingsData()
-  const { mutate: postSummary, isPending } = usePostSummary()
+  const { mutate: updateReport, isPending: isPendingReport } = useUpdateReport()
+  const { mutate: postMacroSettings, isPending: isPendingMacro } =
+    usePostMacroSettingsData()
+  const { mutate: postSummary, isPending: isPendingSummary } = usePostSummary()
   const { mutate: postPortfolio, isPending: isPendingPortfolio } =
     usePostPortfolio()
   const queryClient = useQueryClient()
-  const [isLoading, setIsLoading] = useState(false)
 
+  const isLoading =
+    isPendingReport || isPendingMacro || isPendingSummary || isPendingPortfolio
   const handlePostSettings = async () => {
     if (!reportId) {
       console.error('reportId is missing')
       return
     }
-
-    setIsLoading(true)
 
     try {
       await Promise.all([
@@ -102,21 +100,17 @@ export const AppSidebar: FC = () => {
 
       console.log('Все данные успешно отправлены')
 
-      // 🔄 Перезапрашиваем данные дашборда
-      queryClient.invalidateQueries({ queryKey: ['dashboardData'] })
+      await queryClient.invalidateQueries({ queryKey: ['dashboardData'] })
 
-      enableNavigation()
-      router.navigate({ to: `/reports/${reportId}/dashboard` })
+      await router.navigate({ to: `/reports/${reportId}/dashboard` })
     } catch (error) {
       console.error('Ошибка при отправке данных:', error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
   const postSettings = () => {
     return function () {
-      handlePostSettings()
+      handlePostSettings().then((r) => console.log(r))
     }
   }
 
@@ -127,11 +121,12 @@ export const AppSidebar: FC = () => {
       <SidebarHeader />
       <SidebarContent>
         <ScrollArea className="flex-1">
+          {isLoading ? <LoadingSpinner /> : ''}
           <div className="flex h-full flex-col items-center">
             <h2 className="pb-6 pt-2 text-2xl font-extrabold leading-9 text-blue-900">
               ЛОГО
             </h2>
-            {(isPending || isPendingPortfolio) && <LoadingSpinner />}
+
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">
               <div className="rounded-lg bg-white p-4">
                 <DebtorForm setDebtorData={setDebtorData} />

@@ -17,9 +17,10 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Download as DownloadIcon } from 'lucide-react'
-import { useReport } from '@/context/DateContext'
 import { useExportFile } from '@/hooks/apiHooks/dashboardHooks/useGetReportFile'
 import { toast } from 'sonner'
+import { useReportId } from '@/context/ReportIdContext'
+import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
 
 interface ExportSettings {
   forecastYears: number
@@ -32,7 +33,11 @@ interface ExportSettings {
 }
 
 export const ExportComponent: React.FC = () => {
-  const { selectedData } = useReport()
+  const { reportId } = useReportId()
+  const { report } = useReportDataWithValidation(reportId || '')
+  const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
+  const reportDate =
+    basicReportDate.toLocaleDateString('ru-RU') || 'Дата не найдена'
   const [settings, setSettings] = React.useState<ExportSettings>({
     forecastYears: 1,
     pdDisplayTypes: {
@@ -83,7 +88,7 @@ export const ExportComponent: React.FC = () => {
                 <div className="grid gap-2">
                   <Label>Отчетный период</Label>
                   <div className="bg-muted rounded-md border p-2">
-                    {selectedData.date}
+                    {reportDate}
                   </div>
                 </div>
 

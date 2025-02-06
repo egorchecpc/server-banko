@@ -9,7 +9,7 @@ export const useCreditListFile = () => {
   return useMutation<ExportResponse, Error>({
     mutationFn: async () => {
       const response = await axios.post(
-        'https://banko-backend.stacklevel.group/exportcredit',
+        'http://localhost:3000/exportcredit',
         null,
         {
           responseType: 'blob',

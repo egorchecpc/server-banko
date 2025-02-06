@@ -2,7 +2,6 @@ import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsDat
 import { Button } from '@/components/ui/button'
 import { ReportsModule } from '@/modules/ReportsModule/ReportsModule'
 import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
-import { NavigationProvider } from '@/context/NavigationContext'
 import { useState } from 'react'
 import ImportModalModule from '@/modules/ImportModalModule/ImportModalModule'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
@@ -26,7 +25,7 @@ export const ReportsPage = () => {
   }
 
   return (
-    <NavigationProvider>
+    <>
       <div className="flex w-full flex-col bg-grey-300/40">
         <HeaderModule
           withoutNav={true}
@@ -54,6 +53,6 @@ export const ReportsPage = () => {
         </div>
       </div>
       <ImportModalModule open={isModalOpen} onOpenChange={setIsModalOpen} />
-    </NavigationProvider>
+    </>
   )
 }
