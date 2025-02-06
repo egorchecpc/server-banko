@@ -8,7 +8,7 @@ export const useGetAgeingData = () => {
     queryKey: ['ageingAmountData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'http://localhost:3000/ageing-amount-chart'
+        'https://banko-backend.stacklevel.group/ageing-amount-chart'
       )
       return data
     },
@@ -18,7 +18,7 @@ export const useGetAgeingData = () => {
     queryKey: ['ageingCountData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'http://localhost:3000/ageing-count-chart'
+        'https://banko-backend.stacklevel.group/ageing-count-chart'
       )
       return data
     },
