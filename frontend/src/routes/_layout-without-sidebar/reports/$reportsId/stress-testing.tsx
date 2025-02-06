@@ -1,10 +1,21 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { StressTestingPage } from '@/pages/StressTesting/StressTesting'
+import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute(
-  '/_layout-without-sidebar/reports/$reportsId/stress-testing',
+  '/_layout-without-sidebar/reports/$reportsId/stress-testing'
 )({
-  component: StressTesting,
+  beforeLoad: () => {
+    if (!isAuthenticated()) {
+      throw redirect({
+        to: '/auth',
+        search: {
+          returnTo: window.location.pathname,
+        },
+      })
+    }
+  },
+  component: StressTestingPage,
 })
 
 export default function StressTesting() {

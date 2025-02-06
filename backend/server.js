@@ -22,6 +22,7 @@ import cors from 'cors';
 import bodyParser from "body-parser";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import jwt from 'jsonwebtoken';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +32,46 @@ const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+const SECRET_KEY = 'your-secret-key' // В реальном приложении используйте переменные окружения
+
+// Захардкоженные учетные данные (в реальном приложении используйте базу данных)
+const VALID_CREDENTIALS = {
+  email: 'admin@stacklevel.group',
+  password: 'softclubdisraption'
+}
+
+app.post('/api/login', (req, res) => {
+  const { email, password } = req.body
+
+  if (email === VALID_CREDENTIALS.email && password === VALID_CREDENTIALS.password) {
+    const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: '24h' })
+    res.json({ token })
+  } else {
+    res.status(401).json({ error: 'Неверные учетные данные' })
+  }
+})
+
+// Middleware для проверки токена
+const authenticateToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1]
+  
+  if (!token) {
+    return res.status(401).json({ error: 'Требуется авторизация' })
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY)
+    req.user = decoded
+    next()
+  } catch (err) {
+    return res.status(403).json({ error: 'Недействительный токен' })
+  }
+}
+
+// Пример защищенного маршрута
+app.get('/api/protected', authenticateToken, (req, res) => {
+  res.json({ message: 'Это защищенный маршрут' })
+})
 
 app.get('/lgddata', (req, res) => {
     res.json(LGDData);

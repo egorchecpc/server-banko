@@ -1,6 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute('/_custom-layout/$reportId/new-report')({
+  beforeLoad: () => {
+    if (!isAuthenticated()) {
+      throw redirect({
+        to: '/auth',
+        search: {
+          returnTo: window.location.pathname,
+        },
+      })
+    }
+  },
   component: NewReportComponent,
 })
 

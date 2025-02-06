@@ -152,7 +152,7 @@ export const columns: ColumnDef<CreditListData>[] = [
         {row.getValue('grossCarryingAmount')}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: true,
   },
   {
@@ -208,7 +208,7 @@ export const columns: ColumnDef<CreditListData>[] = [
         </div>
       )
     },
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {
