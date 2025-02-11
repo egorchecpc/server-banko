@@ -1,7 +1,7 @@
 export const ProfileReportsData = [
     {
       "id": "1",
-      "date": "31.12.2023",
+      "date": "2023-12-31",
       "title": "КП Розничный/Ипотечный I квартал",
       "owner": "Виталий Рискович",
       "status": "Согласованный",
@@ -301,7 +301,7 @@ export const ProfileReportsData = [
         "debtorType":"Розничный",
         "creditType":["Ипотечный", "Потребительский"],
         "productType":["На исполнение желаний","Ипотека 15 лет"],
-        "date": "31.12.2023"
+        "date": "2023-12-31"
       },
       "isPublic": true,
       "description":"Корректный проверенный отчёт"
@@ -608,7 +608,7 @@ export const ProfileReportsData = [
         "debtorType":"Розничный",
         "creditType":["Ипотечный"],
         "productType":["Ипотека 15 лет"],
-        "date": "31.12.2022"
+        "date": "2022-12-31"
       },
       "isPublic": true,
       "description":"Корректный проверенный отчёт"
