@@ -59,7 +59,7 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="!ring-none rounded-full p-1 hover:bg-gray-200">
+                <button className="!ring-none rounded-full px-2 py-1 hover:bg-gray-200">
                   <GearIcon />
                 </button>
               </DropdownMenuTrigger>

@@ -41,10 +41,25 @@ export const useGetRiskGroupData = (date: string) => {
     }))
   }
 
+  const formatNormalData = (
+    data: RiskGroupItem[] | undefined
+  ): RiskGroupItem[] | undefined => {
+    if (!data) return undefined
+
+    return data.map((item) => ({
+      ...item,
+      stage1: Number(item.stage1.toFixed(2)),
+      stage2: Number(item.stage2.toFixed(2)),
+      stage3: Number(item.stage3.toFixed(2)),
+      poci: Number(item.poci.toFixed(2)),
+      total: Number(item.total.toFixed(2)),
+    }))
+  }
+
   return {
-    eclAmount: eclAmount.data,
+    eclAmount: formatNormalData(eclAmount.data),
     percentIFRS: formatPercentData(percentIFRS.data),
-    vbsAmount: vbsAmount.data,
+    vbsAmount: formatNormalData(vbsAmount.data),
     isLoading: queries.some((query) => query.isLoading),
     isError: queries.some((query) => query.isError),
     errors: queries.map((query) => query.error),

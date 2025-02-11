@@ -40,7 +40,7 @@ export const GBVStageChartModule: FC<GBVStageChartProps> = ({ data }) => {
       title={t('biAnalytics.gbvStageChart.title')}
     >
       <ContainerBody isScrolling={true} orientation="horizontal">
-        <ChartContainer className="max-h-[42vh] w-full" config={chartConfig}>
+        <ChartContainer className="max-h-[19rem] w-full" config={chartConfig}>
           <BarChart
             layout="vertical"
             data={chartData}

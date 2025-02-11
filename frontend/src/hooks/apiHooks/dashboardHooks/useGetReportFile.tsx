@@ -9,14 +9,14 @@ export const useExportFile = () => {
   return useMutation<ExportResponse, Error>({
     mutationFn: async () => {
       const response = await axios.get(
-          'https://banko-r-backend.stacklevel.group/api/excel/stats',
-          {
-            responseType: 'blob',
-            headers: {
-              Accept:
-                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            },
-          }
+        'https://banko-r-backend.stacklevel.group/api/excel/stats',
+        {
+          responseType: 'blob',
+          headers: {
+            Accept:
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          },
+        }
       )
 
       const url = window.URL.createObjectURL(new Blob([response.data]))

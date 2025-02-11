@@ -211,14 +211,14 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <div className="text-xl font-bold leading-24 text-black-800">
             Распределение {isAmountMode ? 'ВБС' : 'количества'} по срокам
             просрочки {showPercentage ? ' (%)' : ''}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
+              <button className="!ring-none rounded-full px-2 pt-1 hover:bg-gray-200">
                 <GearIcon />
               </button>
             </DropdownMenuTrigger>

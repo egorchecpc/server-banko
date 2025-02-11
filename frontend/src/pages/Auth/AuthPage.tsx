@@ -14,10 +14,13 @@ export const AuthPage = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await axios.post('https://banko-backend.stacklevel.group/api/login', {
-        email,
-        password,
-      })
+      const response = await axios.post(
+        'http://banko-backend.stacklevel.group//api/login',
+        {
+          email,
+          password,
+        }
+      )
 
       // Сохраняем токен в localStorage
       localStorage.setItem('token', response.data.token)

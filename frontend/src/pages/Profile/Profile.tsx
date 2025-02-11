@@ -10,7 +10,6 @@ import { ProfileNavigation } from '@/pages/Profile/ProfileNavigation/ProfileNavi
 import { TemplatesView } from '@/pages/Profile/TemplatesView/TemplatesView'
 import { ProfileEditDialog } from '@/pages/Profile/ProfileEditDialog/ProfileEditDialog'
 import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
-import LoadingSpinner from "@/components/LoadingSpinnerComponent/LoadingSpinner";
 
 export const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('about')
@@ -42,7 +41,7 @@ export const ProfilePage = () => {
   }
 
   if (isProfileLoading) {
-    return <LoadingSpinner />
+    return <div>Loading...</div>
   }
 
   if (!profile) {

@@ -91,7 +91,7 @@ export const GBVChartModule: FC<GBVChartProps> = ({ data }) => {
   return (
     <ContainerComponent withBg={true} title={t('biAnalytics.gbvChart.title')}>
       <ContainerBody isScrolling={false}>
-        <Card className="flex max-h-[42vh] flex-col border-none">
+        <Card className="flex max-h-[19rem] flex-col border-none">
           <CardContent className="flex justify-center pb-0">
             <ChartContainer
               config={chartConfig}
