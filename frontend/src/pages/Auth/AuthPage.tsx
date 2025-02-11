@@ -15,7 +15,7 @@ export const AuthPage = () => {
     e.preventDefault()
     try {
       const response = await axios.post(
-        'http://banko-backend.stacklevel.group//api/login',
+        'https://banko-backend.stacklevel.group/api/login',
         {
           email,
           password,
