@@ -5,7 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { useNavigate } from '@tanstack/react-router'
 import { ReportDetails } from '@/modules/ReportsModule/ReportDetails'
 import { useReport } from '@/context/DateContext'
-import { DataTable } from '@/components/CustomTableComponentTimeless/DataTable'
+import { DataTable } from '@/components/CustomTableComponents/DataTable'
 
 interface ProfileReportsProps {
   data: ProfileReportData[]

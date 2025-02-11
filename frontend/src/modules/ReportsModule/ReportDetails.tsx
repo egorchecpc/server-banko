@@ -47,7 +47,9 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
 
         <div className="text-muted-foreground mt-2 flex items-center gap-2 text-sm">
           <span>{report.date}</span>
-          <Badge variant="outline">{report.label}</Badge>
+          <Badge variant={report.label === 'Черновик' ? 'outline' : 'accepted'}>
+            {report.label}
+          </Badge>
           <Badge
             variant={report.priority === 'Важный' ? 'destructive' : 'secondary'}
           >
@@ -79,7 +81,7 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
             </p>
           </div>
           <div>
-            <p className="text-muted-foreground">Дата создания</p>
+            <p className="text-muted-foreground">Отчётная дата</p>
             <p className="font-medium">{report.debtorData.date?.toString()}</p>
           </div>
         </CardContent>

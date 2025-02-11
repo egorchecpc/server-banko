@@ -14,7 +14,8 @@ import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsDat
 export const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('about')
   const { profile, isProfileLoading, updateProfile } = useProfile()
-  const { templates, isTemplatesLoading, updateTemplate } = useTemplates()
+  const { templates, isTemplatesLoading, updateTemplate, deleteTemplate } =
+    useTemplates()
   const [profileDialogOpen, setProfileDialogOpen] = useState(false)
   const [editedProfile, setEditedProfile] = useState<ProfileData | null>(null)
   const { data: ProfileReportsData } = useGetReportsData()
@@ -79,6 +80,7 @@ export const ProfilePage = () => {
               templates={templates || []}
               isLoading={isTemplatesLoading}
               onUpdateTemplate={updateTemplate}
+              onDeleteTemplate={deleteTemplate}
             />
           </TabsContent>
         </Tabs>

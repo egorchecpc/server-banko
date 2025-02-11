@@ -1,10 +1,8 @@
 import { useQueries, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { RiskGroupItem } from '@/models/RiskGoupItem'
-import { useEffect } from 'react'
 
 export const useGetRiskGroupData = (date: string) => {
-  const queryClient = useQueryClient()
   const endpoints = [
     `https://banko-r-backend.stacklevel.group/api/ecl/sum?date=${date}`,
     `https://banko-r-backend.stacklevel.group/api/ecl/reservation/sum?date=${date}`,
@@ -45,7 +43,7 @@ export const useGetRiskGroupData = (date: string) => {
 
   return {
     eclAmount: eclAmount.data,
-    percentIFRS: percentIFRS.data,
+    percentIFRS: formatPercentData(percentIFRS.data),
     vbsAmount: vbsAmount.data,
     isLoading: queries.some((query) => query.isLoading),
     isError: queries.some((query) => query.isError),

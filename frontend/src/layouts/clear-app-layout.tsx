@@ -2,6 +2,7 @@ import { Outlet } from '@tanstack/react-router'
 import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import Footer from '@/components/FooterComponent/Footer'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
 
 export const ClearAppLayout = () => {
   return (
@@ -15,7 +16,9 @@ export const ClearAppLayout = () => {
         />
         <main className="mx-5">
           <div>
-            <Outlet />
+            <PageWrapper>
+              <Outlet />
+            </PageWrapper>
           </div>
         </main>
         <Footer />

@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/CustomTableComponents/DataTableColumnHeader'
 import { DataTableRowActions } from '@/components/CustomTableComponents/DataTableRowActions'
 import { ArrowUpIcon, QuestionMarkCircledIcon } from '@radix-ui/react-icons'
+import { CheckCircleIcon } from 'lucide-react'
 
 const customFilterFn = (
   row: Row<Task>,
@@ -19,7 +20,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: 'date',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата" />
+      <DataTableColumnHeader column={column} title="Изменён" />
     ),
     cell: ({ row }) => (
       <div className="mx-auto flex h-10 w-[6rem] items-center text-center">
@@ -130,10 +131,6 @@ export type Task = {
   priority: string
   date: string
   owner: string
-  RR: string
-  ECL: string
-  LGD: string
-  PD: string
 }
 
 export const labels = [
@@ -141,12 +138,21 @@ export const labels = [
     value: 'Черновик',
     label: 'Черновик',
   },
+  {
+    value: 'Основной',
+    label: 'Основной',
+  },
 ]
 export const statuses = [
   {
     value: 'В процессе проверки',
     label: 'В процессе проверки',
     icon: QuestionMarkCircledIcon,
+  },
+  {
+    value: 'Согласованный',
+    label: 'Согласованный',
+    icon: CheckCircleIcon,
   },
 ]
 export const priorities = [

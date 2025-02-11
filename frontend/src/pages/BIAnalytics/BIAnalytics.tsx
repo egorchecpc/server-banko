@@ -6,7 +6,7 @@ import AveragePDChartModule from '@/modules/AveragePDChartModule/AveragePDChartM
 import HeatmapChartModule from '@/modules/HeatmapChartModule/HeatmapChartModule'
 import TotalAmountOverdueChartModule from '@/modules/TotalAmountOverdueChartModule/TotalAmountOverdueChartModule'
 import AgeingAmountChartModule from '@/modules/AgeingAmountsChartModule/AgeingAmountChartModule'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { BIAnalyticsSettings } from '@/modules/BISettings/BISettings'
 import {
   Breadcrumb,
@@ -61,9 +61,12 @@ export const BIAnalyticsPage = () => {
     distributionCategory: true,
   })
 
-  const handleChartVisibilityChange = (visibility: visabilitySettings) => {
-    setChartVisibility(visibility)
-  }
+  const handleChartVisibilityChange = useCallback(
+    (visibility: visabilitySettings) => {
+      setChartVisibility((prev) => ({ ...prev, ...visibility }))
+    },
+    []
+  )
 
   if (isLoading) {
     return <LoadingSpinner />
@@ -71,7 +74,6 @@ export const BIAnalyticsPage = () => {
   if (isError) {
     return <div>Error occurred while fetching data</div>
   }
-
   return (
     <div className="max-w-full px-10">
       <Breadcrumb className="mb-4">

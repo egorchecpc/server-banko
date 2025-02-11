@@ -3,6 +3,7 @@ import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { AppSidebar } from '@/modules/SidebarModule/Sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import Footer from '@/components/FooterComponent/Footer'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
 
 export const AppLayout = () => {
   return (
@@ -12,7 +13,9 @@ export const AppLayout = () => {
         <HeaderModule />
         <main className="mx-5 flex-1">
           <div>
-            <Outlet />
+            <PageWrapper>
+              <Outlet />
+            </PageWrapper>
           </div>
         </main>
         <Footer />

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import type React from 'react'
+import { useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -18,7 +19,7 @@ import {
 } from '@/components/ui/select'
 import { Card, CardContent } from '@/components/ui/card'
 import { Trash2, Plus } from 'lucide-react'
-import { MacroTemplate } from '@/models/MacroTemplate'
+import type { MacroTemplate } from '@/models/MacroTemplate'
 import {
   DEFAULT_INDICATOR,
   INDICATOR_TYPES,
@@ -27,7 +28,10 @@ import {
   SCENARIOS,
   YEARS,
 } from '@/pages/Profile/TemplateDialog/TemplateDialogConfig'
-import { MacroSettings } from '@/models/MacroSettings'
+import { useFieldArray, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
 
 interface TemplateDialogProps {
   open: boolean
@@ -36,96 +40,163 @@ interface TemplateDialogProps {
   onSave: (template: MacroTemplate) => void
 }
 
+const templateSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, 'Имя шаблона невалидно'),
+  indicators: z.array(
+    z.object({
+      id: z.string(),
+      type: z.string().min(1, 'Тип индикатора невалиден'),
+      values: z.record(
+        z.string(),
+        z
+          .record(
+            z.string(),
+            z.object({
+              value: z.number().min(0.01, 'Значение должно быть больше 0'),
+              probability: z.number().min(0).max(100),
+            })
+          )
+          .refine(
+            (scenarios) => {
+              const probabilities = Object.values(scenarios).map(
+                (s) => s.probability
+              )
+              const totalProbability = probabilities.reduce((a, b) => a + b, 0)
+              return Math.abs(totalProbability - 100) < 0.01
+            },
+            { message: 'Сумма вероятностей должна быть равна 100%' }
+          )
+      ),
+    })
+  ),
+})
+
+type TemplateFormData = z.infer<typeof templateSchema>
+
 export const TemplateDialog: React.FC<TemplateDialogProps> = ({
   open,
   onOpenChange,
   template,
   onSave,
 }) => {
-  const [editedTemplate, setEditedTemplate] = useState<MacroTemplate>({
-    id: '',
-    name: '',
-    indicators: [],
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<TemplateFormData>({
+    resolver: zodResolver(templateSchema),
+    mode: 'all',
+    defaultValues: {
+      id: '',
+      name: '',
+      indicators: [{ ...DEFAULT_INDICATOR }],
+    },
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'indicators',
   })
 
   useEffect(() => {
     if (template) {
-      setEditedTemplate(template)
+      reset(template)
     } else {
-      setEditedTemplate({
+      reset({
         id: String(Date.now()),
         name: '',
         indicators: [{ ...DEFAULT_INDICATOR, id: String(Date.now()) }],
       })
     }
-  }, [template, open])
+  }, [template, reset])
 
   const handleAddIndicator = () => {
-    setEditedTemplate({
-      ...editedTemplate,
-      indicators: [
-        ...editedTemplate.indicators,
-        {
-          ...DEFAULT_INDICATOR,
-          id: String(Date.now()),
-        },
-      ],
+    append({
+      ...DEFAULT_INDICATOR,
+      id: String(Date.now()),
     })
   }
 
-  const handleRemoveIndicator = (indicatorId: string) => {
-    setEditedTemplate({
-      ...editedTemplate,
-      indicators: editedTemplate.indicators.filter(
-        (ind) => ind.id !== indicatorId
-      ),
-    })
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      showErrors()
+    }
+  }, [errors])
+
+  const onSubmit = (data: TemplateFormData) => {
+    try {
+      onSave(data)
+      onOpenChange(false)
+    } catch (error) {
+      console.error('Error saving template:', error)
+      toast.error('Ошибка при сохранении шаблона')
+      showErrors()
+    }
   }
 
-  const handleIndicatorTypeChange = (indicatorId: string, type: string) => {
-    setEditedTemplate({
-      ...editedTemplate,
-      indicators: editedTemplate.indicators.map((ind) =>
-        ind.id === indicatorId
-          ? { ...ind, type: type as MacroSettings['type'] }
-          : ind
-      ),
-    })
+  const showErrors = () => {
+    if (errors.name) {
+      toast.error(errors.name.message)
+    }
+    if (Array.isArray(errors.indicators)) {
+      errors?.indicators?.forEach((indicator, index) => {
+        if (indicator?.type) {
+          toast.error(`Индикатор ${index + 1}: ${indicator.type}`)
+        }
+
+        if (indicator?.values) {
+          Object.entries(indicator.values).forEach(([year, yearError]) => {
+            if (typeof yearError === 'object') {
+              Object.entries(yearError).forEach(
+                ([scenario, scenarioError]: [string, any]) => {
+                  if (scenarioError?.value?.message) {
+                    toast.error(
+                      `Индикатор ${index + 1}, Год ${year}, ${scenarioNames[scenario]}: ${scenarioError.value.message}`
+                    )
+                  }
+                  if (scenarioError?.probability?.message) {
+                    toast.error(
+                      `Индикатор ${index + 1}, Год ${year}, ${scenarioNames[scenario]}: ${scenarioError.probability.message}`
+                    )
+                  }
+                }
+              )
+              if (yearError?.message) {
+                toast.error(
+                  `Индикатор ${index + 1}, Год ${year}: ${yearError.message}`
+                )
+              }
+            }
+          })
+        }
+      })
+    }
   }
 
   const handleValueChange = (
-    indicatorId: string,
-    year: number,
-    scenario: (typeof SCENARIOS)[number],
+    index: number,
+    year: number | string,
+    scenario: string,
     field: 'value' | 'probability',
-    value: number
+    inputValue: string
   ) => {
-    setEditedTemplate({
-      ...editedTemplate,
-      indicators: editedTemplate.indicators.map((ind) => {
-        if (ind.id === indicatorId) {
-          return {
-            ...ind,
-            values: {
-              ...ind.values,
-              [year]: {
-                ...ind.values[year],
-                [scenario]: {
-                  ...ind.values[year][scenario],
-                  [field]: value,
-                },
-              },
-            },
-          }
+    const value = Number.parseFloat(inputValue)
+    if (!isNaN(value)) {
+      if (typeof year !== 'string') {
+        year = String(year)
+      }
+      setValue(
+        `indicators.${index}.values.${String(year)}.${scenario}.${field}` as keyof TemplateFormData,
+        value,
+        {
+          shouldValidate: true,
         }
-        return ind
-      }),
-    })
-  }
-
-  const handleSave = () => {
-    onSave(editedTemplate)
-    onOpenChange(false)
+      )
+    }
   }
 
   return (
@@ -137,124 +208,152 @@ export const TemplateDialog: React.FC<TemplateDialogProps> = ({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="max-h-[60vh] space-y-6 overflow-y-auto">
-          <div className="space-y-2 p-3">
-            <Label htmlFor="templateName">Название шаблона</Label>
-            <Input
-              id="templateName"
-              value={editedTemplate.name}
-              onChange={(e) =>
-                setEditedTemplate({
-                  ...editedTemplate,
-                  name: e.target.value,
-                })
-              }
-            />
-          </div>
+        <form onSubmit={handleSubmit(onSubmit, showErrors)}>
+          <div className="max-h-[60vh] space-y-6 overflow-y-auto">
+            <div className="space-y-2 p-3">
+              <Label htmlFor="templateName">Название шаблона</Label>
+              <Input
+                id="templateName"
+                {...register('name')}
+                className={errors.name ? 'border-red-500' : ''}
+              />
+            </div>
 
-          <div className="space-y-4">
-            {editedTemplate.indicators.map((indicator, index) => (
-              <Card key={indicator.id}>
-                <CardContent className="space-y-4 p-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-medium">Индикатор {index + 1}</h4>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleRemoveIndicator(indicator.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Тип индикатора</Label>
-                    <Select
-                      value={indicator.type}
-                      onValueChange={(value) =>
-                        handleIndicatorTypeChange(indicator.id, value)
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Выберите тип" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {INDICATOR_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {indicatorNames[type]}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {YEARS.map((year) => (
-                    <div key={year} className="space-y-2">
-                      <h5 className="font-medium">Год {year}</h5>
-                      <div className="grid grid-cols-3 gap-4">
-                        {SCENARIOS.map((scenario) => (
-                          <div key={scenario} className="space-y-2">
-                            <Label>{scenarioNames[scenario]}</Label>
-                            <div className="space-y-2">
-                              <Input
-                                type="text"
-                                placeholder="Значение"
-                                value={indicator.values[year][scenario].value}
-                                onChange={(e) =>
-                                  handleValueChange(
-                                    indicator.id,
-                                    year,
-                                    scenario,
-                                    'value',
-                                    Number(e.target.value)
-                                  )
-                                }
-                              />
-                              <Input
-                                type="text"
-                                placeholder="Вероятность"
-                                value={
-                                  indicator.values[year][scenario].probability
-                                }
-                                onChange={(e) =>
-                                  handleValueChange(
-                                    indicator.id,
-                                    year,
-                                    scenario,
-                                    'probability',
-                                    Number(e.target.value)
-                                  )
-                                }
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+            <div className="space-y-4">
+              {fields.map((field, index) => (
+                <Card key={field.id}>
+                  <CardContent className="space-y-4 p-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">Индикатор {index + 1}</h4>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => remove(index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
-                  ))}
-                </CardContent>
-              </Card>
-            ))}
+
+                    <div className="space-y-2">
+                      <Label>Тип индикатора</Label>
+                      <Select
+                        onValueChange={(value) =>
+                          setValue(`indicators.${index}.type`, value, {
+                            shouldValidate: true,
+                          })
+                        }
+                        value={field.type}
+                      >
+                        <SelectTrigger
+                          className={
+                            errors.indicators?.[index]?.type
+                              ? 'border-red-500'
+                              : ''
+                          }
+                        >
+                          <SelectValue placeholder="Выберите тип" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {INDICATOR_TYPES.map((type) => (
+                            <SelectItem key={type} value={type}>
+                              {indicatorNames[type]}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {YEARS.map((year) => (
+                      <div key={year} className="space-y-2">
+                        <h5 className="font-medium">Год {year}</h5>
+                        <div className="grid grid-cols-3 gap-4">
+                          {SCENARIOS.map((scenario) => (
+                            <div key={scenario} className="space-y-2">
+                              <Label>{scenarioNames[scenario]}</Label>
+                              <div className="space-y-2">
+                                <Input
+                                  type="text"
+                                  placeholder="Значение"
+                                  defaultValue={
+                                    field.values?.[year]?.[scenario]?.value ?? 0
+                                  }
+                                  onChange={(e) =>
+                                    handleValueChange(
+                                      index,
+                                      year,
+                                      scenario,
+                                      'value',
+                                      e.target.value
+                                    )
+                                  }
+                                  className={
+                                    errors.indicators?.[index]?.values?.[
+                                      year
+                                    ]?.[scenario]?.value
+                                      ? 'border-red-500'
+                                      : ''
+                                  }
+                                />
+                                <Input
+                                  type="text"
+                                  placeholder="Вероятность"
+                                  defaultValue={
+                                    field.values?.[year]?.[scenario]
+                                      ?.probability ?? 0
+                                  }
+                                  onChange={(e) =>
+                                    handleValueChange(
+                                      index,
+                                      year,
+                                      scenario,
+                                      'probability',
+                                      e.target.value
+                                    )
+                                  }
+                                  className={
+                                    errors.indicators?.[index]?.values?.[
+                                      year
+                                    ]?.[scenario]?.probability
+                                      ? 'border-red-500'
+                                      : ''
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleAddIndicator}
+              className="w-full"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Добавить индикатор
+            </Button>
           </div>
 
-          <Button
-            variant="outline"
-            onClick={handleAddIndicator}
-            className="w-full"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Добавить индикатор
-          </Button>
-        </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Отмена
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Сохранить
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
+              Отмена
+            </Button>
+            <Button type="submit" variant="primary">
+              Сохранить
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )

@@ -3,6 +3,7 @@ import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { AppSidebar } from '@/modules/SidebarModule/Sidebar'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import Footer from '@/components/FooterComponent/Footer'
+import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
 
 export const CustomAppLayout = () => {
   return (
@@ -16,7 +17,9 @@ export const CustomAppLayout = () => {
         />
         <main className="mx-5">
           <div>
-            <Outlet />
+            <PageWrapper>
+              <Outlet />
+            </PageWrapper>
           </div>
         </main>
         <div className="h-[32vh]"></div>

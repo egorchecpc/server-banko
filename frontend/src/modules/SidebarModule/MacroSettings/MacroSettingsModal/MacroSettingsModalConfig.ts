@@ -10,15 +10,15 @@ export const macroSettingsSchema = z.object({
     z
       .object({
         worst: z.object({
-          value: z.number().nonnegative().min(0),
+          value: z.number().multipleOf(0.01).nonnegative().min(0),
           probability: z.number().min(0).max(100),
         }),
         norm: z.object({
-          value: z.number().nonnegative().min(0),
+          value: z.number().multipleOf(0.01).nonnegative().min(0),
           probability: z.number().min(0).max(100),
         }),
         best: z.object({
-          value: z.number().nonnegative().min(0),
+          value: z.number().multipleOf(0.01).nonnegative().min(0),
           probability: z.number().min(0).max(100),
         }),
       })

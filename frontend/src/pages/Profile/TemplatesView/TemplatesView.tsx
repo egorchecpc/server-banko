@@ -1,25 +1,29 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Edit, Plus, ChevronDown } from 'lucide-react'
+import { Edit, Plus, ChevronDown, Trash2 } from 'lucide-react'
 import { MacroTemplate } from '@/models/MacroTemplate'
 import { TemplateDialog } from '@/pages/Profile/TemplateDialog/TemplateDialog'
 import { indicatorNames } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
 import { scenarioNames } from '@/pages/Profile/TemplateDialog/TemplateDialogConfig'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { MacroSettings } from '@/models/MacroSettings'
+import { DeleteTemplateDialog } from '@/components/AlertDialog/AlertDialog'
 
 interface TemplatesViewProps {
   templates: MacroTemplate[]
   isLoading: boolean
   onUpdateTemplate: (template: MacroTemplate) => void
+  onDeleteTemplate: (templateId: string) => void
 }
 
 export const TemplatesView: React.FC<TemplatesViewProps> = ({
   templates,
   isLoading,
   onUpdateTemplate,
+  onDeleteTemplate,
 }) => {
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [currentTemplate, setCurrentTemplate] = useState<MacroTemplate | null>(
     null
   )
@@ -30,6 +34,19 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
   const handleEditTemplate = (template: MacroTemplate) => {
     setCurrentTemplate(template)
     setTemplateDialogOpen(true)
+  }
+
+  const handleDeleteTemplate = (template: MacroTemplate) => {
+    setCurrentTemplate(template)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    if (currentTemplate) {
+      onDeleteTemplate(currentTemplate.id)
+      setDeleteDialogOpen(false)
+      setCurrentTemplate(null)
+    }
   }
 
   const handleAddTemplate = () => {
@@ -129,13 +146,22 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
                 <div className="p-6">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-semibold">{template.name}</h3>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEditTemplate(template)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleEditTemplate(template)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDeleteTemplate(template)}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </div>
                   </div>
 
                   {firstIndicator && renderIndicatorTable(firstIndicator)}
@@ -178,6 +204,13 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
         onOpenChange={setTemplateDialogOpen}
         template={currentTemplate}
         onSave={onUpdateTemplate}
+      />
+
+      <DeleteTemplateDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={handleConfirmDelete}
+        templateName={currentTemplate?.name ?? ''}
       />
     </div>
   )

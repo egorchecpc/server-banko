@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -44,6 +44,7 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
   scenarios,
 }) => {
   const { t } = useTranslation()
+  const [inputValues, setInputValues] = useState<Record<string, string>>({})
 
   const createInitialFormState = (): MacroSettings => {
     const values: Record<
@@ -81,8 +82,22 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
     if (isOpen) {
       const initialData = editingIndicator || createInitialFormState()
       reset(initialData)
+
+      // Initialize input values
+      const newInputValues: Record<string, string> = {}
+      years.forEach((year) => {
+        scenarios.forEach((scenario) => {
+          const valueKey = `${year}.${scenario}.value`
+          const probKey = `${year}.${scenario}.probability`
+          const value = initialData.values[year]?.[scenario]?.value
+          const probability = initialData.values[year]?.[scenario]?.probability
+          newInputValues[valueKey] = value ? String(value) : ''
+          newInputValues[probKey] = probability ? String(probability) : ''
+        })
+      })
+      setInputValues(newInputValues)
     }
-  }, [editingIndicator, isOpen, reset, years])
+  }, [editingIndicator, isOpen, reset, years, scenarios])
 
   const onSubmit = (data: MacroSettings) => {
     onSubmitForm(data)
@@ -124,6 +139,26 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
             newYearErrors[year] = false
           }
         }
+      }
+    }
+  }
+
+  const handleInputChange = (
+    key: string,
+    value: string,
+    onChange: (value: number) => void
+  ) => {
+    // Разрешаем ввод чисел, точки и пустой строки
+    if (value === '' || /^-?\d*\.?\d*$/.test(value)) {
+      setInputValues((prev) => ({
+        ...prev,
+        [key]: value,
+      }))
+      // Конвертируем в число только если строка не пустая и не одиночная точка
+      if (value && value !== '.') {
+        onChange(parseFloat(value))
+      } else {
+        onChange(0)
       }
     }
   }
@@ -193,6 +228,9 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                 t('sidebar.macroSettings.modal.subtitles.scenariosFull.best'),
               ].map((scenarioFull: string, index: number) => {
                 const scenarioShort = scenarios[index]
+                const valueKey = `${year}.${scenarioShort}.value`
+                const probKey = `${year}.${scenarioShort}.probability`
+
                 return (
                   <div
                     key={scenarioShort}
@@ -205,7 +243,6 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                       render={({ field }) => (
                         <Input
                           type="text"
-                          {...field}
                           placeholder={t(
                             'sidebar.macroSettings.modal.subtitles.value'
                           )}
@@ -214,12 +251,14 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                               ? 'border-red-500 text-red-500'
                               : 'border border-grey-600 text-black-800'
                           }`}
-                          onChange={(e) => {
-                            const value = e.target.value
-                            if (/^\d*$/.test(value)) {
-                              field.onChange(Number(value))
-                            }
-                          }}
+                          value={inputValues[valueKey] || ''}
+                          onChange={(e) =>
+                            handleInputChange(
+                              valueKey,
+                              e.target.value,
+                              field.onChange
+                            )
+                          }
                         />
                       )}
                     />
@@ -229,7 +268,6 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                       render={({ field }) => (
                         <Input
                           type="text"
-                          {...field}
                           placeholder={t(
                             'sidebar.macroSettings.modal.subtitles.probability'
                           )}
@@ -238,12 +276,14 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                               ? 'border-red-500 text-red-500'
                               : 'border border-grey-600 text-black-800'
                           }`}
-                          onChange={(e) => {
-                            const value = e.target.value
-                            if (/^\d*$/.test(value)) {
-                              field.onChange(Number(value))
-                            }
-                          }}
+                          value={inputValues[probKey] || ''}
+                          onChange={(e) =>
+                            handleInputChange(
+                              probKey,
+                              e.target.value,
+                              field.onChange
+                            )
+                          }
                         />
                       )}
                     />

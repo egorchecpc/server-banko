@@ -210,6 +210,18 @@ app.put('/templates/:id', (req, res) => {
   res.json(templates[templateIndex]);
 });
 
+app.delete('/templates/:id', (req, res) => {
+  const { id } = req.params;
+  const templateIndex = templates.findIndex((template) => template.id === id);
+  
+  if (templateIndex === -1) {
+    return res.status(404).json({ error: 'Template not found' });
+  }
+  
+  templates.splice(templateIndex, 1);
+  res.json({ success: true });
+});
+
 app.post('/macro', (req, res) => {
   const macroData = req.body;
   console.log('Полученные макроданные:', macroData);

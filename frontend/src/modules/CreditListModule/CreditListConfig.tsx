@@ -13,7 +13,7 @@ const customFilterFn = (
   return row.getValue(columnId) === filterValue
 }
 
-export const columns: ColumnDef<CreditListData>[] = [
+export const columns: ColumnDef<{ id: string }, unknown>[] = [
   {
     accessorKey: 'clientId',
     header: ({ column }) => (
