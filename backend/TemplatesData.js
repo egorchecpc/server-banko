@@ -270,5 +270,140 @@ export let templates = [
         },
       },
     ],
-  }
+  },
+  {id: '3',
+    name: 'Макро на 25-28 (грустная)',
+    indicators: [
+  {
+    id: '11',
+    type: 'productProfitability',
+    values: {
+      2025: {
+        worst: { value: 5.58, probability: 30 },
+        norm: { value: 5.67, probability: 50 },
+        best: { value: 5.76, probability: 20 },
+      },
+      2026: {
+        worst: { value: 5.67, probability: 30 },
+        norm: { value: 5.76, probability: 50 },
+        best: { value: 5.85, probability: 20 },
+      },
+      2027: {
+        worst: { value: 5.85, probability: 30 },
+        norm: { value: 5.94, probability: 50 },
+        best: { value: 6.03, probability: 20 },
+      },
+      2028: {
+        worst: { value: 5.94, probability: 30 },
+        norm: { value: 6.03, probability: 50 },
+        best: { value: 6.12, probability: 20 },
+      },
+    },
+  },
+  {
+    id: '12',
+    type: 'realWage',
+    values: {
+      2025: {
+        worst: { value: 85.5, probability: 30 },
+        norm: { value: 87.3, probability: 50 },
+        best: { value: 89.1, probability: 20 },
+      },
+      2026: {
+        worst: { value: 88.2, probability: 30 },
+        norm: { value: 90, probability: 50 },
+        best: { value: 91.8, probability: 20 },
+      },
+      2027: {
+        worst: { value: 90, probability: 30 },
+        norm: { value: 91.8, probability: 50 },
+        best: { value: 93.6, probability: 20 },
+      },
+      2028: {
+        worst: { value: 91.8, probability: 30 },
+        norm: { value: 93.6, probability: 50 },
+        best: { value: 95.4, probability: 20 },
+      },
+    },
+  },
+  {
+    id: '13',
+    type: 'gdp',
+    values: {
+      2025: {
+        worst: { value: 195840.0, probability: 30 },
+        norm: { value: 196020.0, probability: 50 },
+        best: { value: 196200.0, probability: 20 },
+      },
+      2026: {
+        worst: { value: 197010.0, probability: 30 },
+        norm: { value: 197100.0, probability: 50 },
+        best: { value: 197280.0, probability: 20 },
+      },
+      2027: {
+        worst: { value: 199692.0, probability: 30 },
+        norm: { value: 199701.0, probability: 50 },
+        best: { value: 199710, probability: 20 },
+      },
+      2028: {
+        worst: { value: 201582.9, probability: 30 },
+        norm: { value: 201591.9, probability: 50 },
+        best: { value: 201600.0, probability: 20 },
+      },
+    },
+  },
+  {
+    id: '14',
+    type: 'realDisposablePopulationIncome',
+    values: {
+      2025: {
+        worst: { value: 91.35, probability: 30 },
+        norm: { value: 95.49, probability: 50 },
+        best: { value: 98.1, probability: 20 },
+      },
+      2026: {
+        worst: { value: 90.72, probability: 30 },
+        norm: { value: 94.5, probability: 50 },
+        best: { value: 97.65, probability: 20 },
+      },
+      2027: {
+        worst: { value: 90.81, probability: 30 },
+        norm: { value: 94.95, probability: 50 },
+        best: { value: 99.54, probability: 20 },
+      },
+      2028: {
+        worst: { value: 91.17, probability: 30 },
+        norm: { value: 95.4, probability: 50 },
+        best: { value: 100.17, probability: 20 },
+      },
+    },
+  },
+  {
+    id: '15',
+    type: 'averageMonthlySalary',
+    values: {
+      2025: {
+        worst: { value: 1692, probability: 30 },
+        norm: { value: 1836.18, probability: 50 },
+        best: { value: 2169, probability: 20 },
+      },
+      2026: {
+        worst: { value: 1908.9, probability: 30 },
+        norm: { value: 2199.6, probability: 50 },
+        best: { value: 2533.5, probability: 20 },
+      },
+      2027: {
+        worst: { value: 2029.5, probability: 30 },
+        norm: { value: 2353.5, probability: 50 },
+        best: { value: 2581.2, probability: 20 },
+      },
+      2028: {
+        worst: { value: 2108.7, probability: 30 },
+        norm: { value: 2381.4, probability: 50 },
+        best: { value: 2709, probability: 20 },
+      },
+    },
+  },
+],
+}
   ]
