@@ -135,7 +135,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                 data-state={row.getIsSelected() && 'selected'}
                 onDoubleClick={() => onRowDoubleClick?.(row.original.id)}
                 onClick={() => handleRowClick(row.original.id)}
-                className={`cursor-pointer hover:bg-gray-100${
+                className={`cursor-pointer hover:bg-gray-100 ${
                   selectedRowId === row.original.id ? 'bg-gray-100' : ''
                 }`}
               >
