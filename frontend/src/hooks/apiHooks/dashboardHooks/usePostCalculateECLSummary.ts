@@ -7,17 +7,16 @@ interface SummaryResponse {
   success: boolean
 }
 
-export const usePostSummary = () => {
+export const usePostSummary = (date: string) => {
   const queryClient = useQueryClient()
   const previousECLData = queryClient.getQueryData(['ECLDataV1']) as ECLData
-
   const { mutate, isPending, isSuccess, isError, error } = useMutation<
     SummaryResponse,
     Error
   >({
     mutationFn: async () => {
       const { data } = await axiosConfig.post(
-        'https://banko-r-backend.stacklevel.group/api/ecl/summary?date=2023-12-31'
+        `https://banko-r-backend.stacklevel.group/api/ecl/summary?date=${date}`
       )
       return data
     },

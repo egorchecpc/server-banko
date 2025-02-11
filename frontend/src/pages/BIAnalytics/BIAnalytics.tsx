@@ -16,9 +16,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { Link } from '@tanstack/react-router'
+import { Link, useParams } from '@tanstack/react-router'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { DistributionCategoryChartModule } from '@/modules/DistributionCategoryChartModule/DistributionCategoryChartModule'
+import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import { fixDate } from '@/utils/dateConverter'
 
 interface visabilitySettings {
   gbv: boolean
@@ -32,7 +34,21 @@ interface visabilitySettings {
 }
 
 export const BIAnalyticsPage = () => {
-  const { data, isLoading, isError } = useGetBIAnalyticsData()
+  const { reportId } = useParams({ strict: false })
+  const { report } = useReportDataWithValidation(reportId || '')
+  const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
+  const reportDate = basicReportDate
+    .toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: 'UTC',
+    })
+    .split('.')
+    .reverse()
+    .join('-')
+  const date = fixDate(reportDate)
+  const { data, isLoading, isError } = useGetBIAnalyticsData(date)
 
   const [chartVisibility, setChartVisibility] = useState({
     gbv: true,

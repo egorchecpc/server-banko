@@ -36,7 +36,7 @@ interface ContainerHeaderProps {
 }
 
 const ContainerHeader: FC<ContainerHeaderProps> = ({ children }) => (
-  <div className="my-1 ml-4 flex">{children}</div>
+  <div className="my-2 ml-4 flex">{children}</div>
 )
 
 interface ContainerBodyProps {

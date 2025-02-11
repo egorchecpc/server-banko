@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import {
   Tooltip,
   PieChart,
@@ -50,9 +50,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
 }) => {
   const [showPercentage, setShowPercentage] = useState(false)
   const [isAmountMode, setIsAmountMode] = useState(true)
-
   const data = isAmountMode ? amountData : countData
-
   const [productSettings, setProductSettings] = useState<
     {
       productName: string
@@ -61,15 +59,13 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
     }[]
   >([])
 
-  // Инициализация productSettings при загрузке данных
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       setProductSettings(
         data.map((product) => ({
-          productName: product.productName,
+          productName: product.product,
           isVisible: true,
-          color:
-            CONFIG.colors[product.productName as keyof typeof CONFIG.colors],
+          color: CONFIG.colors[product.product as keyof typeof CONFIG.colors],
         }))
       )
     }
@@ -96,28 +92,36 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
       return []
     }
 
+    const periodMappings = {
+      without: 'without',
+      '0-30': 'between1To30',
+      '30-60': 'between31To60',
+      '60-90': 'between61To90',
+      '90plus': 'moreThen90',
+    }
+
     const periodTotals: { [key: string]: number } = {}
     const periodDetails: { [key: string]: { [productName: string]: number } } =
       {}
 
-    Object.keys(data[0].periods).forEach((period) => {
+    Object.keys(periodMappings).forEach((period) => {
       periodTotals[period] = 0
       periodDetails[period] = {}
     })
 
     data.forEach((product) => {
-      Object.entries(product.periods).forEach(([period, value]) => {
-        periodTotals[period] += value
+      Object.entries(periodMappings).forEach(([oldKey, newKey]) => {
+        periodTotals[oldKey] += product[newKey as keyof ProductData] as number
       })
     })
 
     visibleProducts.forEach((setting) => {
-      const productData = data.find(
-        (p) => p.productName === setting.productName
-      )
+      const productData = data.find((p) => p.product === setting.productName)
       if (productData) {
-        Object.entries(productData.periods).forEach(([period, value]) => {
-          periodDetails[period][setting.productName] = value
+        Object.entries(periodMappings).forEach(([oldKey, newKey]) => {
+          periodDetails[oldKey][setting.productName] = productData[
+            newKey as keyof ProductData
+          ] as number
         })
       }
     })
@@ -207,7 +211,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="mb-2 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <div className="text-xl font-bold leading-24 text-black-800">
             Распределение {isAmountMode ? 'ВБС' : 'количества'} по срокам
             просрочки {showPercentage ? ' (%)' : ''}
@@ -275,9 +279,11 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
             <PieChart>
               {pieData.length > 0 && (
                 <Pie
+                  key={Math.random()} // fix animation bug from recharts library, delete this if performance dying
                   data={pieData}
                   cx="50%"
                   cy="50%"
+                  animationDuration={700}
                   innerRadius={60}
                   outerRadius={100}
                   paddingAngle={2}
@@ -288,11 +294,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
                   fill="#8884d8"
                   dataKey="value"
                   label={({ name, absoluteValue, periodTotal }) =>
-                    `${name}: ${formatValue(
-                      showPercentage
-                        ? (absoluteValue / periodTotal) * 100
-                        : absoluteValue
-                    )}`
+                    `${name}: ${formatValue(showPercentage ? (absoluteValue / periodTotal) * 100 : absoluteValue)}`
                   }
                 >
                   {pieData.map((entry, index) => (

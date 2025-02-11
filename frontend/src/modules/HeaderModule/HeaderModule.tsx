@@ -8,6 +8,7 @@ interface HeaderModule {
   withoutExportBtn?: boolean
   withLogo?: boolean
   withBackBtn?: boolean
+  isNewReport?: boolean
 }
 
 export const HeaderModule: FC<HeaderModule> = ({
@@ -16,6 +17,7 @@ export const HeaderModule: FC<HeaderModule> = ({
   withoutExportBtn = false,
   withLogo = false,
   withBackBtn = false,
+  isNewReport = false,
 }) => {
   return (
     <Header
@@ -26,6 +28,7 @@ export const HeaderModule: FC<HeaderModule> = ({
       withoutExportBtn={withoutExportBtn}
       withLogo={withLogo}
       withBackBtn={withBackBtn}
+      isNewReport={isNewReport}
     />
   )
 }

@@ -1,5 +1,5 @@
 export interface AveragePDItem {
-  category: string
+  product: string
   value: number
 }
 

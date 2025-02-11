@@ -9,7 +9,11 @@ export const CustomAppLayout = () => {
     <SidebarProvider>
       <AppSidebar />
       <div className="flex w-[1920px] flex-col overflow-hidden">
-        <HeaderModule withoutNav={true} withoutSidebar={false} />
+        <HeaderModule
+          withoutNav={true}
+          withoutSidebar={false}
+          isNewReport={true}
+        />
         <main className="mx-5">
           <div>
             <Outlet />

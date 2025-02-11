@@ -1,4 +1,3 @@
-
 import { columns, owners, priorities, statuses, titles } from './ReportsConfig'
 import { ProfileReportData } from '@/models/ProfileReport'
 import { FC, useState } from 'react'
@@ -6,7 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { useNavigate } from '@tanstack/react-router'
 import { ReportDetails } from '@/modules/ReportsModule/ReportDetails'
 import { useReport } from '@/context/DateContext'
-import {DataTable} from "@/components/CustomTableComponentTimeless/DataTable";
+import { DataTable } from '@/components/CustomTableComponentTimeless/DataTable'
 
 interface ProfileReportsProps {
   data: ProfileReportData[]

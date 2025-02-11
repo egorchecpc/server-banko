@@ -49,7 +49,7 @@ export const DistributionCategoryChartModule: React.FC<
 
       return (
         <div className="rounded-md border bg-white p-2 shadow-md">
-          <p className="mb-2 font-bold">{dataPoint.category}</p>
+          <p className="mb-2 font-bold">{dataPoint.product}</p>
           <div>
             <div className="flex justify-between">
               <span>Без просрочки:</span>
@@ -57,19 +57,19 @@ export const DistributionCategoryChartModule: React.FC<
             </div>
             <div className="flex justify-between">
               <span>0-30 дней:</span>
-              <span>{formatValue(dataPoint.overdue0)}</span>
+              <span>{formatValue(dataPoint.between1To30)}</span>
             </div>
             <div className="flex justify-between">
               <span>30-60 дней:</span>
-              <span>{formatValue(dataPoint.overdue30)}</span>
+              <span>{formatValue(dataPoint.between31To60)}</span>
             </div>
             <div className="flex justify-between">
               <span>60-90 дней:</span>
-              <span>{formatValue(dataPoint.overdue60)}</span>
+              <span>{formatValue(dataPoint.between61To90)}</span>
             </div>
             <div className="flex justify-between">
               <span>90+ дней:</span>
-              <span>{formatValue(dataPoint.overdue90)}</span>
+              <span>{formatValue(dataPoint.moreThen90)}</span>
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@ export const DistributionCategoryChartModule: React.FC<
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="mb-2 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <div className="text-xl font-bold leading-24 text-black-800">
             Распределение {isAmountMode ? 'ВБС' : 'количества'} по категориям
           </div>
@@ -117,7 +117,7 @@ export const DistributionCategoryChartModule: React.FC<
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="category" />
+              <XAxis dataKey="product" />
               <YAxis tickFormatter={(value) => formatValue(value)} />
               <Tooltip
                 content={<CustomTooltip />}
@@ -132,28 +132,28 @@ export const DistributionCategoryChartModule: React.FC<
                 barSize={30}
               />
               <Bar
-                dataKey="overdue0"
+                dataKey="between1To30"
                 name="0-30 дней"
                 fill="var(--chart20)"
                 stackId="a"
                 barSize={30}
               />
               <Bar
-                dataKey="overdue30"
+                dataKey="between31To60"
                 name="30-60 дней"
                 fill="var(--chart40)"
                 stackId="a"
                 barSize={30}
               />
               <Bar
-                dataKey="overdue60"
+                dataKey="between61To90"
                 name="60-90 дней"
                 fill="var(--chart60)"
                 stackId="a"
                 barSize={30}
               />
               <Bar
-                dataKey="overdue90"
+                dataKey="moreThen90"
                 name="90+ дней"
                 fill="var(--chart80)"
                 stackId="a"

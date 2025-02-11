@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/breadcrumb'
 import { ExportComponent } from '@/modules/ExportModule/ExportModule'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import { fixDate } from '@/utils/dateConverter'
 
 interface VisibilitySettings {
   pd: boolean
@@ -32,7 +34,23 @@ interface VisibilitySettings {
 
 export const DashboardPage = () => {
   const { t } = useTranslation()
-  const { data, isLoading, isError } = useGetDashboardData()
+
+  const { reportId } = useParams({ strict: false })
+  const { report } = useReportDataWithValidation(reportId || '')
+  const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
+  const reportDate = basicReportDate
+    .toLocaleDateString('ru-RU', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: 'UTC',
+    })
+    .split('.')
+    .reverse()
+    .join('-')
+  const date = fixDate(reportDate)
+  const { data, isLoading, isError } = useGetDashboardData(date)
+
   const [tableVisibility, setTableVisibility] = useState({
     pd: true,
     lgd: true,
@@ -42,7 +60,6 @@ export const DashboardPage = () => {
     risk: true,
   })
   const { setReportId } = useReportId()
-  const { reportId } = useParams({ strict: false })
 
   useEffect(() => {
     if (reportId) {
@@ -120,24 +137,28 @@ export const DashboardPage = () => {
         </div>
       )}
       <div className="mt-3" />
-      {tableVisibility.risk && data.riskGroupData && (
-        <div className="">
-          <RiskGroupTable
-            data={data.riskGroupData}
-            title="Сумма задолженности ВБС по МСФО"
-          />
-          <div className="mt-3" />
-          <RiskGroupTable
-            data={data.riskGroupData}
-            title="Сумма ожидаемых кредитных убытков по МСФО"
-          />
-          <div className="mt-3" />
-          <RiskGroupTable
-            data={data.riskGroupData}
-            title="Процент резервирования по МСФО"
-          />
-        </div>
-      )}
+      {tableVisibility.risk &&
+        data.eclAmount &&
+        data.percentIFRS &&
+        data.vbsAmount && (
+          <div className="">
+            <RiskGroupTable
+              data={data.vbsAmount}
+              title="Сумма задолженности ВБС по МСФО"
+            />
+            <div className="mt-3" />
+            <RiskGroupTable
+              data={data.eclAmount}
+              title="Сумма ожидаемых кредитных убытков по МСФО"
+            />
+            <div className="mt-3" />
+            <RiskGroupTable
+              data={data.percentIFRS}
+              title="Процент резервирования по МСФО"
+              isPercent={true}
+            />
+          </div>
+        )}
     </div>
   )
 }

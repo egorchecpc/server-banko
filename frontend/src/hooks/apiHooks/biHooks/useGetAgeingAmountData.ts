@@ -3,12 +3,12 @@ import axiosConfig from '@/services/axiosConfig'
 import { ProductData } from '@/models/AgeingAmount'
 import axios from 'axios'
 
-export const useGetAgeingData = () => {
+export const useGetAgeingData = (date: string) => {
   const amountQuery = useQuery<ProductData[]>({
     queryKey: ['ageingAmountData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'https://banko-backend.stacklevel.group/ageing-amount-chart'
+        `https://banko-r-backend.stacklevel.group/api/ecl/grossCarryingAmount/sumByDelay?date=${date}`
       )
       return data
     },
@@ -18,7 +18,7 @@ export const useGetAgeingData = () => {
     queryKey: ['ageingCountData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'https://banko-backend.stacklevel.group/ageing-count-chart'
+        `https://banko-r-backend.stacklevel.group/api/ecl/loans/sumByDelay?date=${date}`
       )
       return data
     },

@@ -13,8 +13,8 @@ const PCureDisplayModule = () => {
         <div className="flex flex-row space-x-4">
           <div className="w-1/2">
             <ContainerHeader>
-              <div className="my-1 flex items-center">
-                <div className="leading-16 text-md font-bold text-black-800">
+              <div className="flex items-center">
+                <div className="text-md font-bold leading-24 text-black-800">
                   Вероятность выздоровления (p_сure)
                 </div>
               </div>
@@ -26,8 +26,8 @@ const PCureDisplayModule = () => {
 
           <div className="w-1/2">
             <ContainerHeader>
-              <div className="my-1 flex items-center">
-                <div className="leading-16 text-md font-bold text-black-800">
+              <div className="flex items-center">
+                <div className="text-md font-bold leading-24 text-black-800">
                   Коэффициент досрочного погашения (PR, prepayment rate)
                 </div>
               </div>

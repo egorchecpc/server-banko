@@ -1,4 +1,4 @@
 export interface GBVData {
-  creditType: string
+  product: string
   value: number
 }

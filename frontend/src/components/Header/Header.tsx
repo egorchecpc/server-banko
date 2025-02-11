@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { useReportId } from '@/context/ReportIdContext'
 import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
-import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 export interface HeaderProps {
   navItems?: { [key: string]: string }
   userData: { [key: string]: string }
@@ -15,6 +14,7 @@ export interface HeaderProps {
   withoutExportBtn?: boolean
   withLogo?: boolean
   withBackBtn?: boolean
+  isNewReport?: boolean
 }
 
 export const Header: FC<HeaderProps> = ({
@@ -25,10 +25,11 @@ export const Header: FC<HeaderProps> = ({
   withoutExportBtn,
   withLogo,
   withBackBtn,
+  isNewReport,
 }) => {
   const { reportId } = useReportId()
   const { report } = useReportDataWithValidation(reportId || '')
-  const reportName = report?.title || 'Название не найдено'
+  const reportName = report?.title || 'Черновик'
   const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
   const reportDate =
     basicReportDate.toLocaleDateString('ru-RU') || 'Дата не найдена'
@@ -55,7 +56,7 @@ export const Header: FC<HeaderProps> = ({
           {!withoutNav && navItems && <Navbar navItems={navItems} />}
         </div>
         <div className="flex items-center gap-5">
-          {!withoutExportBtn && (
+          {!withoutExportBtn && !isNewReport && (
             <div className="flex flex-col gap-0 rounded-lg border p-2 !py-1 text-sm font-medium">
               <div>Отчёт: {reportName}</div>
               <div>Дата: {reportDate}</div>

@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ColumnDef,
@@ -27,6 +26,7 @@ import {
 import { ContainerComponent } from '@/components/ContainerComponent/ContainerComponent'
 import { DataTableToolbar } from '@/components/CustomTableComponentTimeless/DataTableToolbar'
 import { DataTablePagination } from '@/components/CustomTableComponentTimeless/DataTablePagination'
+import { useEffect, useState } from 'react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -44,7 +44,6 @@ interface DataTableProps<TData, TValue> {
   onRowDoubleClick?: (id: string) => void
   onRowClick?: (id: string) => void
   initialSelectedId?: string
-  // Добавляем пропсы пагинации
   currentPage: number
   pageSize: number
   totalPages: number
@@ -70,26 +69,22 @@ export function DataTable<TData extends { id: string }, TValue>({
   onPageChange,
   onPageSizeChange,
 }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [selectedRowId, setSelectedRowId] = React.useState<string | null>(
+  const [rowSelection, setRowSelection] = useState({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(
     initialSelectedId || null
   )
   const { t } = useTranslation()
 
-  React.useEffect(() => {
-    // Установка начального выделения при первой загрузке
+  useEffect(() => {
     if (initialSelectedId) {
       setSelectedRowId(initialSelectedId)
     } else if (data.length > 0) {
       setSelectedRowId(data[0].id)
     }
-  }, [])
+  }, [rowSelection])
 
   const table = useReactTable({
     data,
@@ -148,7 +143,7 @@ export function DataTable<TData extends { id: string }, TValue>({
                 onDoubleClick={() => onRowDoubleClick?.(row.original.id)}
                 onClick={() => handleRowClick(row.original.id)}
                 className={`cursor-pointer hover:bg-gray-100 ${
-                  selectedRowId === row.original.id ? 'bg-gray-100' : ''
+                  selectedRowId === row.original.id ? '!bg-gray-100' : ''
                 }`}
               >
                 {row.getVisibleCells().map((cell) => (

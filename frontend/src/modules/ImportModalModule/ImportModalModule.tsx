@@ -20,6 +20,7 @@ import {
 import { useFileUpload } from '@/hooks/useFileUpload'
 import { ReportForm } from '@/modules/ImportModalModule/ReportForm/ReportForm'
 import { FileUploadButton } from '@/modules/ImportModalModule/FileUploadBtn/FileUploadBtn'
+import { useReport } from '@/context/DateContext'
 
 const ImportModalModule: React.FC<ReportModalProps> = ({
   open,
@@ -29,7 +30,6 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
   const navigate = useNavigate()
   const createReportMutation = useCreateReport()
   const { files, handleFileChange, isAllFilesUploaded } = useFileUpload()
-
   const [step, setStep] = useState<1 | 2>(1)
   const [reportDetails, setReportDetails] = useState<ReportDetails>({
     name: '',
@@ -45,11 +45,10 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
       isPublic: reportDetails.isPublic,
       description: reportDetails.description,
     })
-
     createReportMutation.mutate(payload, {
       onSuccess: (data) => {
         toast.success(t('reports.creation.success'))
-        navigate({ to: `/${data.data.id}/new-report` })
+        navigate({ to: `${data.data.id}/new-report` })
       },
       onError: (error) => {
         toast.error(

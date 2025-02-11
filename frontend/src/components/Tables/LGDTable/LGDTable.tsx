@@ -19,15 +19,7 @@ interface LGDTableProps {
 
 const LGDTable: FC<LGDTableProps> = ({ data }) => {
   return (
-    <ContainerComponent withBg={true}>
-      <div className="mb-2 flex items-center justify-between">
-        <div className="my-2 ml-4 flex items-center">
-          <div className="text-xl font-bold leading-24 text-black-800">
-            Убыток в случае дефолта (LGD)
-          </div>
-        </div>
-      </div>
-
+    <ContainerComponent withBg={true} title={'Убыток в случае дефолта (LGD)'}>
       <ContainerBody isScrolling={true} orientation="horizontal">
         <Table className="table-auto border border-gray-200 bg-white">
           <TableHeader>

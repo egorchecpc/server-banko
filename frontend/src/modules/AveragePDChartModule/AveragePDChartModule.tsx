@@ -31,7 +31,7 @@ const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload }) => {
 
   return (
     <div style={tooltipStyles}>
-      <p className="text-sm">{`${payload[0].payload.category}: ${payload[0].value}%`}</p>
+      <p className="text-sm">{`${payload[0].payload.product}: ${payload[0].value}%`}</p>
     </div>
   )
 }

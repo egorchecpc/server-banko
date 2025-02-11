@@ -1,13 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
-import axiosConfig from '@/services/axiosConfig'
-import { API_ENDPOINTS } from '@/services/endpoints'
 import { GBVData } from '@/models/GBV'
+import axios from 'axios'
 
-export const useGetGBVData = () => {
+export const useGetGBVData = (date: string) => {
   return useQuery<GBVData[], Error>({
     queryKey: ['GBVData'],
     queryFn: async () => {
-      const { data } = await axiosConfig.get(API_ENDPOINTS.GET_GBV_DATA)
+      const { data } = await axios.get(
+        `https://banko-r-backend.stacklevel.group/api/ecl/grossCarryingAmount/sum?date=${date}`
+      )
       return data
     },
   })

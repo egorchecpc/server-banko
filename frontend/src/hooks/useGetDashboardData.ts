@@ -7,10 +7,15 @@ import { useGetPDForecastData } from '@/hooks/apiHooks/dashboardHooks/useGetPDFo
 import { useGetKPIData } from '@/hooks/apiHooks/dashboardHooks/useGetKPIData'
 import { useGetRiskGroupData } from '@/hooks/apiHooks/dashboardHooks/useGetRiskGroupData'
 
-export const useGetDashboardData = () => {
+export const useGetDashboardData = (date: string) => {
   const lgdData = useGetLGDData()
 
-  const riskGroupData = useGetRiskGroupData()
+  const {
+    eclAmount,
+    percentIFRS,
+    vbsAmount,
+    isLoading: isRiskUpdates,
+  } = useGetRiskGroupData(date)
 
   const kpiData = useGetKPIData()
 
@@ -18,8 +23,8 @@ export const useGetDashboardData = () => {
   const quarterlyPDData = useGetPDQuarterlyData()
   const forecastPDData = useGetPDForecastData()
 
-  const eclDataV1 = useGetECLDataV1()
-  const eclDataV2 = useGetECLDataV2()
+  const eclDataV1 = useGetECLDataV1(date)
+  const eclDataV2 = useGetECLDataV2(date)
 
   const data = {
     LGDData: lgdData.data,
@@ -29,7 +34,9 @@ export const useGetDashboardData = () => {
     eclDataV1: eclDataV1.data,
     eclDataV2: eclDataV2.data,
     kpiData: kpiData.data,
-    riskGroupData: riskGroupData.data,
+    eclAmount: eclAmount,
+    percentIFRS: percentIFRS,
+    vbsAmount: vbsAmount,
   }
 
   const isLoading =
@@ -38,7 +45,8 @@ export const useGetDashboardData = () => {
     quarterlyPDData.isLoading ||
     eclDataV1.isLoading ||
     eclDataV2.isLoading ||
-    forecastPDData.isLoading
+    forecastPDData.isLoading ||
+    isRiskUpdates
   const isError =
     lgdData.isError ||
     yearlyPDData.isError ||

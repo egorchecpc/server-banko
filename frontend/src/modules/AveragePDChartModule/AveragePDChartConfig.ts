@@ -16,7 +16,7 @@ export const AXIS_CONFIG = {
     tickFormatter: (value: number) => `${value}%`,
   },
   yAxis: {
-    dataKey: 'category',
+    dataKey: 'product',
     type: 'category' as const,
     tick: { fontSize: 14 },
     width: 200,

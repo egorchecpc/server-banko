@@ -2,7 +2,7 @@ import { GBVData } from '@/models/GBV'
 
 const colors = [
   'var(--chart80)',
-  'var(--chart60)',
+  'lightblue',
   'var(--chart40)',
   'var(--chart20)',
 ]
@@ -16,7 +16,7 @@ export function createChartConfig(
     ...chartData.reduce(
       (config, item, index) => {
         config[`product${index + 1}`] = {
-          label: item.creditType,
+          label: item.product,
           color: colorArray[index] || 'var(--chart80)',
         }
         return config

@@ -21,8 +21,8 @@ interface ChartProps {
 
 const PDChart: FC<ChartProps> = ({ title, data }) => {
   const colors = {
-    cPD: '#8884d8',
-    mPD: '#82ca9d',
+    cPD: 'var(--chart80)',
+    mPD: 'var(--chart40)',
   }
 
   return (

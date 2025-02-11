@@ -52,20 +52,20 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="flex w-full items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex w-full justify-between">
+          <div className="flex items-center">
             <div className="text-xl font-bold leading-24 text-black-800">
               Ожидаемые кредитные убытки (ОКУ, ECL)
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
+                <button className="!ring-none rounded-full p-1 hover:bg-gray-200">
                   <GearIcon />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="right"
-                className="flex items-center gap-2 p-3"
+                className="flex items-center gap-2 p-2"
               >
                 <div className="text-[14px]">Отображение разниц</div>
                 <Switch
@@ -76,11 +76,11 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
             </DropdownMenu>
           </div>
           <div>
-            <Button variant="export" size="default">
-              <Link to={`/reports/${reportId}/credit-list`}>
+            <Link to={`/reports/${reportId}/credit-list`}>
+              <p className="mr-4 bg-transparent text-[14px] text-blue-900 hover:text-charts-60">
                 См. все кредиты
-              </Link>
-            </Button>
+              </p>
+            </Link>
           </div>
         </div>
       </ContainerHeader>

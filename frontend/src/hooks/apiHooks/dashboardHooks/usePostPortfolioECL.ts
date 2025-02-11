@@ -7,7 +7,7 @@ interface SummaryResponse {
   success: boolean
 }
 
-export const usePostPortfolio = () => {
+export const usePostPortfolio = (date: string) => {
   const queryClient = useQueryClient()
   const previousECLData = queryClient.getQueryData(['ECLDataV2']) as ECLData
   const { mutate, isPending, isSuccess, isError, error } = useMutation<
@@ -16,7 +16,7 @@ export const usePostPortfolio = () => {
   >({
     mutationFn: async () => {
       const { data } = await axiosConfig.post(
-        'https://banko-r-backend.stacklevel.group/api/ecl/portfolio/summary?date=2023-12-31'
+        `https://banko-r-backend.stacklevel.group/api/ecl/portfolio/summary?date=${date}`
       )
       return data
     },
@@ -30,12 +30,11 @@ export const usePostPortfolio = () => {
     },
   })
 
-  // Возвращаем все необходимые данные
   return {
     mutate,
-    isPending, // Состояние загрузки
-    isSuccess, // Успешное завершение мутации
-    isError, // Ошибка при мутации
-    error, // Текст ошибки (если есть)
+    isPending,
+    isSuccess,
+    isError,
+    error,
   }
 }

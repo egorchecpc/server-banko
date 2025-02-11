@@ -19,6 +19,8 @@ import { usePostSummary } from '@/hooks/apiHooks/dashboardHooks/usePostCalculate
 import { useQueryClient } from '@tanstack/react-query'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { usePostPortfolio } from '@/hooks/apiHooks/dashboardHooks/usePostPortfolioECL'
+import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import { fixDate } from '@/utils/dateConverter'
 
 export const AppSidebar: FC = () => {
   const [debtorData, setDebtorData] = useState<DebtorData | undefined>()
@@ -27,14 +29,20 @@ export const AppSidebar: FC = () => {
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
 
   const { reportId } = useParams({ strict: false })
-  const router = useRouter()
+  const { report } = useReportDataWithValidation(reportId || '')
+  const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
+  const reportDate =
+    basicReportDate.toISOString().split('T')[0] || 'Дата не найдена'
+  const date = fixDate(reportDate)
 
+  const router = useRouter()
   const { mutate: updateReport, isPending: isPendingReport } = useUpdateReport()
   const { mutate: postMacroSettings, isPending: isPendingMacro } =
     usePostMacroSettingsData()
-  const { mutate: postSummary, isPending: isPendingSummary } = usePostSummary()
+  const { mutate: postSummary, isPending: isPendingSummary } =
+    usePostSummary(date)
   const { mutate: postPortfolio, isPending: isPendingPortfolio } =
-    usePostPortfolio()
+    usePostPortfolio(date)
   const queryClient = useQueryClient()
 
   const isLoading =
@@ -99,7 +107,7 @@ export const AppSidebar: FC = () => {
       })
 
       console.log('Все данные успешно отправлены')
-
+      await queryClient.invalidateQueries({ queryKey: ['ProfileReportsData'] })
       await queryClient.invalidateQueries({ queryKey: ['dashboardData'] })
 
       await router.navigate({ to: `/reports/${reportId}/dashboard` })

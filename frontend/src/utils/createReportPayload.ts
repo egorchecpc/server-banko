@@ -8,10 +8,6 @@ export interface CreateReportPayload {
   status: string
   priority: string
   label: string
-  RR: string
-  ECL: string
-  LGD: string
-  PD: string
   macroData: FormatedMacroSettings
   debtorData: {
     debtorType: string
@@ -41,10 +37,6 @@ export const createReportPayload = ({
   status: 'В процессе проверки',
   priority: 'Важный',
   label: 'Черновик',
-  RR: '0',
-  ECL: '0',
-  LGD: '0',
-  PD: '0',
   macroData: {},
   debtorData: {
     debtorType: type,

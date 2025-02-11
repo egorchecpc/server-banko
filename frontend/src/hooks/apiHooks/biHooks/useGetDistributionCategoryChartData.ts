@@ -3,12 +3,12 @@ import axiosConfig from '@/services/axiosConfig'
 import { CategoryChartItem } from '@/models/CategoryChartItem'
 import axios from 'axios'
 
-export const useGetCategoryChartData = () => {
+export const useGetCategoryChartData = (date: string) => {
   const amountQuery = useQuery<CategoryChartItem[]>({
     queryKey: ['categoryAmountChartData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'https://banko-backend.stacklevel.group/category-amount-chart'
+        `https://banko-r-backend.stacklevel.group/api/ecl/grossCarryingAmount/sumByDelay?date=${date}`
       )
       return data
     },
@@ -18,7 +18,7 @@ export const useGetCategoryChartData = () => {
     queryKey: ['categoryCountChartData'],
     queryFn: async () => {
       const { data } = await axios.get(
-        'https://banko-backend.stacklevel.group/category-count-chart'
+        `https://banko-r-backend.stacklevel.group/api/ecl/loans/sumByDelay?date=${date}`
       )
       return data
     },

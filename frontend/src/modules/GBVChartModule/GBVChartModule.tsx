@@ -64,25 +64,34 @@ export const GBVChartModule: FC<GBVChartProps> = ({ data }) => {
   }
 
   const renderLegend = () => (
-    <div className="grid grid-cols-2 gap-2">
-      {Object.entries(chartConfig).map(([key, { label, color }]) => {
-        if (key !== 'value') {
-          return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex gap-4">
+        {Object.entries(chartConfig)
+          .filter(([key]) => key !== 'value')
+          .slice(0, 2)
+          .map(([key, { label, color }]) => (
             <div key={key} className="flex items-center gap-2">
               <div className="h-4 w-4" style={{ backgroundColor: color }} />
               <span>{label}</span>
             </div>
-          )
-        }
-        return null
-      })}
+          ))}
+      </div>
+      {Object.entries(chartConfig)
+        .filter(([key]) => key !== 'value')
+        .slice(2, 3)
+        .map(([key, { label, color }]) => (
+          <div key={key} className="flex items-center gap-2">
+            <div className="h-4 w-4" style={{ backgroundColor: color }} />
+            <span>{label}</span>
+          </div>
+        ))}
     </div>
   )
 
   return (
     <ContainerComponent withBg={true} title={t('biAnalytics.gbvChart.title')}>
       <ContainerBody isScrolling={false}>
-        <Card className="flex min-h-[40vh] flex-col border-none">
+        <Card className="flex max-h-[42vh] flex-col border-none">
           <CardContent className="flex justify-center pb-0">
             <ChartContainer
               config={chartConfig}
@@ -96,7 +105,7 @@ export const GBVChartModule: FC<GBVChartProps> = ({ data }) => {
                 <Pie
                   data={coloredChartData}
                   dataKey="value"
-                  nameKey="creditType"
+                  nameKey="product"
                   innerRadius={60}
                   outerRadius={100}
                   paddingAngle={2}
