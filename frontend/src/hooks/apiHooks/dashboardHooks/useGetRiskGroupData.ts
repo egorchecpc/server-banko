@@ -1,6 +1,6 @@
-import { useQueries, useQueryClient } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import axios from 'axios'
-import { RiskGroupItem } from '@/models/RiskGoupItem'
+import { RiskGroupItem, RiskGroupItemFormatted } from '@/models/RiskGoupItem'
 
 export const useGetRiskGroupData = (date: string) => {
   const endpoints = [
@@ -41,18 +41,25 @@ export const useGetRiskGroupData = (date: string) => {
     }))
   }
 
+  const formatCurrency = (value: number): string => {
+    return value.toLocaleString('ru-RU', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  }
+
   const formatNormalData = (
     data: RiskGroupItem[] | undefined
-  ): RiskGroupItem[] | undefined => {
+  ): RiskGroupItemFormatted[] | undefined => {
     if (!data) return undefined
 
     return data.map((item) => ({
       ...item,
-      stage1: Number(item.stage1.toFixed(2)),
-      stage2: Number(item.stage2.toFixed(2)),
-      stage3: Number(item.stage3.toFixed(2)),
-      poci: Number(item.poci.toFixed(2)),
-      total: Number(item.total.toFixed(2)),
+      stage1: formatCurrency(Number(item.stage1.toFixed(2))),
+      stage2: formatCurrency(Number(item.stage2.toFixed(2))),
+      stage3: formatCurrency(Number(item.stage3.toFixed(2))),
+      poci: formatCurrency(Number(item.poci.toFixed(2))),
+      total: formatCurrency(Number(item.total.toFixed(2))),
     }))
   }
 
