@@ -10,7 +10,7 @@ export const useTemplates = () => {
     queryKey: ['templates'],
     queryFn: async () => {
       const { data } = await axios.get<MacroTemplate[]>(
-        'http://banko-backend.stacklevel.group//templates'
+        'https:/banko-backend.stacklevel.group/templates'
       )
       return data
     },
@@ -19,7 +19,7 @@ export const useTemplates = () => {
   const { mutate: updateTemplate } = useMutation({
     mutationFn: async (template: MacroTemplate) => {
       const { data } = await axios.put(
-        `http://banko-backend.stacklevel.group//templates/${template.id}`,
+        `https://banko-backend.stacklevel.group/templates/${template.id}`,
         template
       )
       return data
@@ -32,7 +32,7 @@ export const useTemplates = () => {
   const { mutate: deleteTemplate } = useMutation({
     mutationFn: async (templateId: string) => {
       const { data } = await axios.delete(
-        `http://banko-backend.stacklevel.group//templates/${templateId}`
+        `https://banko-backend.stacklevel.group/templates/${templateId}`
       )
       return data
     },
