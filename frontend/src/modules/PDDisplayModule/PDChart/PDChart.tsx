@@ -38,8 +38,20 @@ const PDChart: FC<ChartProps> = ({ title, data }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="cPD" stroke={colors.cPD} name="cPD" />
-          <Line type="monotone" dataKey="mPD" stroke={colors.mPD} name="mPD" />
+          <Line
+            type="monotone"
+            dataKey="cPD"
+            stroke={colors.cPD}
+            strokeWidth={1.5}
+            name="cPD"
+          />
+          <Line
+            type="monotone"
+            dataKey="mPD"
+            stroke={colors.mPD}
+            strokeWidth={1.5}
+            name="mPD"
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -22,6 +22,7 @@ import { ExportComponent } from '@/modules/ExportModule/ExportModule'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
+import { RiskGroupItem, RiskGroupItemFormatted } from '@/models/RiskGoupItem'
 
 interface VisibilitySettings {
   pd: boolean
@@ -71,9 +72,9 @@ export const DashboardPage = () => {
     setTableVisibility(visibility)
   }
 
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
+  // if (isLoading) {
+  //   return <LoadingSpinner />
+  // }
   if (isError) {
     return <div>Error occurred while fetching data</div>
   }
@@ -142,10 +143,7 @@ export const DashboardPage = () => {
         data.percentIFRS &&
         data.vbsAmount && (
           <div className="">
-            <RiskGroupTable
-              data={data.vbsAmount}
-              title="Сумма ВБС по МСФО"
-            />
+            <RiskGroupTable data={data.vbsAmount} title="Сумма ВБС по МСФО" />
             <div className="mt-3" />
             <RiskGroupTable
               data={data.eclAmount}

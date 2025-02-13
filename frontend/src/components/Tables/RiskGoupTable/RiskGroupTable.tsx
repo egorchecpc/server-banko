@@ -11,10 +11,10 @@ import {
   ContainerBody,
   ContainerComponent,
 } from '@/components/ContainerComponent/ContainerComponent'
-import { RiskGroupItem } from '@/models/RiskGoupItem'
+import { RiskGroupItemFormatted } from '@/models/RiskGoupItem'
 
 interface RiskGroupTableProps {
-  data: RiskGroupItem[]
+  data: RiskGroupItemFormatted[]
   title?: string
   isPercent?: boolean
 }
