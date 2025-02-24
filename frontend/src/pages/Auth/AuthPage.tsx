@@ -15,16 +15,15 @@ export const AuthPage = () => {
     e.preventDefault()
     try {
       const response = await axios.post(
-        'https:/banko-backend.stacklevel.group/api/login',
+        'https://banko-backend.stacklevel.group/api/login',
         {
           email,
           password,
         }
       )
 
-      // Сохраняем токен в localStorage
       localStorage.setItem('token', response.data.token)
-      navigate({ to: '/reports' })
+      navigate({ to: '/apps' })
     } catch (err) {
       setError('Неверный email или пароль')
     }

@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as ReportsImport } from './routes/reports'
 import { Route as AuthImport } from './routes/auth'
+import { Route as AppsImport } from './routes/apps'
 import { Route as LayoutWithoutSidebarImport } from './routes/_layout-without-sidebar'
 import { Route as CustomLayoutImport } from './routes/_custom-layout'
 import { Route as ClearLayoutImport } from './routes/_clear-layout'
@@ -35,6 +36,11 @@ const ReportsRoute = ReportsImport.update({
 
 const AuthRoute = AuthImport.update({
   path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AppsRoute = AppsImport.update({
+  path: '/apps',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -141,6 +147,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof LayoutWithoutSidebarImport
+      parentRoute: typeof rootRoute
+    }
+    '/apps': {
+      id: '/apps'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof AppsImport
       parentRoute: typeof rootRoute
     }
     '/auth': {
@@ -272,6 +285,7 @@ const LayoutWithoutSidebarRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutWithoutSidebarRouteWithChildren
+  '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
   '/reports': typeof ReportsRoute
   '/profile': typeof ClearLayoutProfileRoute
@@ -286,6 +300,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutWithoutSidebarRouteWithChildren
+  '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
   '/reports': typeof ReportsRoute
   '/profile': typeof ClearLayoutProfileRoute
@@ -304,6 +319,7 @@ export interface FileRoutesById {
   '/_clear-layout': typeof ClearLayoutRouteWithChildren
   '/_custom-layout': typeof CustomLayoutRouteWithChildren
   '/_layout-without-sidebar': typeof LayoutWithoutSidebarRouteWithChildren
+  '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
   '/reports': typeof ReportsRoute
   '/_clear-layout/profile': typeof ClearLayoutProfileRoute
@@ -320,6 +336,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/apps'
     | '/auth'
     | '/reports'
     | '/profile'
@@ -333,6 +350,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
+    | '/apps'
     | '/auth'
     | '/reports'
     | '/profile'
@@ -349,6 +367,7 @@ export interface FileRouteTypes {
     | '/_clear-layout'
     | '/_custom-layout'
     | '/_layout-without-sidebar'
+    | '/apps'
     | '/auth'
     | '/reports'
     | '/_clear-layout/profile'
@@ -367,6 +386,7 @@ export interface RootRouteChildren {
   ClearLayoutRoute: typeof ClearLayoutRouteWithChildren
   CustomLayoutRoute: typeof CustomLayoutRouteWithChildren
   LayoutWithoutSidebarRoute: typeof LayoutWithoutSidebarRouteWithChildren
+  AppsRoute: typeof AppsRoute
   AuthRoute: typeof AuthRoute
   ReportsRoute: typeof ReportsRoute
 }
@@ -377,6 +397,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClearLayoutRoute: ClearLayoutRouteWithChildren,
   CustomLayoutRoute: CustomLayoutRouteWithChildren,
   LayoutWithoutSidebarRoute: LayoutWithoutSidebarRouteWithChildren,
+  AppsRoute: AppsRoute,
   AuthRoute: AuthRoute,
   ReportsRoute: ReportsRoute,
 }
@@ -398,6 +419,7 @@ export const routeTree = rootRoute
         "/_clear-layout",
         "/_custom-layout",
         "/_layout-without-sidebar",
+        "/apps",
         "/auth",
         "/reports"
       ]
@@ -431,6 +453,9 @@ export const routeTree = rootRoute
         "/_layout-without-sidebar/reports/$reportsId/bi-analytics",
         "/_layout-without-sidebar/reports/$reportsId/stress-testing"
       ]
+    },
+    "/apps": {
+      "filePath": "apps.tsx"
     },
     "/auth": {
       "filePath": "auth.tsx"

@@ -5,6 +5,14 @@ import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
 import { useState } from 'react'
 import ImportModalModule from '@/modules/ImportModalModule/ImportModalModule'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { useSearch } from '@tanstack/react-router'
+
+const debtorTypeHelper = {
+  retail: 'розничные',
+  corporate: 'корпоративные',
+  interbank: 'межбанковские',
+  sovereign: 'суверенные',
+}
 
 export const ReportsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -13,6 +21,10 @@ export const ReportsPage = () => {
     isLoading: profileReportsLoading,
     isError: profileReportsError,
   } = useGetReportsData()
+
+  const search: { type: string } = useSearch({
+    strict: false,
+  })
 
   const isLoading = profileReportsLoading
   const isError = profileReportsError
@@ -37,7 +49,7 @@ export const ReportsPage = () => {
           <div className="layout-content-container flex max-w-[960px] flex-1 flex-col">
             <div className="mb-4 flex flex-wrap justify-between gap-3 p-0">
               <div className="min-w-72 text-4xl font-black leading-tight tracking-[-0.033em] text-[#0e141b]">
-                Доступные отчёты
+                Доступные {debtorTypeHelper[search.type]} отчёты
               </div>
               <div className="flex items-center justify-center">
                 <Button

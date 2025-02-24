@@ -12,7 +12,6 @@ export const PageWrapper: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const location = useLocation()
-  console.log('Current Path:', location.pathname)
   return (
     <AnimatePresence mode="wait">
       <motion.div

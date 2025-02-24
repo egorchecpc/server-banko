@@ -10,7 +10,7 @@ export const useTemplates = () => {
     queryKey: ['templates'],
     queryFn: async () => {
       const { data } = await axios.get<MacroTemplate[]>(
-        'https:/banko-backend.stacklevel.group/templates'
+        'https://banko-backend.stacklevel.group/templates'
       )
       return data
     },
