@@ -6,7 +6,7 @@ import { ECLType } from '@/models/FormatedECL'
 
 export const useGetECLDataV1 = (date: string) => {
   return useQuery<ECLData, Error>({
-    queryKey: ['ECLDataV1'],
+    queryKey: ['ECLDataV1', date],
     queryFn: async () => {
       const { data } = await axios.get(
         `https://banko-r-backend.stacklevel.group/api/ecl/summary?date=${date}`
