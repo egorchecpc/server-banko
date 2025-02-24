@@ -1,21 +1,21 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { ReportsPage } from '@/pages/Reports/ReportsPage'
+import { AppsPage } from '@/pages/Apps/AppsPage'
 import { isAuthenticated } from '@/utils/auth'
 
-export const Route = createFileRoute('/reports')({
+export const Route = createFileRoute('/_main-layout/apps')({
   beforeLoad: () => {
     if (!isAuthenticated()) {
       throw redirect({
         to: '/auth',
         search: {
-          returnTo: '/reports',
+          returnTo: '/apps',
         },
       })
     }
   },
-  component: ReportsPage,
+  component: Apps,
 })
 
-export default function Reports() {
-  return <ReportsPage />
+export default function Apps() {
+  return <AppsPage />
 }

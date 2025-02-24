@@ -1,9 +1,9 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { StressTestingPage } from '@/pages/StressTesting/StressTesting'
+import { BIAnalyticsPage } from '@/pages/BIAnalytics/BIAnalytics'
 import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute(
-  '/_layout-without-sidebar/reports/$reportsId/stress-testing'
+  '/_layout-without-sidebar/reports/$reportId/bi-analytics',
 )({
   beforeLoad: () => {
     if (!isAuthenticated()) {
@@ -15,9 +15,9 @@ export const Route = createFileRoute(
       })
     }
   },
-  component: StressTestingPage,
+  component: BIAnalyticsPage,
 })
 
-export default function StressTesting() {
-  return <StressTestingPage reportDate={'01.01.2024'} />
+export default function BiAnalytics() {
+  return <BIAnalyticsPage />
 }

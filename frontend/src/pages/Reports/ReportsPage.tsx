@@ -38,13 +38,7 @@ export const ReportsPage = () => {
 
   return (
     <>
-      <div className="flex w-full flex-col bg-grey-300/40">
-        <HeaderModule
-          withoutNav={true}
-          withoutSidebar={true}
-          withoutExportBtn={true}
-          withLogo={true}
-        />
+      <div className="flex w-full flex-col">
         <div className="flex flex-1 justify-center px-40 py-5">
           <div className="layout-content-container flex max-w-[960px] flex-1 flex-col">
             <div className="mb-4 flex flex-wrap justify-between gap-3 p-0">
