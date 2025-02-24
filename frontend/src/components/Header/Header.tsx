@@ -76,7 +76,7 @@ export const Header: FC<HeaderProps> = ({
           {!withoutExportBtn && !isNewReport && (
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="primary">Отчёт</Button>
+                <Button variant="primary">Текущий отчёт</Button>
               </PopoverTrigger>
               <PopoverContent className="w-80">
                 <div className="space-y-4">
