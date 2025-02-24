@@ -1,5 +1,9 @@
 export type FileStatus = 'idle' | 'uploading' | 'success' | 'error'
-export type ReportType = 'Розничный' | 'Корпоративный'
+export type ReportType =
+  | 'Розничный'
+  | 'Корпоративный'
+  | 'Межбанковский'
+  | 'Суверены'
 
 export interface FileState {
   progress: number
@@ -18,15 +22,15 @@ export interface ReportDetails {
   name: string
   isPublic: boolean
   description: string
-  type: ReportType | ''
+  type: ReportType
 }
 
 export interface ReportModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  type: ReportType
 }
 
-// config.ts
 export const ACCEPTED_FILE_TYPES = '.xlsx,.xls,.csv'
 
 export const FILE_UPLOAD_CONFIG = {

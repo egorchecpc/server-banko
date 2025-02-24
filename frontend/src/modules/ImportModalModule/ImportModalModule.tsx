@@ -20,11 +20,18 @@ import {
 import { useFileUpload } from '@/hooks/useFileUpload'
 import { ReportForm } from '@/modules/ImportModalModule/ReportForm/ReportForm'
 import { FileUploadButton } from '@/modules/ImportModalModule/FileUploadBtn/FileUploadBtn'
-import { useReport } from '@/context/DateContext'
+
+export const debtorTypeNames = {
+  retail: 'Розничный',
+  corporate: 'Корпоративный',
+  interbank: 'Межбанковский',
+  sovereign: 'Суверены',
+}
 
 const ImportModalModule: React.FC<ReportModalProps> = ({
   open,
   onOpenChange,
+  type,
 }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -35,7 +42,7 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     name: '',
     isPublic: false,
     description: '',
-    type: '',
+    type: debtorTypeNames[type],
   })
 
   const handleSubmit = async () => {
@@ -48,7 +55,11 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     createReportMutation.mutate(payload, {
       onSuccess: (data) => {
         toast.success(t('reports.creation.success'))
-        navigate({ to: `${data.data.id}/new-report` })
+        console.log(payload)
+        navigate({
+          to: `${data.data.id}/credit-type`,
+          search: { id: payload.id, type: 'new' },
+        })
       },
       onError: (error) => {
         toast.error(
@@ -69,6 +80,7 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
 
         {step === 1 ? (
           <ReportForm
+            type={type}
             reportDetails={reportDetails}
             onDetailsChange={setReportDetails}
             onNext={() => setStep(2)}

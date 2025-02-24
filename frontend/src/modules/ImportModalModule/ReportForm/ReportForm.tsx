@@ -15,8 +15,10 @@ import {
   ReportDetails,
   ReportType,
 } from '@/modules/ImportModalModule/ImportModalModuleConfig'
+import { debtorTypeNames } from '@/modules/ImportModalModule/ImportModalModule'
 
 interface ReportFormProps {
+  type: ReportType
   reportDetails: ReportDetails
   onDetailsChange: (details: ReportDetails) => void
   onNext: () => void
@@ -28,9 +30,9 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   onDetailsChange,
   onNext,
   onCancel,
+  type,
 }) => {
-  const isDetailsValid =
-    reportDetails.name.length > 0 && reportDetails.type !== ''
+  const isDetailsValid = reportDetails.name.length > 0
 
   return (
     <div className="py-4">
@@ -46,7 +48,8 @@ export const ReportForm: React.FC<ReportFormProps> = ({
 
       <div className="mb-4">
         <Select
-          value={reportDetails.type}
+          value={debtorTypeNames[type]}
+          disabled={true}
           onValueChange={(value) =>
             onDetailsChange({ ...reportDetails, type: value as ReportType })
           }

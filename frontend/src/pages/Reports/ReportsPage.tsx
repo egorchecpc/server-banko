@@ -6,6 +6,7 @@ import { useState } from 'react'
 import ImportModalModule from '@/modules/ImportModalModule/ImportModalModule'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { useSearch } from '@tanstack/react-router'
+import { ReportType } from '@/modules/ImportModalModule/ImportModalModuleConfig'
 
 const debtorTypeHelper = {
   retail: 'розничные',
@@ -58,7 +59,11 @@ export const ReportsPage = () => {
           </div>
         </div>
       </div>
-      <ImportModalModule open={isModalOpen} onOpenChange={setIsModalOpen} />
+      <ImportModalModule
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        type={search.type as ReportType}
+      />
     </>
   )
 }
