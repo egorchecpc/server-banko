@@ -253,6 +253,7 @@ export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
                     locale={ru}
                     captionLayout="dropdown-buttons"
                     selected={field.value}
+                    defaultMonth={field.value}
                     onSelect={(date) => handleDateSelect(date, field)}
                     fromYear={1960}
                     toYear={2030}
