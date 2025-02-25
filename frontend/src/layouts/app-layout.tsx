@@ -18,7 +18,7 @@ export const AppLayout = () => {
             </PageWrapper>
           </div>
         </main>
-        <div className="mt-16"></div>
+        <div className="mt-12"></div>
         <Footer />
       </div>
     </SidebarProvider>
