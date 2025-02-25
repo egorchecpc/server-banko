@@ -22,12 +22,17 @@ export const usePostMacroSettingsData = () => {
           },
         }
       )
+      queryClient.setQueryData(
+        ['currentMacroVersion'],
+        data.version || Date.now().toString()
+      )
       return data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['PDForecastData'] })
       queryClient.invalidateQueries({ queryKey: ['PDQuarterlyData'] })
       queryClient.invalidateQueries({ queryKey: ['PDYearlyData'] })
+      console.log('2')
     },
   })
 }

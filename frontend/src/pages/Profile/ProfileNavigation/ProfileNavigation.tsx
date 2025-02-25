@@ -26,6 +26,13 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
       >
         Шаблоны макроданных
       </Button>
+      <Button
+        variant={activeTab === 'r-models' ? 'secondary' : 'ghost'}
+        className="w-full justify-start"
+        onClick={() => onTabChange('r-models')}
+      >
+        Настройки R
+      </Button>
     </nav>
   )
 }

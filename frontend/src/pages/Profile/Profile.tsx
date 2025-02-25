@@ -10,6 +10,7 @@ import { ProfileNavigation } from '@/pages/Profile/ProfileNavigation/ProfileNavi
 import { TemplatesView } from '@/pages/Profile/TemplatesView/TemplatesView'
 import { ProfileEditDialog } from '@/pages/Profile/ProfileEditDialog/ProfileEditDialog'
 import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
+import { RModelSettingsPage } from '@/modules/ModelSettingsModule/RModelSettingsPage'
 
 export const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('about')
@@ -82,6 +83,9 @@ export const ProfilePage = () => {
               onUpdateTemplate={updateTemplate}
               onDeleteTemplate={deleteTemplate}
             />
+          </TabsContent>
+          <TabsContent value="r-models">
+            <RModelSettingsPage />
           </TabsContent>
         </Tabs>
       </div>

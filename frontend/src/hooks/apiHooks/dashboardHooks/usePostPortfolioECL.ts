@@ -27,6 +27,7 @@ export const usePostPortfolio = (date: string) => {
         const diff = calculateECLDiff(previousECLData, newECLData)
         queryClient.setQueryData(['eclDiff2'], diff)
       }
+      console.log(4)
     },
   })
 

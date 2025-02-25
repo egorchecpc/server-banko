@@ -15,5 +15,6 @@ export const useGetECLDataV2 = (date: string) => {
       //const { data } = await axios.get('http://localhost:3000/ecldata2')
       //return data
     },
+    enabled: !!date,
   })
 }

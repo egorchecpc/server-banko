@@ -173,7 +173,7 @@
         "macroTypes": {
           "default": "Выберите тип",
           "items": {
-            "productProfitability": "ПП",
+            "productProfitability": "РРП",
             "realWage": "ННЗП",
             "gdp": "ВВП",
             "realDisposablePopulationIncome": "РРДН",

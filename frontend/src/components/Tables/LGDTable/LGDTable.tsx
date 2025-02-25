@@ -15,11 +15,17 @@ import { LGDItem } from '@/models/LGD'
 
 interface LGDTableProps {
   data: LGDItem[]
+  customTitle?: string
 }
 
-const LGDTable: FC<LGDTableProps> = ({ data }) => {
+const LGDTable: FC<LGDTableProps> = ({ data, customTitle }) => {
   return (
-    <ContainerComponent withBg={true} title={'Убыток в случае дефолта (LGD)'}>
+    <ContainerComponent
+      withBg={true}
+      title={
+        customTitle ? `LGD ${customTitle}` : 'Убыток в случае дефолта (LGD)'
+      }
+    >
       <ContainerBody isScrolling={true} orientation="horizontal">
         <Table className="table-auto border border-gray-200 bg-white">
           <TableHeader>

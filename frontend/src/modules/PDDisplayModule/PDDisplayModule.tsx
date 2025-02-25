@@ -27,6 +27,7 @@ interface PDDisplayModuleProps {
   yearlyPDData: YearlyDataResponse
   quarterlyPDData: QuarterlyDataResponse
   forecastPDData: ForecastDataResponse
+  customTitle?: string
 }
 
 const categories = [
@@ -41,6 +42,7 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
   yearlyPDData,
   quarterlyPDData,
   forecastPDData,
+  customTitle = '',
 }) => {
   const [deltaMode, setDeltaMode] = useState(false)
   const [displayQuarterly, setDisplayQuarterly] = useState(false)
@@ -142,7 +144,9 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
       <ContainerHeader>
         <div className="flex items-center justify-between">
           <div className="text-xl font-bold leading-24 text-black-800">
-            {t('dashboard.tables.pdTable.cPDTitle')}
+            {customTitle
+              ? `PD ${customTitle}`
+              : t('dashboard.tables.pdTable.cPDTitle')}
           </div>
           {renderSettings(
             () => setDeltaMode(!deltaMode),

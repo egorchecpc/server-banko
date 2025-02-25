@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import { reportType } from '@/modules/HeaderModule/HeaderModuleConfig'
 
 export interface HeaderProps {
   navItems?: { [key: string]: string }
@@ -85,7 +86,9 @@ export const Header: FC<HeaderProps> = ({
                     <div className="text-sm">
                       <p>Отчёт: {reportName}</p>
                       <p>Дата: {reportDate}</p>
-                      <p>Текущий тип кредита: ипотечный</p>
+                      <p>
+                        Текущий тип кредита: <b>{reportType[search.type]}</b>
+                      </p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">

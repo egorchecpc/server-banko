@@ -1,6 +1,6 @@
 import PDDisplayModule from '@/modules/PDDisplayModule/PDDisplayModule'
 import LGDTable from '@/components/Tables/LGDTable/LGDTable'
-import { Link, useParams } from '@tanstack/react-router'
+import { Link, useParams, useSearch } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useGetDashboardData } from '@/hooks/useGetDashboardData'
 import ECLDisplayModule from '@/modules/ECLDisplayModule/ECLDisplayModule'
@@ -19,10 +19,8 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { ExportComponent } from '@/modules/ExportModule/ExportModule'
-import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
-import { RiskGroupItem, RiskGroupItemFormatted } from '@/models/RiskGoupItem'
 
 interface VisibilitySettings {
   pd: boolean
@@ -33,10 +31,18 @@ interface VisibilitySettings {
   risk: boolean
 }
 
+export const creditType = {
+  consumer: 'по потребительским',
+  mortgage: 'по ипотечным',
+  overdraft: 'по овердрафтам',
+  cards: 'по кредитным картам',
+}
+
 export const DashboardPage = () => {
   const { t } = useTranslation()
 
   const { reportId } = useParams({ strict: false })
+  const search: { type: string } = useSearch({ strict: false })
   const { report } = useReportDataWithValidation(reportId || '')
   const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
   const reportDate = basicReportDate
@@ -72,9 +78,6 @@ export const DashboardPage = () => {
     setTableVisibility(visibility)
   }
 
-  // if (isLoading) {
-  //   return <LoadingSpinner />
-  // }
   if (isError) {
     return <div>Error occurred while fetching data</div>
   }
@@ -116,11 +119,20 @@ export const DashboardPage = () => {
               quarterlyPDData={data.quarterlyPDData}
               forecastPDData={data.forecastPDData}
             />
+            <div className="mb-3"></div>
+            <PDDisplayModule
+              yearlyPDData={data.yearlyPDData}
+              quarterlyPDData={data.quarterlyPDData}
+              forecastPDData={data.forecastPDData}
+              customTitle={creditType[search.type]}
+            />
           </div>
         )}
       {tableVisibility.lgd && data.LGDData && (
         <div className="flex-1">
           <LGDTable data={data.LGDData} />
+          <div className="mb-3"></div>
+          <LGDTable data={data.LGDData} customTitle={creditType[search.type]} />
         </div>
       )}
       <div className="">{tableVisibility.pcure && <PCureDisplayModule />}</div>

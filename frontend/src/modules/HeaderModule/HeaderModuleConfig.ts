@@ -10,3 +10,10 @@ export const userData = {
   name: 'Мария',
   position: 'Риск-менеджер',
 }
+
+export const reportType = {
+  consumer: 'потребительский',
+  mortgage: 'ипотечный',
+  overdraft: 'овердрафт',
+  cards: 'по кредитным картам',
+}

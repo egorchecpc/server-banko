@@ -85,7 +85,6 @@ export const AppSidebar: FC = () => {
           })
         }),
       ])
-
       await new Promise<void>((resolve, reject) => {
         postSummary(undefined, {
           onSuccess: () => {
@@ -109,7 +108,6 @@ export const AppSidebar: FC = () => {
       console.log('Все данные успешно отправлены')
       await queryClient.invalidateQueries({ queryKey: ['ProfileReportsData'] })
       await queryClient.invalidateQueries({ queryKey: ['dashboardData'] })
-
       await router.navigate({ to: `/reports/${reportId}/dashboard` })
     } catch (error) {
       console.error('Ошибка при отправке данных:', error)

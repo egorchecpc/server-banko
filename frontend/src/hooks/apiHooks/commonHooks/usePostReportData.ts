@@ -26,7 +26,7 @@ export const useUpdateReport = () => {
   return useMutation({
     mutationFn: updateReport,
     onSuccess: (data) => {
-      console.log('Отчёт успешно обновлен', data)
+      console.log('1', data)
     },
     onError: (error: any) => {
       console.error('Ошибка при обновлении отчёта', error)
