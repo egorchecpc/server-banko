@@ -22,9 +22,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { DebtorData } from '@/models/DebtorData'
-import { useParams, useSearch } from '@tanstack/react-router'
+import { useParams } from '@tanstack/react-router'
 import { useGetDebtorDataById } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
-import { DebtorType } from '@/components/TypeSelector/TypeSelector'
 
 interface DebtorFormProps {
   setDebtorData: React.Dispatch<React.SetStateAction<DebtorData | undefined>>
@@ -33,53 +32,34 @@ interface DebtorFormProps {
 export const DebtorForm: FC<DebtorFormProps> = ({ setDebtorData }) => {
   const { reportId } = useParams({ strict: false })
   const { debtorData } = useGetDebtorDataById(reportId ? reportId : '')
-  const search: { type: string } = useSearch({ strict: false })
   const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const { t } = useTranslation()
 
-  const getCreditTypeFromUrlParam = (urlType: string): string => {
-    const typeMap: Record<DebtorType, string> = {
-      consumer: t('sidebar.debtorForm.creditType.items.item1'),
-      mortgage: t('sidebar.debtorForm.creditType.items.item2'),
-      overdraft: t('sidebar.debtorForm.creditType.items.item3'),
-      cards: t('sidebar.debtorForm.creditType.items.item4'),
-    }
-    return typeMap[urlType as DebtorType] || typeMap.cards
-  }
-
   const parseInitialData = () => {
-    if (!debtorData) {
-      return {
-        debtorType: 'default',
-        creditType: search.type ? [getCreditTypeFromUrlParam(search.type)] : [],
-        productType: [],
-        date: undefined,
-      }
-    }
-    return {
-      ...debtorData,
-      creditType: search.type
-        ? [getCreditTypeFromUrlParam(search.type)]
-        : debtorData.creditType,
-    }
+    if (!debtorData) return undefined
+    return debtorData
   }
 
   const form = useForm<DebtorData>({
-    defaultValues: parseInitialData(),
+    defaultValues: parseInitialData() || {
+      debtorType: 'default',
+      creditType: [],
+      productType: [],
+      date: undefined,
+    },
   })
 
   useEffect(() => {
     if (debtorData) {
-      const initialData = parseInitialData()
-      setDebtorData(initialData)
-      Object.keys(initialData).forEach((key) => {
+      setDebtorData(debtorData)
+      Object.keys(debtorData).forEach((key) => {
         form.setValue(
           key as keyof DebtorData,
-          initialData[key as keyof DebtorData]
+          debtorData[key as keyof DebtorData]
         )
       })
     }
-  }, [debtorData, search.type])
+  }, [debtorData])
 
   const debtorType = {
     title: t('sidebar.debtorForm.debtorType.title'),

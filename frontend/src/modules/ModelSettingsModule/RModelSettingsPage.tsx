@@ -29,8 +29,6 @@ interface ModelSettingsDialogProps {
 const ModelSettingsDialog: React.FC<ModelSettingsDialogProps> = ({
   open,
   onOpenChange,
-  productType,
-  bucket,
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

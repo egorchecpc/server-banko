@@ -22,13 +22,12 @@ export interface ReportDetails {
   name: string
   isPublic: boolean
   description: string
-  type: ReportType
+  type: ReportType | ''
 }
 
 export interface ReportModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  type: ReportType
 }
 
 export const ACCEPTED_FILE_TYPES = '.xlsx,.xls,.csv'

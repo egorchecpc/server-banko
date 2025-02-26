@@ -31,7 +31,6 @@ export const debtorTypeNames = {
 const ImportModalModule: React.FC<ReportModalProps> = ({
   open,
   onOpenChange,
-  type,
 }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -42,7 +41,7 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     name: '',
     isPublic: false,
     description: '',
-    type: debtorTypeNames[type],
+    type: '',
   })
 
   const handleSubmit = async () => {
@@ -56,10 +55,11 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
       onSuccess: (data) => {
         toast.success(t('reports.creation.success'))
         console.log(payload)
-        navigate({
-          to: `${data.data.id}/credit-type`,
-          search: { id: payload.id, type: 'new' },
-        })
+        navigate({ to: `${data.data.id}/new-report` })
+        // navigate({
+        //   to: `${data.data.id}/credit-type`,
+        //   search: { id: payload.id, type: 'new' },
+        // })
       },
       onError: (error) => {
         toast.error(
@@ -80,7 +80,6 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
 
         {step === 1 ? (
           <ReportForm
-            type={type}
             reportDetails={reportDetails}
             onDetailsChange={setReportDetails}
             onNext={() => setStep(2)}

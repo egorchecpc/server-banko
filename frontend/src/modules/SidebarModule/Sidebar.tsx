@@ -80,7 +80,9 @@ export const AppSidebar: FC = () => {
           }
 
           postMacroSettings(formatMacroDataToServer(macroData), {
-            onSuccess: () => resolve(),
+            onSuccess: () => {
+              resolve()
+            },
             onError: (error) => reject(error),
           })
         }),

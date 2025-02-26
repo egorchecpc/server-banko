@@ -43,14 +43,14 @@ export const CustomFormField: FC<CustomFormFieldProps> = ({
     defaultValue: [] as string[],
   })
 
-  const isMultiSelect = name === 'productType' //|| name === 'creditType'
+  const isMultiSelect = name === 'productType' || name === 'creditType'
 
   if (!isMultiSelect) {
     return (
       <FormItem className="mb-3">
         <FormLabel>{fieldData.title}</FormLabel>
         <Select
-          disabled={name === 'debtorType' || name === 'creditType'}
+          disabled={name === 'debtorType'}
           value={
             typeof field.value === 'string'
               ? field.value

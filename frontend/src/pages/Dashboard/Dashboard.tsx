@@ -1,6 +1,6 @@
 import PDDisplayModule from '@/modules/PDDisplayModule/PDDisplayModule'
 import LGDTable from '@/components/Tables/LGDTable/LGDTable'
-import { Link, useParams, useSearch } from '@tanstack/react-router'
+import { Link, useParams } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useGetDashboardData } from '@/hooks/useGetDashboardData'
 import ECLDisplayModule from '@/modules/ECLDisplayModule/ECLDisplayModule'
@@ -21,6 +21,12 @@ import {
 import { ExportComponent } from '@/modules/ExportModule/ExportModule'
 import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
+import {
+  ForecastDataResponse,
+  QuarterlyDataResponse,
+  YearlyDataResponse,
+} from '@/models/PD'
+import { LGDItem } from '@/models/LGD'
 
 interface VisibilitySettings {
   pd: boolean
@@ -42,7 +48,6 @@ export const DashboardPage = () => {
   const { t } = useTranslation()
 
   const { reportId } = useParams({ strict: false })
-  const search: { type: string } = useSearch({ strict: false })
   const { report } = useReportDataWithValidation(reportId || '')
   const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
   const reportDate = basicReportDate
@@ -56,8 +61,7 @@ export const DashboardPage = () => {
     .reverse()
     .join('-')
   const date = fixDate(reportDate)
-  const { data, isLoading, isError } = useGetDashboardData(date)
-
+  const { data, isError } = useGetDashboardData(date)
   const [tableVisibility, setTableVisibility] = useState({
     pd: true,
     lgd: true,
@@ -67,7 +71,6 @@ export const DashboardPage = () => {
     risk: true,
   })
   const { setReportId } = useReportId()
-
   useEffect(() => {
     if (reportId) {
       setReportId(reportId)
@@ -81,6 +84,9 @@ export const DashboardPage = () => {
   if (isError) {
     return <div>Error occurred while fetching data</div>
   }
+
+  const creditTypes = report?.debtorData.creditType || []
+
   return (
     <div className="mb-6 max-w-full px-10">
       <Breadcrumb className="mb-4">
@@ -120,19 +126,31 @@ export const DashboardPage = () => {
               forecastPDData={data.forecastPDData}
             />
             <div className="mb-3"></div>
-            <PDDisplayModule
-              yearlyPDData={data.yearlyPDData}
-              quarterlyPDData={data.quarterlyPDData}
-              forecastPDData={data.forecastPDData}
-              customTitle={creditType[search.type]}
-            />
+            {creditTypes.map((type, index) => (
+              <div key={`pd-${type}-${index}`}>
+                <PDDisplayModule
+                  yearlyPDData={data.yearlyPDData as YearlyDataResponse}
+                  quarterlyPDData={
+                    data.quarterlyPDData as QuarterlyDataResponse
+                  }
+                  forecastPDData={data.forecastPDData as ForecastDataResponse}
+                  customTitle={type}
+                />
+                {index < creditTypes.length - 1 && <div className="mb-3"></div>}
+              </div>
+            ))}
           </div>
         )}
       {tableVisibility.lgd && data.LGDData && (
         <div className="flex-1">
           <LGDTable data={data.LGDData} />
           <div className="mb-3"></div>
-          <LGDTable data={data.LGDData} customTitle={creditType[search.type]} />
+          {creditTypes.map((type, index) => (
+            <div key={`lgd-${type}-${index}`}>
+              <LGDTable data={data.LGDData as LGDItem[]} customTitle={type} />
+              {index < creditTypes.length - 1 && <div className="mb-3"></div>}
+            </div>
+          ))}
         </div>
       )}
       <div className="">{tableVisibility.pcure && <PCureDisplayModule />}</div>

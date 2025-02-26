@@ -15,8 +15,17 @@ import { Slider } from '@/components/ui/slider'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Save, RotateCcw, Send } from 'lucide-react'
+import { Save, RotateCcw, Send, Plus, Upload } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from '@/components/ui/dialog'
+import ModelResultsModal from '@/modules/ModelSettingsModule/ModelResultsModal'
 
 // Типы для настроек моделей
 interface LinearModelSettings {
@@ -91,7 +100,17 @@ export const RModelSettingsModule: React.FC = () => {
   const [cvFolds, setCvFolds] = useState<number>(5)
   const [outputFormat, setOutputFormat] = useState<string>('summary')
   const [predictNewData, setPredictNewData] = useState<boolean>(false)
-  const [formulaExpression, setFormulaExpression] = useState<string>('y ~ ')
+  const [formulaExpression, setFormulaExpression] =
+    useState<string>('PD_TTC (0) ~ ')
+
+  // Добавляем состояние для модального окна добавления переменной
+  const [isAddVariableOpen, setIsAddVariableOpen] = useState<boolean>(false)
+  const [isResultsModalOpen, setIsResultsModalOpen] = useState<boolean>(false)
+  const [newVariableName, setNewVariableName] = useState<string>('')
+  const [newVariableCount, setNewVariableCount] = useState<string>('')
+  const [newVariableDescription, setNewVariableDescription] =
+    useState<string>('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   // Переменные для выбора
   const [variables, setVariables] = useState<Variable[]>([
@@ -152,13 +171,34 @@ export const RModelSettingsModule: React.FC = () => {
 
   // Обновление формулы при изменении выбранных переменных
   useEffect(() => {
+    updateFormulaExpression()
+  }, [variables, useLogarithm])
+
+  // Функция обновления формулы
+  const updateFormulaExpression = () => {
     const selectedVars = variables
       .filter((v) => v.selected)
       .map((v) => v.id)
       .join(' + ')
 
-    setFormulaExpression(selectedVars ? `y ~ ${selectedVars}` : 'y ~ 1')
-  }, [variables])
+    const baseFormula = selectedVars
+      ? `PD_TTC (0) ~ ${selectedVars}`
+      : 'PD_TTC (0) ~ 1'
+
+    if (useLogarithm) {
+      if (selectedVars) {
+        const loggedVars = variables
+          .filter((v) => v.selected)
+          .map((v) => `log(${v.id})`)
+          .join(' + ')
+        setFormulaExpression(`log(PD_TTC (0)) ~ ${loggedVars}`)
+      } else {
+        setFormulaExpression('log(PD_TTC (0)) ~ 1')
+      }
+    } else {
+      setFormulaExpression(baseFormula)
+    }
+  }
 
   // Обработчик выбора переменных
   const handleVariableToggle = (variableId: string): void => {
@@ -169,6 +209,11 @@ export const RModelSettingsModule: React.FC = () => {
           : variable
       )
     )
+  }
+
+  // Функция для закрытия модального окна
+  const closeModal = () => {
+    setIsResultsModalOpen(false)
   }
 
   // Обработчик изменения дополнительных настроек
@@ -184,6 +229,37 @@ export const RModelSettingsModule: React.FC = () => {
         [setting]: value,
       },
     }))
+  }
+
+  // Обработчик логарифмирования
+  const handleLogarithmToggle = (value: boolean): void => {
+    setUseLogarithm(value)
+  }
+
+  // Обработчик добавления новой переменной
+  const handleAddVariable = (): void => {
+    if (newVariableName.trim() === '') return
+
+    const newVarId = `x${variables.length + 1}`
+    const newVar: Variable = {
+      id: newVarId,
+      name: newVariableName,
+      description: newVariableDescription || newVariableName,
+      selected: false,
+    }
+
+    setVariables((prev) => [...prev, newVar])
+    setNewVariableName('')
+    setNewVariableDescription('')
+    setSelectedFile(null)
+    setIsAddVariableOpen(false)
+  }
+
+  // Обработчик выбора файла
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0])
+    }
   }
 
   // Отправка данных на бэкенд
@@ -206,8 +282,8 @@ export const RModelSettingsModule: React.FC = () => {
     }
 
     console.log('Отправка на бэкенд:', payload)
-    // В реальном приложении здесь был бы код для отправки данных на сервер
-    alert('Настройки модели отправлены на сервер')
+    // Открываем модальное окно с результатами вместо alert
+    setIsResultsModalOpen(true)
   }
 
   // Сброс настроек
@@ -227,6 +303,7 @@ export const RModelSettingsModule: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      <ModelResultsModal isOpen={isResultsModalOpen} onClose={closeModal} />
       <div className="flex w-full">
         <div className="flex flex-col items-start">
           <div className="text-xl font-bold leading-24 text-black-800">
@@ -286,10 +363,114 @@ export const RModelSettingsModule: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
-
             {/* Выбор переменных */}
             <div className="space-y-2">
-              <Label htmlFor="variables">Выбор переменных для модели</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="variables">Выбор переменных для модели</Label>
+                <Dialog
+                  open={isAddVariableOpen}
+                  onOpenChange={setIsAddVariableOpen}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-1"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Добавление нового показателя</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="variable-name">
+                          Название показателя
+                        </Label>
+                        <Input
+                          id="variable-name"
+                          value={newVariableName}
+                          onChange={(e) => setNewVariableName(e.target.value)}
+                          placeholder="Например: ИПЦ"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="variable-description">
+                          Описание показателя
+                        </Label>
+                        <Input
+                          id="variable-description"
+                          value={newVariableDescription}
+                          onChange={(e) =>
+                            setNewVariableDescription(e.target.value)
+                          }
+                          placeholder="Например: Индекс потребительских цен"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="variable-count">
+                          Количество наблюдений
+                        </Label>
+                        <Input
+                          id="variable-count"
+                          value={newVariableCount}
+                          onChange={(e) => setNewVariableCount(e.target.value)}
+                          placeholder="Введите число"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="variable-file">
+                          Загрузить данные (Excel)
+                        </Label>
+                        <div className="flex w-full items-center justify-center">
+                          <label
+                            htmlFor="variable-file"
+                            className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-gray-50 px-4 transition hover:bg-gray-100"
+                          >
+                            <div className="flex flex-col items-center justify-center pb-6 pt-5">
+                              <Upload className="mb-2 h-8 w-8 text-gray-400" />
+                              <p className="mb-2 text-sm text-gray-500">
+                                <span className="font-medium">
+                                  Нажмите для загрузки
+                                </span>{' '}
+                                или перетащите файл
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                Excel файл (XLSX, XLS)
+                              </p>
+                            </div>
+                            <Input
+                              id="variable-file"
+                              type="file"
+                              className="hidden"
+                              accept=".xlsx,.xls"
+                              onChange={handleFileChange}
+                            />
+                            {selectedFile && (
+                              <p className="mt-2 text-sm text-green-600">
+                                Выбран файл: {selectedFile.name}
+                              </p>
+                            )}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsAddVariableOpen(false)}
+                      >
+                        Отмена
+                      </Button>
+                      <Button variant={'primary'} onClick={handleAddVariable}>
+                        Добавить
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
               <div className="space-y-2 rounded-md border p-4">
                 {variables.map((variable) => (
                   <div
@@ -317,7 +498,6 @@ export const RModelSettingsModule: React.FC = () => {
                 ))}
               </div>
             </div>
-
             {/* Формула модели */}
             <div className="space-y-2">
               <Label htmlFor="formula">Формула модели (R синтаксис)</Label>
@@ -325,11 +505,10 @@ export const RModelSettingsModule: React.FC = () => {
                 id="formula"
                 value={formulaExpression}
                 onChange={(e) => setFormulaExpression(e.target.value)}
-                placeholder="Например: y ~ x1 + x2"
+                placeholder="Например: PD_TTC (0) ~ x1 + x2"
                 className="font-mono"
               />
             </div>
-
             {/* Логарифмирование */}
             <div className="flex items-center justify-between">
               <Label htmlFor="log-transform" className="flex-1">
@@ -338,10 +517,9 @@ export const RModelSettingsModule: React.FC = () => {
               <Switch
                 id="log-transform"
                 checked={useLogarithm}
-                onCheckedChange={setUseLogarithm}
+                onCheckedChange={handleLogarithmToggle}
               />
             </div>
-
             {/* Отбор переменных */}
             <div className="space-y-2">
               <Label htmlFor="variableSelection">Метод отбора переменных</Label>
@@ -360,9 +538,8 @@ export const RModelSettingsModule: React.FC = () => {
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Кросс-валидация */}
-            <div className="flex items-center justify-between">
+            {/* Кросс-валидация закомментирована по требованию */}
+            {/* <div className="flex items-center justify-between">
               <Label htmlFor="cross-validation" className="flex-1">
                 Кросс-валидация
               </Label>
@@ -371,10 +548,9 @@ export const RModelSettingsModule: React.FC = () => {
                 checked={crossValidation}
                 onCheckedChange={setCrossValidation}
               />
-            </div>
-
+            </div> */}
             {/* Количество фолдов кросс-валидации */}
-            {crossValidation && (
+            {/* {crossValidation && (
               <div className="space-y-2">
                 <Label htmlFor="cv-folds">Количество фолдов</Label>
                 <Input
@@ -386,7 +562,7 @@ export const RModelSettingsModule: React.FC = () => {
                   onChange={(e) => setCvFolds(parseInt(e.target.value))}
                 />
               </div>
-            )}
+            )} */}
           </CardContent>
         </TabsContent>
 

@@ -18,7 +18,6 @@ import {
 import { debtorTypeNames } from '@/modules/ImportModalModule/ImportModalModule'
 
 interface ReportFormProps {
-  type: ReportType
   reportDetails: ReportDetails
   onDetailsChange: (details: ReportDetails) => void
   onNext: () => void
@@ -30,9 +29,9 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   onDetailsChange,
   onNext,
   onCancel,
-  type,
 }) => {
-  const isDetailsValid = reportDetails.name.length > 0
+  const isDetailsValid =
+    reportDetails.name.length > 0 && reportDetails.type !== ''
 
   return (
     <div className="py-4">
@@ -48,8 +47,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
 
       <div className="mb-4">
         <Select
-          value={debtorTypeNames[type]}
-          disabled={true}
+          value={reportDetails.type}
           onValueChange={(value) =>
             onDetailsChange({ ...reportDetails, type: value as ReportType })
           }

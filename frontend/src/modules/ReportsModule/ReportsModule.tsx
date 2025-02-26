@@ -28,9 +28,12 @@ export const ReportsModule: FC<ProfileReportsProps> = ({ data }) => {
       setSelectedData({ date: foundReport.date, name: foundReport.title })
     }
     navigate({
-      to: `/reports/${reportId}/credit-type`,
-      search: { id: reportId },
+      to: `/reports/${reportId}/dashboard`,
     }).then((r) => console.log(r))
+    // navigate({
+    //   to: `/reports/${reportId}/credit-type`,
+    //   search: { id: reportId },
+    // }).then((r) => console.log(r))
   }
 
   return (
