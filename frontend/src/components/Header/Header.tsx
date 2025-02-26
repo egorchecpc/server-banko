@@ -95,13 +95,6 @@ export const Header: FC<HeaderProps> = ({
                     <Button variant="primary" className="w-full">
                       Сохранить отчёт
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={handleCreditTypeClick}
-                    >
-                      Выбрать тип кредита
-                    </Button>
                   </div>
                 </div>
               </PopoverContent>
