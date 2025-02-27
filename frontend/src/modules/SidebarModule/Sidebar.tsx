@@ -109,7 +109,8 @@ export const AppSidebar: FC = () => {
 
       console.log('Все данные успешно отправлены')
       await queryClient.invalidateQueries({ queryKey: ['ProfileReportsData'] })
-      await queryClient.invalidateQueries({ queryKey: ['dashboardData'] })
+      await queryClient.invalidateQueries({ queryKey: ['ECLDataV1'] })
+      await queryClient.invalidateQueries({ queryKey: ['ECLDataV2'] })
       await router.navigate({ to: `/reports/${reportId}/dashboard` })
     } catch (error) {
       console.error('Ошибка при отправке данных:', error)

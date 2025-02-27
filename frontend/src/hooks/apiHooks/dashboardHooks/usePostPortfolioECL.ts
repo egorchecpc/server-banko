@@ -9,7 +9,7 @@ interface SummaryResponse {
 
 export const usePostPortfolio = (date: string) => {
   const queryClient = useQueryClient()
-  const previousECLData = queryClient.getQueryData(['ECLDataV2']) as ECLData
+  const previousECLData = queryClient.getQueryData(['ECLDataV2', date]) as ECLData
   const { mutate, isPending, isSuccess, isError, error } = useMutation<
     SummaryResponse,
     Error
@@ -21,8 +21,8 @@ export const usePostPortfolio = (date: string) => {
       return data
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['ECLDataV2'] })
-      const newECLData = queryClient.getQueryData(['ECLDataV2']) as ECLData
+      await queryClient.invalidateQueries({ queryKey: ['ECLDataV2', date] })
+      const newECLData = queryClient.getQueryData(['ECLDataV2', date]) as ECLData
       if (previousECLData && newECLData) {
         const diff = calculateECLDiff(previousECLData, newECLData)
         queryClient.setQueryData(['eclDiff2'], diff)
