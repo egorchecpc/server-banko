@@ -36,7 +36,7 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
       <div className="mt-8 flex items-center justify-center">
         <div className="w-full max-w-md rounded-2xl bg-white px-12 py-7">
           <div className="mb-4 text-center text-[24px] font-semibold">
-            Выберите тип кредита
+            Выберите вид кредита
           </div>
 
           <div className="mb-6 grid grid-cols-2 gap-6">

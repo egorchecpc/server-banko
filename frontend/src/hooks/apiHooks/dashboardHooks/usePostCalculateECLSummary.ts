@@ -9,7 +9,10 @@ interface SummaryResponse {
 
 export const usePostSummary = (date: string) => {
   const queryClient = useQueryClient()
-  const previousECLData = queryClient.getQueryData(['ECLDataV1', date]) as ECLData
+  const previousECLData = queryClient.getQueryData([
+    'ECLDataV1',
+    date,
+  ]) as ECLData
   const { mutate, isPending, isSuccess, isError, error } = useMutation<
     SummaryResponse,
     Error
@@ -22,7 +25,10 @@ export const usePostSummary = (date: string) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['ECLDataV1', date] })
-      const newECLData = queryClient.getQueryData(['ECLDataV1', date]) as ECLData
+      const newECLData = queryClient.getQueryData([
+        'ECLDataV1',
+        date,
+      ]) as ECLData
       if (previousECLData && newECLData) {
         const diff = calculateECLDiff(previousECLData, newECLData)
         queryClient.setQueryData(['eclDiff1'], diff)

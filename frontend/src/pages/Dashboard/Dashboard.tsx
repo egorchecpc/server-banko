@@ -27,6 +27,12 @@ import {
   YearlyDataResponse,
 } from '@/models/PD'
 import { LGDItem } from '@/models/LGD'
+import {
+  processForecastData,
+  processQuarterlyData,
+  processYearlyData,
+} from '@/modules/PDDisplayModule/multiplyPd'
+import { processLgdData } from '@/components/Tables/LGDTable/multiplyLGD'
 
 interface VisibilitySettings {
   pd: boolean
@@ -129,10 +135,12 @@ export const DashboardPage = () => {
             {creditTypes.map((type, index) => (
               <div key={`pd-${type}-${index}`}>
                 <PDDisplayModule
-                  yearlyPDData={data.yearlyPDData as YearlyDataResponse}
-                  quarterlyPDData={
+                  yearlyPDData={processYearlyData(
+                    data.yearlyPDData as YearlyDataResponse
+                  )}
+                  quarterlyPDData={processQuarterlyData(
                     data.quarterlyPDData as QuarterlyDataResponse
-                  }
+                  )}
                   forecastPDData={data.forecastPDData as ForecastDataResponse}
                   customTitle={type}
                 />
@@ -147,7 +155,10 @@ export const DashboardPage = () => {
           <div className="mb-3"></div>
           {creditTypes.map((type, index) => (
             <div key={`lgd-${type}-${index}`}>
-              <LGDTable data={data.LGDData as LGDItem[]} customTitle={type} />
+              <LGDTable
+                data={processLgdData(data.LGDData as LGDItem[])}
+                customTitle={type}
+              />
               {index < creditTypes.length - 1 && <div className="mb-3"></div>}
             </div>
           ))}
