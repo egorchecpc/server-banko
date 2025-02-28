@@ -39,13 +39,14 @@ const categories = [
 ] as const
 
 const PDDisplayModule: FC<PDDisplayModuleProps> = ({
-  yearlyPDData,
-  quarterlyPDData,
-  forecastPDData,
-  customTitle = '',
-}) => {
+                                                     yearlyPDData,
+                                                     quarterlyPDData,
+                                                     forecastPDData,
+                                                     customTitle = '',
+                                                   }) => {
   const [deltaMode, setDeltaMode] = useState(false)
   const [displayQuarterly, setDisplayQuarterly] = useState(false)
+  const [showHistoricalTCC, setShowHistoricalTCC] = useState(false)
   const [isChartModalOpen, setIsChartModalOpen] = useState(false)
   const { t } = useTranslation()
 
@@ -57,46 +58,68 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
     moreThen90: t('categories.moreThen90Percent'),
   }
   const renderSettings = (
-    onDeltaChange: () => void,
-    onQuarterlyChange: () => void
+      onDeltaChange: () => void,
+      onQuarterlyChange: () => void,
+      onHistoricalTCCChange: () => void
   ) => (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
-          <GearIcon />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem onSelect={(event) => event.preventDefault()}>
-          <div className="flex items-center gap-11">
-            <div className="w-full">
-              {t('dashboard.tables.pdTable.buttons.deltaBtn')}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
+            <GearIcon />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onSelect={(event) => event.preventDefault()}>
+            <div className="flex items-center gap-11">
+              <div className="w-full">
+                {t('dashboard.tables.pdTable.buttons.deltaBtn')}
+              </div>
+              <Switch checked={deltaMode} onCheckedChange={onDeltaChange} />
             </div>
-            <Switch checked={deltaMode} onCheckedChange={onDeltaChange} />
-          </div>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={(event) => event.preventDefault()}>
-          <div className="flex items-center gap-2">
-            <div className="w-full">
-              {t('dashboard.tables.pdTable.buttons.qBtn')}
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={(event) => event.preventDefault()}>
+            <div className="flex items-center gap-2">
+              <div className="w-full">
+                {t('dashboard.tables.pdTable.buttons.qBtn')}
+              </div>
+              <Switch
+                  checked={displayQuarterly}
+                  onCheckedChange={onQuarterlyChange}
+              />
             </div>
-            <Switch
-              checked={displayQuarterly}
-              onCheckedChange={onQuarterlyChange}
-            />
-          </div>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => setIsChartModalOpen(true)}>
-          {t('dashboard.tables.pdTable.buttons.chartBtn')}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={(event) => event.preventDefault()}>
+            <div className="flex items-center gap-2">
+              <div className="w-full">
+                {t('dashboard.tables.pdTable.buttons.historicalTCCBtn') ||
+                    'PD TCC Historical'}
+              </div>
+              <Switch
+                  checked={showHistoricalTCC}
+                  onCheckedChange={onHistoricalTCCChange}
+              />
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setIsChartModalOpen(true)}>
+            {t('dashboard.tables.pdTable.buttons.chartBtn')}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
   )
 
   const prepareTableData = () => {
+    // Apply historical filter if needed
+    const filteredYearlyData = Object.entries(yearlyPDData).filter(([year]) => {
+      // If showHistoricalTCC is false, filter out years 2021-2023
+      if (!showHistoricalTCC) {
+        return !['year2021', 'year2022', 'year2023'].includes(year)
+      }
+      return true
+    })
+
     if (!displayQuarterly) {
-      return Object.entries(yearlyPDData).map(([year, { cpd }]) => ({
+      return filteredYearlyData.map(([year, { cpd }]) => ({
         ...cpd,
         year: year.replace('year', ''),
         isYearly: true,
@@ -104,33 +127,33 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
     }
 
     const quarterlyData = Object.entries(quarterlyPDData).flatMap(
-      ([yearKey, quarterData]) => {
-        const year = yearKey.replace('year', '')
+        ([yearKey, quarterData]) => {
+          const year = yearKey.replace('year', '')
 
-        if (!Array.isArray(quarterData)) {
-          console.warn(`No quarterly data for year ${year}`)
-          return []
+          if (!Array.isArray(quarterData)) {
+            console.warn(`No quarterly data for year ${year}`)
+            return []
+          }
+
+          return quarterData.map((quarterItem) => ({
+            ...quarterItem,
+            year,
+            isYearly: false,
+          }))
         }
-
-        return quarterData.map((quarterItem) => ({
-          ...quarterItem,
-          year,
-          isYearly: false,
-        }))
-      }
     )
 
     const quarterlyYears = new Set(
-      Object.keys(quarterlyPDData).map((year) => year.replace('year', ''))
+        Object.keys(quarterlyPDData).map((year) => year.replace('year', ''))
     )
 
-    const yearlyDataFiltered = Object.entries(yearlyPDData)
-      .filter(([year]) => !quarterlyYears.has(year.replace('year', '')))
-      .map(([year, { cpd }]) => ({
-        ...cpd,
-        year: year.replace('year', ''),
-        isYearly: true,
-      }))
+    const yearlyDataFiltered = filteredYearlyData
+        .filter(([year]) => !quarterlyYears.has(year.replace('year', '')))
+        .map(([year, { cpd }]) => ({
+          ...cpd,
+          year: year.replace('year', ''),
+          isYearly: true,
+        }))
 
     const allData = [...quarterlyData, ...yearlyDataFiltered]
 
@@ -140,50 +163,54 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
   const tableData = prepareTableData()
 
   return (
-    <ContainerComponent withBg={true}>
-      <ContainerHeader>
-        <div className="flex items-center justify-between">
-          <div className="text-xl font-bold leading-24 text-black-800">
-            {customTitle
-              ? `PD ${customTitle}`
-              : t('dashboard.tables.pdTable.cPDTitle')}
+      <ContainerComponent withBg={true}>
+        <ContainerHeader>
+          <div className="flex items-center justify-between">
+            <div className="text-xl font-bold leading-24 text-black-800">
+              {customTitle
+                  ? `PD ${customTitle}`
+                  : t('dashboard.tables.pdTable.cPDTitle')}
+            </div>
+            {renderSettings(
+                () => setDeltaMode(!deltaMode),
+                () => setDisplayQuarterly(!displayQuarterly),
+                () => setShowHistoricalTCC(!showHistoricalTCC)
+            )}
           </div>
-          {renderSettings(
-            () => setDeltaMode(!deltaMode),
-            () => setDisplayQuarterly(!displayQuarterly)
-          )}
-        </div>
-      </ContainerHeader>
-      <ContainerBody isScrolling={true}>
-        <PDTable
-          data={tableData}
-          deltaMode={deltaMode}
-          displayQuarterly={displayQuarterly}
-        />
-      </ContainerBody>
-      <PDChartsModal
-        isOpen={isChartModalOpen}
-        onClose={() => setIsChartModalOpen(false)}
-      >
-        {categories.map((category) => {
-          const chartData = Object.entries(forecastPDData).map(
-            ([yearKey, { cpd, mpd }]) => ({
-              period: yearKey.replace('year', ''),
-              cPD: Number(cpd[category] ?? 0),
-              mPD: Number(mpd[category] ?? 0),
-            })
-          )
+        </ContainerHeader>
+        <ContainerBody isScrolling={true}>
+          <PDTable
+              data={tableData}
+              deltaMode={deltaMode}
+              displayQuarterly={displayQuarterly}
+          />
+        </ContainerBody>
+        <PDChartsModal
+            isOpen={isChartModalOpen}
+            onClose={() => setIsChartModalOpen(false)}
+        >
+          {categories
+              .filter((category) => category !== 'moreThen90')
+              .map((category) => {
+                console.log(category)
+                const chartData = Object.entries(forecastPDData).map(
+                    ([yearKey, { cpd, mpd }]) => ({
+                      period: yearKey.replace('year', ''),
+                      cPD: Number(cpd[category] ?? 0),
+                      mPD: Number(mpd[category] ?? 0),
+                    })
+                )
 
-          return (
-            <PDChart
-              key={category}
-              title={`${categoryName[category]}`}
-              data={chartData}
-            />
-          )
-        })}
-      </PDChartsModal>
-    </ContainerComponent>
+                return (
+                    <PDChart
+                        key={category}
+                        title={`${categoryName[category]}`}
+                        data={chartData}
+                    />
+                )
+              })}
+        </PDChartsModal>
+      </ContainerComponent>
   )
 }
 
