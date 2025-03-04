@@ -36,7 +36,7 @@ const AuthPage = () => {
       )
       setIsLoading((prev) => !prev)
       localStorage.setItem('token', response.data.token)
-      navigate({ to: '/apps' })
+      navigate({ to: '/test' })
     } catch (err) {
       setError('Неверный email или пароль')
       console.log(err)
