@@ -44,7 +44,7 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
   forecastPDData,
   customTitle = '',
 }) => {
-  const [deltaMode, setDeltaMode] = useState(false)
+  const [deltaMode, setDeltaMode] = useState(true)
   const [displayQuarterly, setDisplayQuarterly] = useState(false)
   const [showHistoricalTCC, setShowHistoricalTCC] = useState(false)
   const [isChartModalOpen, setIsChartModalOpen] = useState(false)

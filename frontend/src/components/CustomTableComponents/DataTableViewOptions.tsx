@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface DataTableViewOptionsProps<TData, TTitles> {
@@ -22,6 +22,14 @@ export function DataTableViewOptions<TData, TTitles>({
   titles,
 }: DataTableViewOptionsProps<TData, TTitles>) {
   const { t } = useTranslation()
+
+  useEffect(() => {
+    const mpdColumn = table.getAllColumns().find((col) => col.id === 'mpd')
+    if (mpdColumn && mpdColumn.getIsVisible()) {
+      mpdColumn.toggleVisibility(false)
+    }
+  }, [table])
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

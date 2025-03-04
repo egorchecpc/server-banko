@@ -1,6 +1,13 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { DataTableColumnHeader } from '@/components/CustomTableComponents/DataTableColumnHeader'
 import { CreditListData } from '@/models/CreditList'
+import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
+
+const stageIcons = {
+  '1': <CheckCircle className="h-5 w-5 text-green-500" />, // Первая стадия - зеленый
+  '2': <AlertTriangle className="h-5 w-5 text-yellow-500" />, // Вторая стадия - желтый
+  '3': <XCircle className="h-5 w-5 text-red-500" />, // Третья стадия - красный
+}
 
 const customFilterFn = (
   row: Row<CreditListData>,
@@ -104,11 +111,39 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Стадия" allowHide={true} />
     ),
-    cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
-        {row.getValue('stage')}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const stage = row.getValue<string>('stage')
+      let barColor = ''
+
+      switch (stage) {
+        case '1':
+          barColor = 'bg-green-500'
+          break
+        case '2':
+          barColor = 'bg-yellow-500'
+          break
+        case '3':
+          barColor = 'bg-red-500'
+          break
+        default:
+          barColor = 'bg-gray-500'
+      }
+
+      return (
+        <div className="flex h-10 w-full items-center px-2">
+          {stageIcons[stage]}
+          <div className="ml-2 flex w-full flex-col space-y-1">
+            <div className="text-sm font-medium">{`Стадия ${stage}`}</div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+              <div
+                className={`h-full rounded-full ${barColor}`}
+                style={{ width: '100%' }}
+              />
+            </div>
+          </div>
+        </div>
+      )
+    },
     enableSorting: false,
     enableHiding: true,
   },
@@ -244,7 +279,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       </div>
     ),
     enableSorting: false,
-    enableHiding: false,
+    enableHiding: true,
   },
 ]
 

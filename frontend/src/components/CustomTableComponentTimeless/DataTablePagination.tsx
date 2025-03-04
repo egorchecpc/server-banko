@@ -52,7 +52,7 @@ export function DataTablePagination({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[7.5rem] items-center justify-center text-sm font-medium">
+        <div className="flex w-[8rem] items-center justify-center text-sm font-medium">
           {t('customTable.pagination.page')} {currentPage + 1} из {totalPages}
         </div>
         <div className="flex items-center space-x-2">

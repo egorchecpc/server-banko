@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import {
   Table,
   TableBody,
@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { ECLData, StageData } from '@/models/ECL'
+import { Button } from '@/components/ui/button'
 
 interface ECLTableProps {
   data: ECLData
@@ -78,13 +79,19 @@ const renderStageCells = (
 )
 
 const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
+  const [expandedRows, setExpandedRows] = useState<Record<number, boolean>>({})
+
+  const toggleRow = (index: number) => {
+    setExpandedRows((prev) => ({ ...prev, [index]: !prev[index] }))
+  }
+
   return (
     <Table className="table-auto bg-white">
       <TableHeader>
         <TableRow className="border-b hover:bg-transparent">
           <TableHead
             rowSpan={2}
-            className="bg-muted w-52 min-w-52 max-w-52 border text-left font-bold"
+            className="bg-muted w-56 min-w-56 max-w-56 border text-left font-bold"
           >
             <div className="flex items-center justify-between">
               <span>{isFirst ? 'Виды кредитов' : 'Категория'}</span>
@@ -129,38 +136,73 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
         {data.map((row, index) => {
           const diffRow = eclDiff?.[index]
           return (
-            <TableRow
-              key={index}
-              className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
-            >
-              <TableCell
-                className={`w-48 min-w-48 max-w-48 border-0 text-left ${
-                  row.creditType === TOTAL_LABEL ? 'font-bold' : 'font-medium'
-                }`}
+            <React.Fragment key={index}>
+              <TableRow
+                className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
               >
-                {row.creditType}
-              </TableCell>
-              {STAGES.map((stage) => (
-                <React.Fragment key={stage.key}>
-                  {renderStageCells(
-                    row[stage.key],
-                    diffRow?.[stage.key],
-                    showDelta
+                <TableCell className="w-48 min-w-48 max-w-48 border-0 text-left font-medium">
+                  {isFirst && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleRow(index)}
+                      className="mr-2"
+                    >
+                      {expandedRows[index] ? '▼' : '▶'}
+                    </Button>
                   )}
-                </React.Fragment>
-              ))}
-              <TableCell className="border-x text-center font-bold">
-                {row.total.balance}
-              </TableCell>
-              <TableCell className="border-x text-center font-bold">
-                {showDelta && diffRow
-                  ? renderCellWithDelta(
-                      row.total.reserve,
-                      diffRow.total.reserve
-                    )
-                  : row.total.reserve}
-              </TableCell>
-            </TableRow>
+                  {row.creditType}
+                </TableCell>
+                {STAGES.map((stage) => (
+                  <React.Fragment key={stage.key}>
+                    {renderStageCells(
+                      row[stage.key],
+                      diffRow?.[stage.key],
+                      showDelta
+                    )}
+                  </React.Fragment>
+                ))}
+                <TableCell className="border-x text-center font-bold">
+                  {row.total.balance}
+                </TableCell>
+                <TableCell className="border-x text-center font-bold">
+                  {showDelta && diffRow
+                    ? renderCellWithDelta(
+                        row.total.reserve,
+                        diffRow.total.reserve
+                      )
+                    : row.total.reserve}
+                </TableCell>
+              </TableRow>
+
+              {isFirst &&
+                expandedRows[index] &&
+                [1, 2, 3].map((i) => (
+                  <TableRow
+                    key={`product-${index}-${i}`}
+                    className="border-none bg-gray-50"
+                  >
+                    <TableCell className="border-none pl-8 text-left">
+                      Продукт {i}
+                    </TableCell>
+                    {STAGES.map(() => (
+                      <>
+                        <TableCell className="border-x text-center">
+                          0
+                        </TableCell>
+                        <TableCell className="border-x text-center">
+                          0
+                        </TableCell>
+                        <TableCell className="border-x text-center">
+                          0
+                        </TableCell>
+                      </>
+                    ))}
+                    <TableCell className="border-x text-center">0</TableCell>
+                    <TableCell className="border-x text-center">0</TableCell>
+                  </TableRow>
+                ))}
+            </React.Fragment>
           )
         })}
       </TableBody>

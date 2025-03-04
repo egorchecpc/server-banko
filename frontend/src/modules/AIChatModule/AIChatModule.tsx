@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 import { useChat } from '@/context/ai-context'
 
 // API URL for backend
-const API_URL = 'http://localhost:3000'
+const API_URL = 'https://banko-backend.stacklevel.group'
 
 interface Message {
   role: 'user' | 'assistant' | 'function'

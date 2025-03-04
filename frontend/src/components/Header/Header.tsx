@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { Navbar } from '@/components/Navbar/Navbar'
 import UserNav from '@/components/UserNav/UserNav'
 import { SidebarTrigger } from '@/components/ui/sidebar'
@@ -65,11 +65,7 @@ export const Header: FC<HeaderProps> = ({
               Назад
             </Button>
           )}
-          {withLogo && (
-            <h2 className="text-2xl font-extrabold leading-9 text-blue-900">
-              ЛОГО
-            </h2>
-          )}
+          {withLogo && <img src="/img/logo.png" alt="BANKO" className="h-16" />}
           {!withoutSidebar && <SidebarTrigger />}
           {!withoutNav && navItems && <Navbar navItems={navItems} />}
         </div>

@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/sidebar'
 import { DebtorForm } from '@/modules/SidebarModule/DebtorForm/DebtorForm'
 import { MacroSettingsComponent } from '@/modules/SidebarModule/MacroSettings/MacroSettings'
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { getYearArray } from '@/utils/getDate'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatMacroDataToServer } from '@/utils/formatMacroDataToServer'
@@ -132,9 +132,7 @@ export const AppSidebar: FC = () => {
         <ScrollArea className="flex-1">
           {isLoading ? <LoadingSpinner /> : ''}
           <div className="flex h-full flex-col items-center">
-            <h2 className="pb-6 pt-2 text-2xl font-extrabold leading-9 text-blue-900">
-              ЛОГО
-            </h2>
+            <img src="/img/logo.png" alt="BANKO" className="h-24" />
 
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">
               <div className="rounded-lg bg-white p-4">
