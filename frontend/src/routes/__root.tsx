@@ -13,9 +13,9 @@ function RootComponent() {
   return (
     <ReportIdProvider>
       <ReportProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="app mx-auto flex min-h-screen w-full">
           <Outlet />
-          <TanStackRouterDevtools position="bottom-right" />
+          {/*<TanStackRouterDevtools position="bottom-right" />*/}
           <ScrollToTop />
           <Toaster expand={true} position="bottom-right" richColors />
         </div>

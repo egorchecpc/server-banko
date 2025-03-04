@@ -54,6 +54,25 @@ export const AppSidebar: FC = () => {
     }
 
     try {
+      await new Promise<void>((resolve, reject) => {
+        postSummary(undefined, {
+          onSuccess: () => {
+            console.log('Summary successfully posted')
+            resolve()
+          },
+          onError: (error) => reject(error),
+        })
+      })
+
+      await new Promise<void>((resolve, reject) => {
+        postPortfolio(undefined, {
+          onSuccess: () => {
+            console.log('Portfolio successfully posted')
+            resolve()
+          },
+          onError: (error) => reject(error),
+        })
+      })
       await Promise.all([
         new Promise<void>((resolve, reject) => {
           if (!debtorData) {
@@ -87,25 +106,6 @@ export const AppSidebar: FC = () => {
           })
         }),
       ])
-      await new Promise<void>((resolve, reject) => {
-        postSummary(undefined, {
-          onSuccess: () => {
-            console.log('Summary successfully posted')
-            resolve()
-          },
-          onError: (error) => reject(error),
-        })
-      })
-
-      await new Promise<void>((resolve, reject) => {
-        postPortfolio(undefined, {
-          onSuccess: () => {
-            console.log('Portfolio successfully posted')
-            resolve()
-          },
-          onError: (error) => reject(error),
-        })
-      })
 
       console.log('Все данные успешно отправлены')
       await queryClient.invalidateQueries({ queryKey: ['ProfileReportsData'] })
@@ -126,7 +126,7 @@ export const AppSidebar: FC = () => {
   const years = getYearArray(true, true, 4)
 
   return (
-    <Sidebar>
+    <Sidebar className="h-full">
       <SidebarHeader />
       <SidebarContent>
         <ScrollArea className="flex-1">

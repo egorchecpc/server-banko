@@ -15,20 +15,19 @@ interface ChartProps {
   data: Array<{
     period: string // Годы по оси X
     cPD: number // Значения для cPD
-    mPD: number // Значения для mPD
+    mPD: number
   }>
 }
 
 const PDChart: FC<ChartProps> = ({ title, data }) => {
   const colors = {
     cPD: 'var(--chart80)',
-    mPD: 'var(--chart40)',
+    mPD: 'lightblue',
   }
-
   return (
     <div className="mb-6">
       <h2 className="mb-4 text-center text-lg font-semibold">{title}</h2>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={300} className="px-20">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis

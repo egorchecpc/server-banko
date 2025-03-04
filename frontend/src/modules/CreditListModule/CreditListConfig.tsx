@@ -191,7 +191,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
         {row.getValue('expectedCreditLossesAmount')}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {
@@ -201,10 +201,32 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
     ),
     cell: ({ row }) => {
       const value = row.getValue<number>('reservationPercentage')
-      const formattedValue = (value * 100).toFixed(2)
+      const percentage = value * 100
+      const formattedValue = percentage.toFixed(2)
+
+      // Определяем цвет в зависимости от значения
+      let barColor = ''
+      if (percentage < 15) {
+        barColor = 'bg-green-500' // низкий - зеленый
+      } else if (percentage >= 15 && percentage <= 35) {
+        barColor = 'bg-yellow-500' // средний - желтый
+      } else {
+        barColor = 'bg-red-500' // высокий - красный
+      }
+
       return (
-        <div className="flex h-10 items-center justify-center">
-          {formattedValue}%
+        <div className="flex h-10 w-full items-center justify-start px-2">
+          <div className="flex w-full flex-col space-y-1">
+            <div className="flex items-center justify-between">
+              <div className="text-sm font-medium">{formattedValue}%</div>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+              <div
+                className={`h-full rounded-full ${barColor}`}
+                style={{ width: `${Math.min(percentage, 100)}%` }}
+              />
+            </div>
+          </div>
         </div>
       )
     },

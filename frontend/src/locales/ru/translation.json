@@ -49,10 +49,10 @@
 
         "types": { "type1": "cPD", "type2": "mPD" },
         "buttons": {
-          "qBtn": "PD TCC исторический (по кварталам)",
+          "qBtn": "PD_TCC (по кварталам)",
           "deltaBtn": "Отображение разниц",
           "chartBtn": "Графическое отображение",
-          "historicalTCCBtn": "PD TCC исторический (по годам)"
+          "historicalTCCBtn": "PD_TCC (по годам)"
         }
       },
       "lgdTable": {

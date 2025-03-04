@@ -28,7 +28,6 @@ import {
 } from '@/models/PD'
 import { LGDItem } from '@/models/LGD'
 import {
-  processForecastData,
   processQuarterlyData,
   processYearlyData,
 } from '@/modules/PDDisplayModule/multiplyPd'
@@ -52,7 +51,6 @@ export const creditType = {
 
 export const DashboardPage = () => {
   const { t } = useTranslation()
-
   const { reportId } = useParams({ strict: false })
   const { report } = useReportDataWithValidation(reportId || '')
   const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')

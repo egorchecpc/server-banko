@@ -23,10 +23,14 @@ import bodyParser from "body-parser";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
+import fs from 'fs'
+import { promisify } from "util";
+import { exec } from "child_process";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const execPromise = promisify(exec);
 const app = express();
 const port = 3000;
 
@@ -282,6 +286,163 @@ app.post('/exportcredit', (req, res) => {
     console.error('Export error:', error);
     res.status(500).json({ error: 'Ошибка при экспорте файла' });
   }
+});
+
+const createTempPythonScript = async (messages) => {
+  const scriptDir = path.join(__dirname, 'temp');
+  const scriptPath = path.join(scriptDir, `chat_${Date.now()}.py`);
+  
+  // Ensure the temp directory exists
+  if (!fs.existsSync(scriptDir)) {
+    fs.mkdirSync(scriptDir, { recursive: true });
+  }
+  
+  // Format messages for Python
+  const formattedMessages = messages.map(msg => {
+    if (msg.role === 'user') {
+      return `Messages(role=MessagesRole.USER, content="${msg.content.replace(/"/g, '\\"')}")`;
+    } else if (msg.role === 'assistant') {
+      return `Messages(role=MessagesRole.ASSISTANT, content="${msg.content.replace(/"/g, '\\"')}")`;
+    } else if (msg.role === 'function') {
+      return `Messages(role=MessagesRole.FUNCTION, content='${msg.content.replace(/'/g, "\\'")}', name="${msg.name || ''}")`;
+    }
+    return '';
+  }).filter(Boolean);
+
+  // Create Python script
+  const script = `
+import json
+import sys
+import os
+
+# Добавляем корневой каталог проекта в путь импорта
+sys.path.insert(0, "${__dirname.replace(/\\/g, '\\\\')}")
+from gigachat.models import Chat, Messages, MessagesRole
+from gigachat import GigaChat
+from functions.pd_functions.pd_yearly import pd_function, get_pd_data
+from functions.pd_functions.pd_quarterly import pd_quarterly_function, get_pd_quarterly_data
+from functions.pd_functions.pd_forecast import pd_forecast_function, get_pd_forecast_data
+
+try:
+    with GigaChat(
+        credentials="MTZiOWZkMjMtMzMzMS00NmM3LTg0ZjAtNWM0YmI2OTExZDZhOjFiOGUxYjc2LTVkNzYtNGQyMS1iNWYxLWVhMjIwYjUyMjczMg==",
+        model="GigaChat", 
+        verify_ssl_certs=False
+    ) as giga:
+        messages = [
+            ${formattedMessages.join(',\n            ')}
+        ]
+        
+        chat = Chat(messages=messages, functions=[pd_function, pd_quarterly_function, pd_forecast_function])
+        resp = giga.chat(chat).choices[0]
+        mess = resp.message
+        
+        result = {"content": mess.content}
+        
+        if resp.finish_reason == "function_call":
+            result["function_call"] = {
+                "name": mess.function_call.name,
+                "arguments": mess.function_call.arguments
+            }
+            
+            func_result = None
+            
+            if mess.function_call.name == "get_pd_data":
+                year = mess.function_call.arguments.get("year", None)
+                if year:
+                    func_result = get_pd_data(year)
+            
+            elif mess.function_call.name == "get_pd_forecast_data":
+                year = mess.function_call.arguments.get("year", None)
+                if year:
+                    func_result = get_pd_forecast_data(year)
+            
+            elif mess.function_call.name == "get_pd_quarterly_data":
+                year = mess.function_call.arguments.get("year", None)
+                quarter = mess.function_call.arguments.get("quarter", None)
+                if year and quarter:
+                    func_result = get_pd_quarterly_data(year, quarter)
+            
+            if func_result:
+                result["function_result"] = func_result
+                
+                # Добавляем результат функции в сообщения и отправляем еще один запрос для получения финального ответа
+                function_message = Messages(
+                    role=MessagesRole.FUNCTION,
+                    name=mess.function_call.name,
+                    content=json.dumps(func_result)
+                )
+                
+                # Создаем новый запрос с добавленным результатом функции
+                follow_up_messages = messages + [
+                    Messages(role=MessagesRole.ASSISTANT, content=result["content"], function_call={"name": mess.function_call.name, "arguments": mess.function_call.arguments}),
+                    function_message
+                ]
+                
+                follow_up_chat = Chat(messages=follow_up_messages)
+                follow_up_resp = giga.chat(follow_up_chat).choices[0]
+                result["final_response"] = follow_up_resp.message.content
+        
+        print(json.dumps(result))
+except Exception as e:
+    print(json.dumps({"error": str(e)}), file=sys.stderr)
+    sys.exit(1)
+  `;
+  
+  fs.writeFileSync(scriptPath, script);
+  return scriptPath;
+};
+
+// Chat API endpoint
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { messages } = req.body;
+    
+    // Create a temporary Python script
+    const scriptPath = await createTempPythonScript(messages);
+    
+    // Execute the Python script
+    const { stdout, stderr } = await execPromise(`python ${scriptPath}`);
+    
+    // Clean up temporary file
+    fs.unlinkSync(scriptPath);
+    
+    if (stderr) {
+      console.error('Python script error:', stderr);
+      return res.status(500).json({ error: 'Error executing GigaChat' });
+    }
+    
+    // Parse the result
+    const result = JSON.parse(stdout);
+    
+    if (result.error) {
+      return res.status(500).json({ error: result.error });
+    }
+    
+    const response = {};
+    
+    // Если есть финальный ответ после вызова функции, используем его
+    if (result.final_response) {
+      response.message = result.final_response;
+    } else {
+      response.message = result.content;
+    }
+    
+    // If there was a function call and result
+    if (result.function_result) {
+      response.functionResult = result.function_result;
+    }
+    
+    return res.status(200).json(response);
+  } catch (error) {
+    console.error('API handler error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
 });
 
 app.listen(port, () => {

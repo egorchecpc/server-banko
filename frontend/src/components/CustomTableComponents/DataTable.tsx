@@ -109,6 +109,7 @@ export function DataTable<TData extends { id: string }, TValue>({
   const TableContent = (
     <div
       className={`overflow-auto rounded-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}
+      style={{ userSelect: 'none' }}
     >
       <Table>
         <TableHeader>

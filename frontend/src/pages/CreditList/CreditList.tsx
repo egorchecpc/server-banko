@@ -1,5 +1,6 @@
 import { CreditListModule } from '@/modules/CreditListModule/CreditListModule'
 import { useGetCreditListData } from '@/hooks/apiHooks/dashboardHooks/useGetCreditListData'
+import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
 export const CreditListPage = () => {
   const {
@@ -11,7 +12,7 @@ export const CreditListPage = () => {
   const isError = creditListError
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingSpinner />
   }
   if (isError) {
     return <div>Error occurred while fetching data</div>
