@@ -11,11 +11,6 @@ export const useGetECLDataV1 = (date: string) => {
       const { data } = await axios.get(
         `https://banko-r-backend.stacklevel.group/api/ecl/summary?date=${date}`
       )
-      console.log('ECLDataV1', data)
-      console.log(
-        'ECLDataV1 transformed',
-        transformECLDataFromServer(data, ECLType.PRODUCT)
-      )
       return transformECLDataFromServer(data, ECLType.PRODUCT)
       //const { data } = await axios.get('http://localhost:3000/ecldata1')
       //return data

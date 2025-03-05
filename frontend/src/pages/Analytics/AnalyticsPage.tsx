@@ -13,6 +13,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  CartesianGrid,
 } from 'recharts'
 import {
   Select,
@@ -24,7 +25,8 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import Footer from '@/components/FooterComponent/Footer'
 
 // Mock data - replace with your actual data
 
@@ -125,6 +127,7 @@ const TransactionRiskChart = () => {
         <CardContent className="h-full">
           <ResponsiveContainer width="100%" height="85%" className="py-1.5">
             <BarChart data={transactionRiskData} barSize={30}>
+              <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis
                 label={{
@@ -223,71 +226,69 @@ const RiskyAssets = () => {
   )
 }
 
-const RiskByAccountChart = () => {
-  return (
-    <Card className="h-96 w-full">
-      <CardHeader>
-        <CardTitle>Risk by Account</CardTitle>
-      </CardHeader>
-      <CardContent className="flex h-full items-center justify-center">
-        <svg viewBox="0 0 400 400" width="100%" height="100%">
-          <circle cx="200" cy="200" r="180" fill="#f0f9ff" />
-          {/* Mock sunburst segments with different colors and sizes */}
-          <path
-            d="M200,200 L350,100 A180,180 0 0,1 320,320 Z"
-            fill="#10b981"
-            opacity="0.7"
-          />
-          <path
-            d="M200,200 L320,320 A180,180 0 0,1 80,320 Z"
-            fill="#34d399"
-            opacity="0.7"
-          />
-          <path
-            d="M200,200 L80,320 A180,180 0 0,1 50,100 Z"
-            fill="#6ee7b7"
-            opacity="0.7"
-          />
-          <text
-            x="200"
-            y="200"
-            textAnchor="middle"
-            dy=".3em"
-            className="text-sm"
-          >
-            Accounts
-          </text>
-        </svg>
-      </CardContent>
-    </Card>
-  )
-}
-
 // Risk Scatter Plot Component
 const RiskScatterPlot = () => {
-  // Mock data for scatter plot
+  // More realistic data representing credit volume, borrower income, and ECL (Expected Credit Loss)
   const scatterData = [
-    { x: 100, y: 200, z: 50 },
-    { x: 200, y: 150, z: 30 },
-    { x: 300, y: 250, z: 70 },
-    { x: 400, y: 100, z: 20 },
-    { x: 500, y: 300, z: 90 },
+    { x: 50000, y: 30000, z: 5, id: 1, risk: 'Низкий' },
+    { x: 120000, y: 45000, z: 15, id: 2, risk: 'Умеренный' },
+    { x: 200000, y: 60000, z: 25, id: 3, risk: 'Умеренный' },
+    { x: 300000, y: 75000, z: 40, id: 4, risk: 'Высокий' },
+    { x: 80000, y: 35000, z: 10, id: 5, risk: 'Низкий' },
+    { x: 180000, y: 55000, z: 30, id: 6, risk: 'Средний' },
+    { x: 250000, y: 65000, z: 35, id: 7, risk: 'Средний' },
+    { x: 400000, y: 90000, z: 50, id: 8, risk: 'Высокий' },
   ]
 
+  // Custom tooltip to display more information
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload
+      return (
+        <div className="rounded border bg-white p-4 shadow-lg">
+          <p className="font-bold">Кредитный профиль #{data.id}</p>
+          <p>Объем кредита: {data.x.toLocaleString()} руб.</p>
+          <p>Доход заемщика: {data.y.toLocaleString()} руб.</p>
+          <p>ECL: {data.z}%</p>
+          <p>Уровень риска: {data.risk}</p>
+        </div>
+      )
+    }
+    return null
+  }
+
   return (
-    <Card className="h-96 w-full">
+    <Card className="h-[550px] w-full">
       <CardHeader>
-        <CardTitle>Risk Distribution</CardTitle>
+        <div className="text-xl font-bold leading-38 text-black-900">
+          Анализ кредитных рисков
+        </div>
       </CardHeader>
       <CardContent className="h-full">
         <ResponsiveContainer width="100%" height="85%">
-          <ScatterChart>
-            <XAxis type="number" dataKey="x" name="X" />
-            <YAxis type="number" dataKey="y" name="Y" />
-            <ZAxis type="number" dataKey="z" range={[10, 100]} />
-            <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+          <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              type="number"
+              dataKey="x"
+              name="Объем кредита"
+              unit=" руб."
+              tickFormatter={(value) => `${(value / 1000).toFixed(0)} тыс.`}
+            />
+            <YAxis
+              type="number"
+              dataKey="y"
+              name="Доход заемщика"
+              unit=" руб."
+              tickFormatter={(value) => `${(value / 1000).toFixed(0)} тыс.`}
+            />
+            <ZAxis type="number" dataKey="z" range={[10, 100]} name="ECL" />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ strokeDasharray: '3 3' }}
+            />
             <Scatter
-              name="Risk Points"
+              name="Кредитные риски"
               data={scatterData}
               fill="#10b981"
               fillOpacity={0.7}
@@ -306,9 +307,9 @@ const CreditTypesSunburstChart = () => {
       value: 100,
       children: [
         { name: 'Ипотека', value: 25 },
-        { name: 'Авто', value: 20 },
-        { name: 'Потребительский', value: 15 },
-        { name: 'Кредитная карта', value: 10 },
+        { name: 'Авто', value: 25 },
+        { name: 'Потребительский', value: 25 },
+        { name: 'Кредитная карта', value: 25 },
       ],
     },
     {
@@ -316,9 +317,9 @@ const CreditTypesSunburstChart = () => {
       value: 100,
       children: [
         { name: 'Инвестиционный', value: 30 },
-        { name: 'Оборотный', value: 25 },
-        { name: 'Проектное финансирование', value: 20 },
-        { name: 'Овердрафт', value: 15 },
+        { name: 'Оборотный', value: 20 },
+        { name: 'Проектное финансирование', value: 25 },
+        { name: 'Овердрафт', value: 25 },
       ],
     },
     {
@@ -326,9 +327,9 @@ const CreditTypesSunburstChart = () => {
       value: 100,
       children: [
         { name: 'Краткосрочный', value: 35 },
-        { name: 'Долгосрочный', value: 25 },
-        { name: 'Overnight', value: 20 },
-        { name: 'Своп', value: 15 },
+        { name: 'Долгосрочный', value: 15 },
+        { name: 'Overnight', value: 25 },
+        { name: 'Своп', value: 25 },
       ],
     },
     {
@@ -338,7 +339,7 @@ const CreditTypesSunburstChart = () => {
         { name: 'Государственный', value: 20 },
         { name: 'Муниципальный', value: 25 },
         { name: 'Целевой', value: 30 },
-        { name: 'Экспортный', value: 15 },
+        { name: 'Экспортный', value: 25 },
       ],
     },
   ]
@@ -352,109 +353,152 @@ const CreditTypesSunburstChart = () => {
   )
 
   // Color palettes
-  const COLORS_INNER = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12']
+  const COLORS_INNER = [
+    '#1e90ff', // Dodger Blue
+    '#4169e1', // Royal Blue
+    '#0000cd', // Medium Blue
+    '#00008b', // Dark Blue
+  ]
   const COLORS_OUTER = [
-    '#85c1e9',
-    '#76d7c4',
-    '#f1948a',
-    '#f5cba7',
-    '#5dade2',
-    '#82e0aa',
-    '#f1948a',
-    '#f0b27a',
+    '#87cefa', // Light Sky Blue
+    '#87ceeb', // Sky Blue
+    '#6495ed', // Cornflower Blue
+    '#4682b4', // Steel Blue
+    '#5f9ea0', // Cadet Blue
+    '#4169e1', // Royal Blue
+    '#0080ff', // Azure
+    '#1e4d8c', // Dark Slate Blue
   ]
 
+  // Custom label for inner ring
+  const renderInnerLabel = ({ name, percent }) => {
+    return (
+      <text
+        x={0}
+        y={0}
+        fill="white"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize="12"
+      >
+        {`${name}\n${(percent * 100).toFixed(0)}%`}
+      </text>
+    )
+  }
+
+  // Custom label for outer ring
+  const renderOuterLabel = ({ name, percent, parentName }) => {
+    return `${parentName}: ${name} (${(percent * 100).toFixed(0)}%)`
+  }
+
   return (
-    <div className="relative h-[400px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          {/* Inner Ring (Credit Types) */}
-          <Pie
-            data={creditData}
-            dataKey="value"
-            nameKey="name"
-            startAngle={90}
-            endAngle={-270}
-            innerRadius={0}
-            outerRadius={100}
-            fill="#8884d8"
-            paddingAngle={2}
-            label={({ name, percent }) =>
-              `${name} (${(percent * 100).toFixed(0)}%)`
-            }
-            labelLine={false}
-          >
-            {creditData.map((entry, index) => (
-              <Cell
-                key={`inner-${index}`}
-                fill={COLORS_INNER[index % COLORS_INNER.length]}
-              />
-            ))}
-          </Pie>
+    <Card className="h-[550px] w-full space-y-4">
+      <CardHeader>
+        <div className="text-xl font-bold leading-38 text-black-900">
+          Диаграмма кредитных рисков
+        </div>
+      </CardHeader>
+      <div className="relative h-[400px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            {/* Inner Ring (Credit Types) */}
+            <Pie
+              data={creditData}
+              dataKey="value"
+              nameKey="name"
+              startAngle={90}
+              endAngle={-270}
+              innerRadius={0}
+              outerRadius={100}
+              fill="#8884d8"
+              paddingAngle={2}
+              label={renderInnerLabel}
+              labelLine={false}
+            >
+              {creditData.map((entry, index) => (
+                <Cell
+                  key={`inner-${index}`}
+                  fill={COLORS_INNER[index % COLORS_INNER.length]}
+                />
+              ))}
+            </Pie>
 
-          {/* Outer Ring (Product Types) */}
-          <Pie
-            data={outerData}
-            dataKey="value"
-            nameKey="name"
-            startAngle={90}
-            endAngle={-270}
-            innerRadius={110}
-            outerRadius={170}
-            fill="#82ca9d"
-            paddingAngle={2}
-            label={({ name, percent }) =>
-              `${name} (${(percent * 100).toFixed(0)}%)`
-            }
-            labelLine={true}
-          >
-            {outerData.map((entry, index) => (
-              <Cell
-                key={`outer-${index}`}
-                fill={COLORS_OUTER[index % COLORS_OUTER.length]}
-              />
-            ))}
-          </Pie>
+            {/* Outer Ring (Product Types) */}
+            <Pie
+              data={outerData}
+              dataKey="value"
+              nameKey="name"
+              startAngle={90}
+              endAngle={-270}
+              innerRadius={110}
+              outerRadius={170}
+              fill="#82ca9d"
+              paddingAngle={2}
+              label={renderOuterLabel}
+              labelLine={true}
+            >
+              {outerData.map((entry, index) => (
+                <Cell
+                  key={`outer-${index}`}
+                  fill={COLORS_OUTER[index % COLORS_OUTER.length]}
+                />
+              ))}
+            </Pie>
 
-          <Tooltip
-            formatter={(value, name, props) => [
-              value,
-              `${props.payload.parentName ? props.payload.parentName + ' - ' : ''}${name}`,
-            ]}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+            <Tooltip
+              formatter={(value, name, props) => [
+                value,
+                `${props.payload.parentName ? props.payload.parentName + ' - ' : ''}${name}`,
+              ]}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    </Card>
   )
 }
 
+const debtorTypeHelper = {
+  retail: 'розничных',
+  corporate: 'корпоративных',
+  interbank: 'межбанковских',
+  sovereign: 'суверенных',
+}
+
 const FinancialDashboard = () => {
+  const search: { type: string } = useSearch({
+    strict: false,
+  })
+  const navigate = useNavigate()
+  const handleContinue = () => {
+    navigate({ to: '/reports', search: { type: search.type } })
+  }
   return (
-    <div className="h-[180vh] w-full space-y-6 p-6">
+    <div className="h-[172vh] w-full space-y-6 p-6">
       <div className="flex items-center justify-between px-1.5">
         <div className="text-2xl font-bold leading-38 text-black-900">
-          Аналитика по портфелю
+          Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов
         </div>
-        <Button variant={'primary'}>
-          <Link to={'/apps'}>Перейти к отчётам</Link>
+        <Button variant={'primary'} onClick={handleContinue}>
+          Перейти к отчётам
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-6">
         <RiskSummaryCard
           value={14323.6}
-          label="Общая сумма розничных кредитов"
+          label="Общая сумма розничных кредитов в первой стадии"
           percentage={0.36}
           variant="high-risk"
         />
         <RiskSummaryCard
           value={45.92}
-          label="Общая сумма корпоративных кредитов"
+          label="Общая сумма розничных кредитов во второй стадии"
           percentage={0.25}
           variant="medium-risk"
         />
         <RiskSummaryCard
           value={44.7}
-          label="Общая сумма межбанковских кредитов"
+          label="Общая сумма розничных кредитов в третьей стадии"
           percentage={0.16}
           variant="low-risk"
         />
@@ -464,15 +508,15 @@ const FinancialDashboard = () => {
         <div className="col-span-9">
           <TransactionRiskChart />
         </div>
-        <div className="col-span-3">
+        <div className="col-span-3 mb-3">
           <RiskyAssets />
         </div>
       </div>
-
-      <div className="grid grid-cols-2 gap-6">
+      <div className="!mb-[80px] grid grid-cols-2 gap-6">
         <CreditTypesSunburstChart />
         <RiskScatterPlot />
       </div>
+      <Footer />
     </div>
   )
 }

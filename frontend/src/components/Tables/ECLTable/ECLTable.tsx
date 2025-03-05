@@ -141,7 +141,7 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
                 className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
               >
                 <TableCell className="w-48 min-w-48 max-w-48 border-0 text-left font-medium">
-                  {isFirst && (
+                  {isFirst && row.products && row.products.length > 0 && (
                     <Button
                       variant="ghost"
                       size="sm"
@@ -176,30 +176,36 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
               </TableRow>
 
               {isFirst &&
+                row.products &&
+                row.products.length > 0 &&
                 expandedRows[index] &&
-                [1, 2, 3].map((i) => (
+                row.products.map((product, productIndex) => (
                   <TableRow
-                    key={`product-${index}-${i}`}
+                    key={`product-${index}-${productIndex}`}
                     className="border-none bg-gray-50"
                   >
                     <TableCell className="border-none pl-8 text-left">
-                      Продукт {i}
+                      {product.product || 'Неизвестный продукт'}
                     </TableCell>
-                    {STAGES.map(() => (
-                      <>
+                    {STAGES.map((stage) => (
+                      <React.Fragment key={stage.key}>
                         <TableCell className="border-x text-center">
-                          0
+                          {formatCurrency(product.grossCarryingAmount || 0)}
                         </TableCell>
                         <TableCell className="border-x text-center">
-                          0
+                          {formatCurrency(product.estimatedReservation || 0)}
                         </TableCell>
                         <TableCell className="border-x text-center">
-                          0
+                          {formatPercent(product.reservationPercentage || 0)}
                         </TableCell>
-                      </>
+                      </React.Fragment>
                     ))}
-                    <TableCell className="border-x text-center">0</TableCell>
-                    <TableCell className="border-x text-center">0</TableCell>
+                    <TableCell className="border-x text-center">
+                      {formatCurrency(product.grossCarryingAmount || 0)}
+                    </TableCell>
+                    <TableCell className="border-x text-center">
+                      {formatCurrency(product.estimatedReservation || 0)}
+                    </TableCell>
                   </TableRow>
                 ))}
             </React.Fragment>
@@ -208,6 +214,18 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
       </TableBody>
     </Table>
   )
+}
+
+// Utility functions (since they're not imported)
+const formatCurrency = (value: number): string => {
+  return value.toLocaleString('ru-RU', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
+}
+
+const formatPercent = (value: number): string => {
+  return `${(value * 100).toFixed(1)}%`
 }
 
 export default ECLTable

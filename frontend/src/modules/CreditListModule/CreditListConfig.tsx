@@ -113,33 +113,12 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
     ),
     cell: ({ row }) => {
       const stage = row.getValue<string>('stage')
-      let barColor = ''
-
-      switch (stage) {
-        case '1':
-          barColor = 'bg-green-500'
-          break
-        case '2':
-          barColor = 'bg-yellow-500'
-          break
-        case '3':
-          barColor = 'bg-red-500'
-          break
-        default:
-          barColor = 'bg-gray-500'
-      }
 
       return (
         <div className="flex h-10 w-full items-center px-2">
           {stageIcons[stage]}
-          <div className="ml-2 flex w-full flex-col space-y-1">
+          <div className="ml-2 flex w-full flex-col">
             <div className="text-sm font-medium">{`Стадия ${stage}`}</div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
-              <div
-                className={`h-full rounded-full ${barColor}`}
-                style={{ width: '100%' }}
-              />
-            </div>
           </div>
         </div>
       )

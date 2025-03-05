@@ -18,8 +18,8 @@ import { Route as CustomLayoutImport } from './routes/_custom-layout'
 import { Route as ClearLayoutImport } from './routes/_clear-layout'
 import { Route as BasicLayoutImport } from './routes/_basic-layout'
 import { Route as IndexImport } from './routes/index'
-import { Route as MainLayoutTestImport } from './routes/_main-layout/test'
 import { Route as MainLayoutAppsImport } from './routes/_main-layout/apps'
+import { Route as MainLayoutAnalyzerImport } from './routes/_main-layout/analyzer'
 import { Route as ClearLayoutProfileImport } from './routes/_clear-layout/profile'
 import { Route as MainLayoutReportsIndexImport } from './routes/_main-layout/reports/index'
 import { Route as BasicLayoutReportsReportIdIndexImport } from './routes/_basic-layout/reports/$reportId/index'
@@ -67,13 +67,13 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const MainLayoutTestRoute = MainLayoutTestImport.update({
-  path: '/test',
+const MainLayoutAppsRoute = MainLayoutAppsImport.update({
+  path: '/apps',
   getParentRoute: () => MainLayoutRoute,
 } as any)
 
-const MainLayoutAppsRoute = MainLayoutAppsImport.update({
-  path: '/apps',
+const MainLayoutAnalyzerRoute = MainLayoutAnalyzerImport.update({
+  path: '/analyzer',
   getParentRoute: () => MainLayoutRoute,
 } as any)
 
@@ -189,18 +189,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClearLayoutProfileImport
       parentRoute: typeof ClearLayoutImport
     }
+    '/_main-layout/analyzer': {
+      id: '/_main-layout/analyzer'
+      path: '/analyzer'
+      fullPath: '/analyzer'
+      preLoaderRoute: typeof MainLayoutAnalyzerImport
+      parentRoute: typeof MainLayoutImport
+    }
     '/_main-layout/apps': {
       id: '/_main-layout/apps'
       path: '/apps'
       fullPath: '/apps'
       preLoaderRoute: typeof MainLayoutAppsImport
-      parentRoute: typeof MainLayoutImport
-    }
-    '/_main-layout/test': {
-      id: '/_main-layout/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof MainLayoutTestImport
       parentRoute: typeof MainLayoutImport
     }
     '/_main-layout/reports/': {
@@ -323,15 +323,15 @@ const LayoutWithoutSidebarRouteWithChildren =
   LayoutWithoutSidebarRoute._addFileChildren(LayoutWithoutSidebarRouteChildren)
 
 interface MainLayoutRouteChildren {
+  MainLayoutAnalyzerRoute: typeof MainLayoutAnalyzerRoute
   MainLayoutAppsRoute: typeof MainLayoutAppsRoute
-  MainLayoutTestRoute: typeof MainLayoutTestRoute
   MainLayoutReportsIndexRoute: typeof MainLayoutReportsIndexRoute
   MainLayoutReportsReportIdCreditTypeRoute: typeof MainLayoutReportsReportIdCreditTypeRoute
 }
 
 const MainLayoutRouteChildren: MainLayoutRouteChildren = {
+  MainLayoutAnalyzerRoute: MainLayoutAnalyzerRoute,
   MainLayoutAppsRoute: MainLayoutAppsRoute,
-  MainLayoutTestRoute: MainLayoutTestRoute,
   MainLayoutReportsIndexRoute: MainLayoutReportsIndexRoute,
   MainLayoutReportsReportIdCreditTypeRoute:
     MainLayoutReportsReportIdCreditTypeRoute,
@@ -346,8 +346,8 @@ export interface FileRoutesByFullPath {
   '': typeof MainLayoutRouteWithChildren
   '/auth': typeof AuthRoute
   '/profile': typeof ClearLayoutProfileRoute
+  '/analyzer': typeof MainLayoutAnalyzerRoute
   '/apps': typeof MainLayoutAppsRoute
-  '/test': typeof MainLayoutTestRoute
   '/reports': typeof MainLayoutReportsIndexRoute
   '/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
   '/reports/$reportId/credit-list': typeof ClearLayoutReportsReportIdCreditListRoute
@@ -363,8 +363,8 @@ export interface FileRoutesByTo {
   '': typeof MainLayoutRouteWithChildren
   '/auth': typeof AuthRoute
   '/profile': typeof ClearLayoutProfileRoute
+  '/analyzer': typeof MainLayoutAnalyzerRoute
   '/apps': typeof MainLayoutAppsRoute
-  '/test': typeof MainLayoutTestRoute
   '/reports': typeof MainLayoutReportsIndexRoute
   '/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
   '/reports/$reportId/credit-list': typeof ClearLayoutReportsReportIdCreditListRoute
@@ -385,8 +385,8 @@ export interface FileRoutesById {
   '/_main-layout': typeof MainLayoutRouteWithChildren
   '/auth': typeof AuthRoute
   '/_clear-layout/profile': typeof ClearLayoutProfileRoute
+  '/_main-layout/analyzer': typeof MainLayoutAnalyzerRoute
   '/_main-layout/apps': typeof MainLayoutAppsRoute
-  '/_main-layout/test': typeof MainLayoutTestRoute
   '/_main-layout/reports/': typeof MainLayoutReportsIndexRoute
   '/_basic-layout/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
   '/_clear-layout/reports/$reportId/credit-list': typeof ClearLayoutReportsReportIdCreditListRoute
@@ -404,8 +404,8 @@ export interface FileRouteTypes {
     | ''
     | '/auth'
     | '/profile'
+    | '/analyzer'
     | '/apps'
-    | '/test'
     | '/reports'
     | '/reports/$reportId/dashboard'
     | '/reports/$reportId/credit-list'
@@ -420,8 +420,8 @@ export interface FileRouteTypes {
     | ''
     | '/auth'
     | '/profile'
+    | '/analyzer'
     | '/apps'
-    | '/test'
     | '/reports'
     | '/reports/$reportId/dashboard'
     | '/reports/$reportId/credit-list'
@@ -440,8 +440,8 @@ export interface FileRouteTypes {
     | '/_main-layout'
     | '/auth'
     | '/_clear-layout/profile'
+    | '/_main-layout/analyzer'
     | '/_main-layout/apps'
-    | '/_main-layout/test'
     | '/_main-layout/reports/'
     | '/_basic-layout/reports/$reportId/dashboard'
     | '/_clear-layout/reports/$reportId/credit-list'
@@ -527,8 +527,8 @@ export const routeTree = rootRoute
     "/_main-layout": {
       "filePath": "_main-layout.tsx",
       "children": [
+        "/_main-layout/analyzer",
         "/_main-layout/apps",
-        "/_main-layout/test",
         "/_main-layout/reports/",
         "/_main-layout/reports/$reportId/credit-type"
       ]
@@ -540,12 +540,12 @@ export const routeTree = rootRoute
       "filePath": "_clear-layout/profile.tsx",
       "parent": "/_clear-layout"
     },
-    "/_main-layout/apps": {
-      "filePath": "_main-layout/apps.tsx",
+    "/_main-layout/analyzer": {
+      "filePath": "_main-layout/analyzer.tsx",
       "parent": "/_main-layout"
     },
-    "/_main-layout/test": {
-      "filePath": "_main-layout/test.tsx",
+    "/_main-layout/apps": {
+      "filePath": "_main-layout/apps.tsx",
       "parent": "/_main-layout"
     },
     "/_main-layout/reports/": {

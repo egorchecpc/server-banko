@@ -192,7 +192,6 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
         {categories
           .filter((category) => category !== 'moreThen90')
           .map((category) => {
-            console.log(category)
             const chartData = Object.entries(forecastPDData).map(
               ([yearKey, { cpd, mpd }]) => ({
                 period: yearKey.replace('year', ''),

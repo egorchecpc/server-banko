@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { isAuthenticated } from '@/utils/auth'
 import FinancialDashboard from '@/pages/Analytics/AnalyticsPage'
 
-export const Route = createFileRoute('/_main-layout/test')({
+export const Route = createFileRoute('/_main-layout/analyzer')({
   beforeLoad: () => {
     if (!isAuthenticated()) {
       throw redirect({
