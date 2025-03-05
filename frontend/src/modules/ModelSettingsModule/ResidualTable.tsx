@@ -94,7 +94,29 @@ const ResidualPlot = () => {
         layout="vertical"
         margin={{ top: 40, bottom: 0 }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        <CartesianGrid
+          vertical={(props) => {
+            // Получаем общее количество вертикальных точек
+            const totalPoints = props.verticalPoints?.length || 0
+
+            // Находим индекс центральной линии
+            const centerIndex = Math.floor(totalPoints / 2)
+
+            // Выделяем линии сразу слева и справа от центральной
+            const isEdgeLine =
+              props.index === centerIndex - 1 || props.index === centerIndex + 1
+
+            return (
+              <line
+                {...props}
+                strokeWidth={isEdgeLine ? 3 : 1}
+                stroke={isEdgeLine ? 'black' : '#e0e0e0'}
+                strokeDasharray="3 3"
+              />
+            )
+          }}
+          strokeDasharray="3 3"
+        />
         <YAxis
           dataKey="obs"
           type="category"

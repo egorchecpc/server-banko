@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown } from 'lucide-react'
 import ResidualTable from '@/modules/ModelSettingsModule/ResidualTable'
 
 interface ModelResultsModalProps {

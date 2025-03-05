@@ -148,7 +148,9 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
                       onClick={() => toggleRow(index)}
                       className="mr-2"
                     >
-                      {expandedRows[index] ? '▼' : '▶'}
+                      <span style={{ fontSize: '8px' }}>
+                        {expandedRows[index] ? '▼' : '▶'}
+                      </span>
                     </Button>
                   )}
                   {row.creditType}

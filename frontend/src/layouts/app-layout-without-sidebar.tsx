@@ -5,7 +5,7 @@ import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
 
 export const AppLayoutWithoutSidebar = () => {
   return (
-    <div className="flex w-[1920px] flex-col overflow-hidden">
+    <div className="flex h-full w-full flex-col overflow-hidden">
       <HeaderModule
         withoutNav={false}
         withoutSidebar={true}

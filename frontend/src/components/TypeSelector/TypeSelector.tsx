@@ -32,7 +32,7 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
   options,
 }) => {
   return (
-    <div className="flex h-[108vh] w-full flex-col">
+    <div className="flex h-[125vh] min-h-screen w-full flex-col">
       <div className="mt-24 flex items-center justify-center">
         <div className="w-full max-w-md rounded-2xl bg-white px-12 py-7">
           <div className="mb-4 text-center text-[24px] font-semibold">
