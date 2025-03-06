@@ -1,5 +1,6 @@
 import { Outlet } from '@tanstack/react-router'
 import { HeaderModule } from '@/modules/HeaderModule/HeaderModule'
+import Footer from '@/components/FooterComponent/Footer'
 
 export const MainAppLayout = () => {
   return (
@@ -11,8 +12,11 @@ export const MainAppLayout = () => {
         withLogo={true}
       />
       <div className="flex-1">
-        <Outlet />
+        <main>
+          <Outlet />
+        </main>
       </div>
+      <Footer />
     </div>
   )
 }

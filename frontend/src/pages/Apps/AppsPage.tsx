@@ -17,11 +17,13 @@ export const AppsPage = () => {
   }
 
   return (
-    <DebtorTypeSelector
-      selectedType={selectedType}
-      onTypeSelect={setSelectedType}
-      onContinue={handleContinue}
-      options={DEBTOR_TYPES}
-    />
+    <div className="h-full">
+      <DebtorTypeSelector
+        selectedType={selectedType}
+        onTypeSelect={setSelectedType}
+        onContinue={handleContinue}
+        options={DEBTOR_TYPES}
+      />
+    </div>
   )
 }

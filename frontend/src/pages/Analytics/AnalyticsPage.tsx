@@ -143,21 +143,6 @@ const TransactionRiskChart = () => {
           </ResponsiveContainer>
         </CardContent>
       </Card>
-
-      {/* Condensed Chart
-      <Card className="h-48 w-full">
-        <CardContent className="h-full pt-4">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={transactionRiskData} barSize={20}>
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(tick) => `${tick}%`} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="reservationPercent" fill="#10b981" />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-      */}
     </div>
   )
 }
@@ -181,7 +166,7 @@ const RiskyAssets = () => {
   )
 
   return (
-    <Card className="h-[49vh] w-full">
+    <Card className="h-96 w-full">
       <CardHeader>
         <div className="text-xl font-bold leading-38 text-black-900">
           Самые рисковые активы
@@ -474,7 +459,7 @@ const FinancialDashboard = () => {
     navigate({ to: '/reports', search: { type: search.type } })
   }
   return (
-    <div className="h-[172vh] w-full space-y-6 p-6">
+    <div className="h-full w-full space-y-6 p-6">
       <div className="flex items-center justify-between px-1.5">
         <div className="text-2xl font-bold leading-38 text-black-900">
           Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов
@@ -485,10 +470,10 @@ const FinancialDashboard = () => {
       </div>
       <div className="grid grid-cols-3 gap-6">
         <RiskSummaryCard
-          value={14323.6}
-          label="Общая сумма розничных кредитов в первой стадии"
-          percentage={0.36}
-          variant="high-risk"
+          value={44.7}
+          label="Общая сумма розничных кредитов в третьей стадии"
+          percentage={0.16}
+          variant="low-risk"
         />
         <RiskSummaryCard
           value={45.92}
@@ -497,10 +482,10 @@ const FinancialDashboard = () => {
           variant="medium-risk"
         />
         <RiskSummaryCard
-          value={44.7}
-          label="Общая сумма розничных кредитов в третьей стадии"
-          percentage={0.16}
-          variant="low-risk"
+          value={14323.6}
+          label="Общая сумма розничных кредитов в первой стадии"
+          percentage={0.36}
+          variant="high-risk"
         />
       </div>
       <div className="mb-6"></div>
@@ -516,7 +501,6 @@ const FinancialDashboard = () => {
         <CreditTypesSunburstChart />
         <RiskScatterPlot />
       </div>
-      <Footer />
     </div>
   )
 }

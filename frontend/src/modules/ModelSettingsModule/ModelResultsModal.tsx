@@ -14,15 +14,19 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
 import ResidualTable from '@/modules/ModelSettingsModule/ResidualTable'
+import AutocorrelationChart from './AutocorrelationChart'
+import TimeSeriesPlot from './TimeSeriesPlot'
 
 interface ModelResultsModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
-interface ResidualDialogProps {
+interface DialogProps {
   isOpen: boolean
   onClose: () => void
+  title: string
+  children: React.ReactNode
 }
 
 const ModelResultsModal: React.FC<ModelResultsModalProps> = ({
@@ -183,18 +187,21 @@ const ModelResultsModal: React.FC<ModelResultsModalProps> = ({
     )
   }
 
-  const ResidualDialog: React.FC<ResidualDialogProps> = ({
+  // Generic dialog component for all chart views
+  const CustomDialog: React.FC<DialogProps> = ({
     isOpen,
     onClose,
+    title,
+    children,
   }) => {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>Actual, Fitted, Residual</DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
           <div className="mt-4 max-h-[70vh] overflow-y-auto overflow-x-hidden px-1">
-            <ResidualTable />
+            {children}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={onClose}>
@@ -207,6 +214,9 @@ const ModelResultsModal: React.FC<ModelResultsModalProps> = ({
   }
 
   const [showResidualDialog, setShowResidualDialog] = useState(false)
+  const [showAutocorrelationDialog, setShowAutocorrelationDialog] =
+    useState(false)
+  const [showTimeSeriesDialog, setShowTimeSeriesDialog] = useState(false)
 
   return (
     <>
@@ -227,6 +237,16 @@ const ModelResultsModal: React.FC<ModelResultsModalProps> = ({
                     >
                       Actual, Fitted, Residual Table
                     </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setShowAutocorrelationDialog(true)}
+                    >
+                      Correlogram of Residuals
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setShowTimeSeriesDialog(true)}
+                    >
+                      Time Series Plot
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <DialogTitle className="ml-4">Результат модели</DialogTitle>
@@ -246,11 +266,30 @@ const ModelResultsModal: React.FC<ModelResultsModalProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Separate dialog for residual table */}
-      <ResidualDialog
+      {/* Separate dialogs for different views */}
+      <CustomDialog
         isOpen={showResidualDialog}
         onClose={() => setShowResidualDialog(false)}
-      />
+        title="Actual, Fitted, Residual"
+      >
+        <ResidualTable />
+      </CustomDialog>
+
+      <CustomDialog
+        isOpen={showAutocorrelationDialog}
+        onClose={() => setShowAutocorrelationDialog(false)}
+        title="Correlogram of Residuals"
+      >
+        <AutocorrelationChart />
+      </CustomDialog>
+
+      <CustomDialog
+        isOpen={showTimeSeriesDialog}
+        onClose={() => setShowTimeSeriesDialog(false)}
+        title="Time Series Plot"
+      >
+        <TimeSeriesPlot />
+      </CustomDialog>
     </>
   )
 }
