@@ -49,7 +49,7 @@ export const ProfileEditDialog: React.FC<ProfileEditDialogProps> = ({
           <DialogTitle>Редактировать профиль</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <div className="flex items-center gap-4">
+          {/*<div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
               <AvatarImage src={editedProfile.avatar} />
               <AvatarFallback>{editedProfile.name.slice(0, 2)}</AvatarFallback>
@@ -69,7 +69,7 @@ export const ProfileEditDialog: React.FC<ProfileEditDialogProps> = ({
                 onChange={handleAvatarChange}
               />
             </div>
-          </div>
+          </div>*/}
           <div className="space-y-2">
             <Label htmlFor="name">Имя</Label>
             <Input

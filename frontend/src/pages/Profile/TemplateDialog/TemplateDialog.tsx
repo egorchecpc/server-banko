@@ -209,7 +209,7 @@ export const TemplateDialog: React.FC<TemplateDialogProps> = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit, showErrors)}>
-          <div className="max-h-[60vh] space-y-6 overflow-y-auto">
+          <div className="overflow-y-none max-h-[60vh] space-y-6">
             <div className="space-y-2 p-3">
               <Label htmlFor="templateName">Название шаблона</Label>
               <Input
@@ -339,20 +339,20 @@ export const TemplateDialog: React.FC<TemplateDialogProps> = ({
               <Plus className="mr-2 h-4 w-4" />
               Добавить индикатор
             </Button>
-          </div>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Отмена
-            </Button>
-            <Button type="submit" variant="primary">
-              Сохранить
-            </Button>
-          </DialogFooter>
+            <div className="flex items-center justify-end gap-3 py-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                Отмена
+              </Button>
+              <Button type="submit" variant="primary">
+                Сохранить
+              </Button>
+            </div>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

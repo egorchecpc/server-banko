@@ -123,6 +123,22 @@ const transactionRiskData: TransactionRiskDataItem[] = [
   { month: 'Дек', risk: 4.9, reservationPercent: 4.9 },
 ]
 
+const quarterlyData: TransactionRiskDataItem[] = [
+  { label: 'Квартал I 2025', reservationPercent: 3.0 },
+  { label: 'Квартал II 2025', reservationPercent: 4.2 },
+  { label: 'Квартал III 2025 ', reservationPercent: 4.4 },
+  { label: 'Квартал IV 2025', reservationPercent: 4.9 },
+]
+
+const yearlyData: TransactionRiskDataItem[] = [
+  { label: '2020', reservationPercent: 4.7 },
+  { label: '2021', reservationPercent: 4.7 },
+  { label: '2022', reservationPercent: 3.5 },
+  { label: '2023', reservationPercent: 4.2 },
+  { label: '2024', reservationPercent: 4.7 },
+  { label: '2025', reservationPercent: 4.7 },
+]
+
 interface CustomTooltipProps {
   active?: boolean
   payload?: Array<any>
@@ -131,6 +147,17 @@ interface CustomTooltipProps {
 const TransactionRiskChart: React.FC = () => {
   const [timeframe, setTimeframe] = useState<string>('Month')
   const [selectedTimeframe, setSelectedTimeframe] = useState<string>('Месяц')
+
+  const getData = () => {
+    switch (timeframe) {
+      case 'Quarter':
+        return quarterlyData
+      case 'Year':
+        return yearlyData
+      default:
+        return transactionRiskData
+    }
+  }
 
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -167,9 +194,7 @@ const TransactionRiskChart: React.FC = () => {
               }}
             >
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select timeframe">
-                  {selectedTimeframe}
-                </SelectValue>
+                <SelectValue>{selectedTimeframe}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Month">Месяц</SelectItem>
@@ -181,9 +206,9 @@ const TransactionRiskChart: React.FC = () => {
         </CardHeader>
         <CardContent className="h-full">
           <ResponsiveContainer width="100%" height="85%" className="py-1.5">
-            <BarChart data={transactionRiskData} barSize={30}>
+            <BarChart data={getData()} barSize={30}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
+              <XAxis dataKey={timeframe === 'Month' ? 'month' : 'label'} />
               <YAxis
                 label={{
                   value: 'Процент резервов',

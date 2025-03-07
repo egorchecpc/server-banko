@@ -41,7 +41,7 @@ export const ReportsPage = () => {
     <>
       <div className="flex w-full flex-col">
         <div className="flex flex-1 justify-center px-40 py-5">
-          <div className="layout-content-container flex max-w-[960px] flex-1 flex-col">
+          <div className="layout-content-container flex max-w-[1400px] flex-1 flex-col">
             <div className="mb-4 flex flex-wrap justify-between gap-3 p-0">
               <div className="min-w-72 text-4xl font-black leading-tight tracking-[-0.033em] text-[#0e141b]">
                 Доступные {debtorTypeHelper[search.type]} отчёты

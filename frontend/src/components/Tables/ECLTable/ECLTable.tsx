@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/table'
 import { ECLData, StageData } from '@/models/ECL'
 import { Button } from '@/components/ui/button'
+import { ProductDiff } from '@/utils/calculateECLDif'
 
 interface ECLTableProps {
   data: ECLData
@@ -53,6 +54,37 @@ const renderCellWithDelta = (
       {value}
       <span className={`ml-1 ${color}`}>
         ({Math.abs(deltaNum).toFixed(2)}%{arrow})
+      </span>
+    </span>
+  )
+}
+
+// Новая функция для отображения разницы в продуктах
+const renderProductCellWithDelta = (
+  value: number,
+  delta: number | undefined,
+  isPercent: boolean = false
+): JSX.Element | string => {
+  const formattedValue = isPercent
+    ? formatPercent(value)
+    : formatCurrency(value)
+
+  if (delta === undefined) return formattedValue
+  if (isNaN(delta)) return formattedValue
+
+  const getArrowAndColor = (delta: number) => {
+    if (delta === 0) return { color: 'text-yellow-500', arrow: '→' }
+    return delta > 0
+      ? { color: 'text-red-500', arrow: '↑' }
+      : { color: 'text-green-500', arrow: '↓' }
+  }
+
+  const { color, arrow } = getArrowAndColor(delta)
+  return (
+    <span>
+      {formattedValue}
+      <span className={`ml-1 ${color}`}>
+        ({Math.abs(delta).toFixed(2)}%{arrow})
       </span>
     </span>
   )
@@ -181,35 +213,63 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
                 row.products &&
                 row.products.length > 0 &&
                 expandedRows[index] &&
-                row.products.map((product, productIndex) => (
-                  <TableRow
-                    key={`product-${index}-${productIndex}`}
-                    className="border-none bg-gray-50"
-                  >
-                    <TableCell className="border-none pl-8 text-left">
-                      {product.product || 'Неизвестный продукт'}
-                    </TableCell>
-                    {STAGES.map((stage) => (
-                      <React.Fragment key={stage.key}>
-                        <TableCell className="border-x text-center">
-                          {formatCurrency(product.grossCarryingAmount || 0)}
-                        </TableCell>
-                        <TableCell className="border-x text-center">
-                          {formatCurrency(product.estimatedReservation || 0)}
-                        </TableCell>
-                        <TableCell className="border-x text-center">
-                          {formatPercent(product.reservationPercentage || 0)}
-                        </TableCell>
-                      </React.Fragment>
-                    ))}
-                    <TableCell className="border-x text-center">
-                      {formatCurrency(product.grossCarryingAmount || 0)}
-                    </TableCell>
-                    <TableCell className="border-x text-center">
-                      {formatCurrency(product.estimatedReservation || 0)}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                row.products.map((product, productIndex) => {
+                  // Получаем данные о разнице для продукта, если они доступны
+                  const productDiff =
+                    isFirst && showDelta && diffRow?.products
+                      ? (diffRow.products[productIndex] as ProductDiff)
+                      : undefined
+
+                  return (
+                    <TableRow
+                      key={`product-${index}-${productIndex}`}
+                      className="border-none bg-gray-50"
+                    >
+                      <TableCell className="border-none pl-8 text-left">
+                        {product.product || 'Неизвестный продукт'}
+                      </TableCell>
+                      {STAGES.map((stage) => (
+                        <React.Fragment key={stage.key}>
+                          <TableCell className="border-x text-center">
+                            {formatCurrency(product.grossCarryingAmount || 0)}
+                          </TableCell>
+                          <TableCell className="border-x text-center">
+                            {showDelta && productDiff
+                              ? renderProductCellWithDelta(
+                                  product.estimatedReservation || 0,
+                                  productDiff.estimatedReservation
+                                )
+                              : formatCurrency(
+                                  product.estimatedReservation || 0
+                                )}
+                          </TableCell>
+                          <TableCell className="border-x text-center">
+                            {showDelta && productDiff
+                              ? renderProductCellWithDelta(
+                                  product.reservationPercentage || 0,
+                                  productDiff.reservationPercentage,
+                                  true
+                                )
+                              : formatPercent(
+                                  product.reservationPercentage || 0
+                                )}
+                          </TableCell>
+                        </React.Fragment>
+                      ))}
+                      <TableCell className="border-x text-center">
+                        {formatCurrency(product.grossCarryingAmount || 0)}
+                      </TableCell>
+                      <TableCell className="border-x text-center">
+                        {showDelta && productDiff
+                          ? renderProductCellWithDelta(
+                              product.estimatedReservation || 0,
+                              productDiff.estimatedReservation
+                            )
+                          : formatCurrency(product.estimatedReservation || 0)}
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
             </React.Fragment>
           )
         })}

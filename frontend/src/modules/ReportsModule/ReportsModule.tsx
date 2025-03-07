@@ -38,7 +38,7 @@ export const ReportsModule: FC<ProfileReportsProps> = ({ data }) => {
 
   return (
     <TooltipProvider>
-      <div className="space-y-4">
+      <div className="mx-auto flex w-full flex-col space-y-4">
         <DataTable
           columns={columns}
           data={data}

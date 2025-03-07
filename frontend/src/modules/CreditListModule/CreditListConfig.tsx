@@ -4,9 +4,9 @@ import { CreditListData } from '@/models/CreditList'
 import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 
 const stageIcons = {
-  '1': <CheckCircle className="h-5 w-5 text-green-500" />, // Первая стадия - зеленый
-  '2': <AlertTriangle className="h-5 w-5 text-yellow-500" />, // Вторая стадия - желтый
-  '3': <XCircle className="h-5 w-5 text-red-500" />, // Третья стадия - красный
+  '1': <CheckCircle className="h-5 w-5 text-green-500" />,
+  '2': <AlertTriangle className="h-5 w-5 text-yellow-500" />,
+  '3': <XCircle className="h-5 w-5 text-red-500" />,
 }
 
 const customFilterFn = (
@@ -27,7 +27,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="ID клиента" />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('clientId')}
       </div>
     ),
@@ -40,7 +40,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="ID договора" />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('id')}
       </div>
     ),
@@ -53,7 +53,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="Валюта" />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('currency')}
       </div>
     ),
@@ -67,7 +67,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="Тип должника" />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('ownerType')}
       </div>
     ),
@@ -81,7 +81,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="Вид продукта" />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('product')}
       </div>
     ),
@@ -99,7 +99,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('creditType')}
       </div>
     ),
@@ -136,7 +136,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center whitespace-nowrap">
+      <div className="flex h-10 w-full items-center justify-center whitespace-nowrap">
         {row.getValue('date')}
       </div>
     ),
@@ -149,7 +149,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="Дата выдачи" />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('loanRepaymentDate')}
       </div>
     ),
@@ -162,7 +162,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="ВБС" allowHide={true} />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('grossCarryingAmount')}
       </div>
     ),
@@ -175,7 +175,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="LGD" allowHide={true} />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('lgd')}
       </div>
     ),
@@ -188,7 +188,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="PR" allowHide={true} />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('prepaymentRate')}
       </div>
     ),
@@ -201,7 +201,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="ECL" allowHide={true} />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('expectedCreditLossesAmount')}
       </div>
     ),
@@ -218,14 +218,13 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       const percentage = value * 100
       const formattedValue = percentage.toFixed(2)
 
-      // Определяем цвет в зависимости от значения
       let barColor = ''
       if (percentage < 15) {
-        barColor = 'bg-green-500' // низкий - зеленый
+        barColor = 'bg-green-500'
       } else if (percentage >= 15 && percentage <= 35) {
-        barColor = 'bg-yellow-500' // средний - желтый
+        barColor = 'bg-yellow-500'
       } else {
-        barColor = 'bg-red-500' // высокий - красный
+        barColor = 'bg-red-500'
       }
 
       return (
@@ -253,7 +252,7 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
       <DataTableColumnHeader column={column} title="mpd" allowHide={true} />
     ),
     cell: ({ row }) => (
-      <div className="flex h-10 items-center justify-center">
+      <div className="flex h-10 w-full items-center justify-center">
         {row.getValue('mpd')}
       </div>
     ),

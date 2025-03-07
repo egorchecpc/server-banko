@@ -33,8 +33,6 @@ export const useGetECLDataV1 = (date: string) => {
       )
       const filteredData = filterUnwantedProducts(data)
       return transformECLDataFromServer(filteredData, ECLType.PRODUCT)
-      //const { data } = await axios.get('http://localhost:3000/ecldata1')
-      //return data
     },
 
     enabled: !!date,

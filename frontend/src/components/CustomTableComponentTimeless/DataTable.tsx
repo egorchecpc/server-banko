@@ -9,7 +9,6 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
@@ -51,6 +50,7 @@ interface DataTableProps<TData, TValue> {
   onPageSizeChange: (size: number) => void
 }
 
+// Исправленный код для компонента DataTable
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
@@ -84,8 +84,9 @@ export function DataTable<TData extends { id: string }, TValue>({
     } else if (data.length > 0) {
       setSelectedRowId(data[0].id)
     }
-  }, [rowSelection])
+  }, [initialSelectedId, data])
 
+  // Создаем таблицу БЕЗ клиентской пагинации
   const table = useReactTable({
     data,
     columns,
@@ -94,7 +95,9 @@ export function DataTable<TData extends { id: string }, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      // Мы НЕ устанавливаем pagination здесь, т.к. используем серверную пагинацию
     },
+    manualPagination: true, // Указываем, что пагинация управляется вручную (серверная)
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -102,7 +105,8 @@ export function DataTable<TData extends { id: string }, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // Убираем клиентскую пагинацию
+    // getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -113,11 +117,17 @@ export function DataTable<TData extends { id: string }, TValue>({
     onRowClick?.(id)
   }
 
+  // Для отладки
+  useEffect(() => {
+    console.log('Data length:', data.length)
+    console.log('Table rows:', table.getRowModel().rows)
+  }, [data, table])
+
   const TableContent = (
     <div
       className={`h-full w-full overflow-auto rounded-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}
     >
-      <Table className="!h-full min-h-screen w-full table-auto">
+      <Table className="!h-fll w-full table-auto">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="hover:bg-transparent">

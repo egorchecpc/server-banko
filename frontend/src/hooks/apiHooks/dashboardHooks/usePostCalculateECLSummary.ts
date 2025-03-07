@@ -30,7 +30,7 @@ export const usePostSummary = (date: string) => {
         date,
       ]) as ECLData
       if (previousECLData && newECLData) {
-        const diff = calculateECLDiff(previousECLData, newECLData)
+        const diff = calculateECLDiff(previousECLData, newECLData, true)
         queryClient.setQueryData(['eclDiff1'], diff)
       }
     },

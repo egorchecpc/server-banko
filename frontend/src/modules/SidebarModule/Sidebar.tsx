@@ -6,11 +6,11 @@ import {
 } from '@/components/ui/sidebar'
 import { DebtorForm } from '@/modules/SidebarModule/DebtorForm/DebtorForm'
 import { MacroSettingsComponent } from '@/modules/SidebarModule/MacroSettings/MacroSettings'
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react'
 import { getYearArray } from '@/utils/getDate'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { formatMacroDataToServer } from '@/utils/formatMacroDataToServer'
-import { useParams, useRouter } from '@tanstack/react-router'
+import { Link, useParams, useRouter } from '@tanstack/react-router'
 import { DebtorData } from '@/models/DebtorData'
 import { MacroSettings } from '@/models/MacroSettings'
 import { useUpdateReport } from '@/hooks/apiHooks/commonHooks/usePostReportData'
@@ -107,10 +107,30 @@ export const AppSidebar: FC = () => {
         }),
       ])
 
+      await new Promise<void>((resolve, reject) => {
+        postSummary(undefined, {
+          onSuccess: () => {
+            console.log('Summary successfully posted')
+            resolve()
+          },
+          onError: (error) => reject(error),
+        })
+      })
+
+      await new Promise<void>((resolve, reject) => {
+        postPortfolio(undefined, {
+          onSuccess: () => {
+            console.log('Portfolio successfully posted')
+            resolve()
+          },
+          onError: (error) => reject(error),
+        })
+      })
+
       console.log('Все данные успешно отправлены')
       await queryClient.invalidateQueries({ queryKey: ['ProfileReportsData'] })
-      await queryClient.invalidateQueries({ queryKey: ['ECLDataV1'] })
-      await queryClient.invalidateQueries({ queryKey: ['ECLDataV2'] })
+      await queryClient.invalidateQueries({ queryKey: ['ECLDataV1', date] })
+      await queryClient.invalidateQueries({ queryKey: ['ECLDataV2', date] })
       await router.navigate({ to: `/reports/${reportId}/dashboard` })
     } catch (error) {
       console.error('Ошибка при отправке данных:', error)
@@ -132,7 +152,9 @@ export const AppSidebar: FC = () => {
         <ScrollArea className="flex-1">
           {isLoading ? <LoadingSpinner /> : ''}
           <div className="flex h-full flex-col items-center">
-            <img src="/img/logo.png" alt="BANKO" className="h-24" />
+            <Link to="/apps">
+              <img src="/img/logo.png" alt="BANKO" className="h-24" />
+            </Link>
 
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">
               <div className="rounded-lg bg-white p-4">

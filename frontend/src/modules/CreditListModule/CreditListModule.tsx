@@ -21,7 +21,7 @@ export const CreditListModule: FC = () => {
     return <LoadingSpinner />
   }
   return (
-    <div className="hidden h-full min-h-screen w-full flex-1 flex-col md:flex">
+    <div className="hidden h-full w-full flex-1 flex-col md:flex">
       <div className="flex items-center justify-between">
         <div className="mb-5 text-2xl font-bold leading-38 text-black-900">
           Список всех кредитов

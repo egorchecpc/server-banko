@@ -15,9 +15,16 @@ export const useGetCreditListData = (
         size: size.toString(),
         ...(sort ? { sort } : {}),
       })
+      console.log('Requesting with params:', {
+        page,
+        size,
+        sort,
+        url: `${'https://banko-r-backend.stacklevel.group/api/contracts'}?${params.toString()}`,
+      })
       const { data } = await axios.get(
         `${'https://banko-r-backend.stacklevel.group/api/contracts'}?${params.toString()}`
       )
+      console.log('Received data:', data)
       return data
     },
   })

@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useNavigate, useSearch } from '@tanstack/react-router'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { reportType } from '@/modules/HeaderModule/HeaderModuleConfig'
 
 export interface HeaderProps {
@@ -65,7 +65,11 @@ export const Header: FC<HeaderProps> = ({
               Назад
             </Button>
           )}
-          {withLogo && <img src="/img/logo.png" alt="BANKO" className="h-16" />}
+          {withLogo && (
+            <Link to="/apps">
+              <img src="/img/logo.png" alt="BANKO" className="h-16" />
+            </Link>
+          )}
           {!withoutSidebar && <SidebarTrigger />}
           {!withoutNav && navItems && <Navbar navItems={navItems} />}
         </div>

@@ -1,21 +1,4 @@
-interface ECLData {
-  creditType: string
-  stage1: StageData
-  stage2: StageData
-  stage3: StageData
-  total: TotalData
-}
-
-interface StageData {
-  balance: string
-  reserve: string
-  percent: string
-}
-
-interface TotalData {
-  balance: string
-  reserve: string
-}
+import { ECLData } from '@/models/ECL'
 
 export interface ECLDiffResult {
   creditType: string
@@ -23,6 +6,14 @@ export interface ECLDiffResult {
   stage2: StageDiff
   stage3: StageDiff
   total: TotalDiff
+  products?: ProductDiff[] | null
+}
+
+export interface ProductDiff {
+  product: string
+  grossCarryingAmount: number
+  estimatedReservation: number
+  reservationPercentage: number
 }
 
 export interface StageDiff {
@@ -46,7 +37,8 @@ function parsePercent(str: string): number {
 
 export function calculateECLDiff(
   oldECL: ECLData[],
-  newECL: ECLData[]
+  newECL: ECLData[],
+  isECLv1: boolean = false
 ): ECLDiffResult[] {
   return newECL.map((newItem) => {
     const oldItem = oldECL.find(
@@ -75,6 +67,10 @@ export function calculateECLDiff(
           balance: parseNumber(newItem.total.balance),
           reserve: 0,
         },
+        // Добавляем объекты products только для ECLv1
+        ...(isECLv1 && newItem.products
+          ? { products: calculateProductsDiff([], newItem.products) }
+          : {}),
       }
     }
 
@@ -135,6 +131,50 @@ export function calculateECLDiff(
           oldItem.total.reserve
         ),
       },
+      // Добавляем расчет разницы для продуктов только для ECLv1
+      ...(isECLv1 && newItem.products && oldItem.products
+        ? {
+            products: calculateProductsDiff(oldItem.products, newItem.products),
+          }
+        : {}),
+    }
+  })
+}
+
+// Функция для расчета разницы между продуктами
+function calculateProductsDiff(
+  oldProducts: any[] = [],
+  newProducts: any[]
+): ProductDiff[] {
+  return newProducts.map((newProduct) => {
+    const oldProduct = oldProducts.find(
+      (product) => product.product === newProduct.product
+    )
+
+    if (!oldProduct) {
+      return {
+        product: newProduct.product,
+        grossCarryingAmount: newProduct.grossCarryingAmount,
+        estimatedReservation: 0, // 0% изменения
+        reservationPercentage: newProduct.reservationPercentage,
+      }
+    }
+
+    const calculateReservationChange = (newValue: number, oldValue: number) => {
+      if (oldValue === 0) return 0
+      return ((newValue - oldValue) / oldValue) * 100
+    }
+
+    return {
+      product: newProduct.product,
+      grossCarryingAmount:
+        newProduct.grossCarryingAmount - oldProduct.grossCarryingAmount,
+      estimatedReservation: calculateReservationChange(
+        newProduct.estimatedReservation,
+        oldProduct.estimatedReservation
+      ),
+      reservationPercentage:
+        newProduct.reservationPercentage - oldProduct.reservationPercentage,
     }
   })
 }

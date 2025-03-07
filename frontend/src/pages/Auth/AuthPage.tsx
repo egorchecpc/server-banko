@@ -48,7 +48,9 @@ const AuthPage = () => {
     <div className="flex h-[125vh] w-full items-center justify-center bg-gradient-to-br from-blue-500 via-indigo-400 to-blue-300 p-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center">
-          <img src="/img/logo.png" alt="BANKO" className="h-36" />
+          <Link to="/apps">
+            <img src="/img/logo.png" alt="BANKO" className="h-36" />
+          </Link>
         </div>
 
         <Card className="border-none p-2 shadow-lg">

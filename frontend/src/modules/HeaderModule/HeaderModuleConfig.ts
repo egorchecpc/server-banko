@@ -7,7 +7,7 @@ export const navItems = {
 }
 
 export const userData = {
-  name: 'Мария',
+  name: 'Иван Иванов',
   position: 'Риск-менеджер',
 }
 

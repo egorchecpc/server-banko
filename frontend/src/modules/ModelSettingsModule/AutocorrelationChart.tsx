@@ -47,6 +47,100 @@ const AutocorrelationChart = () => {
     return null
   }
 
+  // Function to render the "tree-like" correlation display
+  const renderCorrelationTree = (value, maxWidth = 100) => {
+    const absValue = Math.abs(value)
+    const width = (absValue * maxWidth).toFixed(0)
+    const isPositive = value >= 0
+
+    return (
+      <div className="flex h-6 w-full items-center justify-center">
+        <div className="relative flex h-6 w-full items-center justify-center">
+          {/* Center line */}
+          <div className="absolute h-full w-px bg-gray-400"></div>
+
+          {/* Confidence interval lines */}
+          <div
+            className="absolute h-full w-px border-l border-dashed border-red-500"
+            style={{ left: '35%' }}
+          ></div>
+          <div
+            className="absolute h-full w-px border-l border-dashed border-red-500"
+            style={{ right: '35%' }}
+          ></div>
+
+          {/* Correlation bar */}
+          {isPositive ? (
+            <div
+              className="border-black absolute h-4 border-b border-r border-t bg-blue-500"
+              style={{
+                width: `${width}%`,
+                maxWidth: '50%',
+                left: '50%',
+              }}
+            ></div>
+          ) : (
+            <div
+              className="border-black absolute h-4 border-b border-l border-t bg-blue-500"
+              style={{
+                width: `${width}%`,
+                maxWidth: '50%',
+                right: '50%',
+              }}
+            ></div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  // Function to render the "tree-like" partial correlation display
+  const renderPartialCorrelationTree = (value, maxWidth = 100) => {
+    const absValue = Math.abs(value)
+    const width = (absValue * maxWidth).toFixed(0)
+    const isPositive = value >= 0
+
+    return (
+      <div className="flex h-6 w-full items-center justify-center">
+        <div className="relative flex h-6 w-full items-center justify-center">
+          {/* Center line */}
+          <div className="absolute h-full w-px bg-gray-400"></div>
+
+          {/* Confidence interval lines */}
+          <div
+            className="absolute h-full w-px border-l border-dashed border-red-500"
+            style={{ left: '35%' }}
+          ></div>
+          <div
+            className="absolute h-full w-px border-l border-dashed border-red-500"
+            style={{ right: '35%' }}
+          ></div>
+
+          {/* Correlation bar */}
+          {isPositive ? (
+            <div
+              className="border-black absolute h-4 border-b border-r border-t bg-green-500"
+              style={{
+                width: `${width}%`,
+                maxWidth: '50%',
+                left: '50%',
+              }}
+            ></div>
+          ) : (
+            <div
+              className="border-black absolute h-4 border-b border-l border-t bg-green-500"
+              style={{
+                width: `${width}%`,
+                maxWidth: '50%',
+                right: '50%',
+              }}
+            ></div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex w-full flex-col items-center justify-center p-4">
       <h3 className="mb-4 text-center text-lg font-semibold">
@@ -141,29 +235,11 @@ const AutocorrelationChart = () => {
             {autocorrelationData.map((row) => (
               <tr key={row.lag}>
                 <td className="border border-gray-400 px-2 py-1">{row.lag}</td>
-                <td className="border border-gray-400 px-2 py-1">
-                  <div className="flex h-6 items-center justify-center">
-                    <div
-                      className={`h-4 bg-blue-500`}
-                      style={{
-                        width: `${Math.abs(row.ac) * 50}px`,
-                        marginLeft: row.ac < 0 ? 'auto' : '0',
-                        marginRight: row.ac > 0 ? 'auto' : '0',
-                      }}
-                    ></div>
-                  </div>
+                <td className="border border-gray-400 px-0 py-1">
+                  {renderCorrelationTree(row.ac)}
                 </td>
-                <td className="border border-gray-400 px-2 py-1">
-                  <div className="flex h-6 items-center justify-center">
-                    <div
-                      className={`h-4 bg-green-500`}
-                      style={{
-                        width: `${Math.abs(row.pac) * 50}px`,
-                        marginLeft: row.pac < 0 ? 'auto' : '0',
-                        marginRight: row.pac > 0 ? 'auto' : '0',
-                      }}
-                    ></div>
-                  </div>
+                <td className="border border-gray-400 px-0 py-1">
+                  {renderPartialCorrelationTree(row.pac)}
                 </td>
                 <td className="border border-gray-400 px-2 py-1">
                   {row.ac.toFixed(3)}

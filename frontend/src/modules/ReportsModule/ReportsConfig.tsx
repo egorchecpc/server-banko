@@ -46,7 +46,7 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       )
     },
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {
@@ -80,7 +80,7 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       )
     },
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: true,
     filterFn: customFilterFn,
   },
@@ -107,7 +107,7 @@ export const columns: ColumnDef<Task>[] = [
         </div>
       )
     },
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: true,
     filterFn: customFilterFn,
   },
@@ -121,7 +121,7 @@ export const columns: ColumnDef<Task>[] = [
         {row.getValue('owner')}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: true,
     filterFn: customFilterFn,
   },

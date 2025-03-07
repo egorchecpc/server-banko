@@ -54,12 +54,12 @@ export const ProfilePage = () => {
     <div className="space-y-8">
       <ProfileHeader userData={profile} onEdit={handleProfileEdit} />
 
-      <Card>
-        <CardContent className="p-6">
-          <div className="mb-2 text-2xl font-bold">{profile.reportsCount}</div>
-          <div className="text-gray-600">Созданных отчётов</div>
-        </CardContent>
-      </Card>
+      {/*<Card>*/}
+      {/*  <CardContent className="p-6">*/}
+      {/*    <div className="mb-2 text-2xl font-bold">{profile.reportsCount}</div>*/}
+      {/*    <div className="text-gray-600">Созданных отчётов</div>*/}
+      {/*  </CardContent>*/}
+      {/*</Card>*/}
 
       <div className="mt-8">
         <h3 className="mb-4 text-xl font-semibold">Доступные отчёты</h3>
