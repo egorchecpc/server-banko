@@ -53,7 +53,9 @@ const UserNav: FC<UserNavProps> = ({ userData }) => {
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>{t('navbar.logOut')}</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to="/auth">{t('navbar.logOut')}</Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

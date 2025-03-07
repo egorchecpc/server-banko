@@ -38,7 +38,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const label = labels.find((label) => label.value === row.original.label)
       return (
-        <div className="flex h-10 items-center justify-center gap-1">
+        <div className="flex h-10 items-center justify-start gap-1">
           {label && <Badge variant="outline">{label.label}</Badge>}
           <span className="max-w-[31rem] truncate font-medium">
             {row.getValue('title')}
@@ -63,10 +63,18 @@ export const columns: ColumnDef<Task>[] = [
         return null
       }
 
+      // Определяем цвет иконки в зависимости от статуса
+      const iconColorClass =
+        status.value === 'В процессе проверки'
+          ? 'text-amber-500' // Оранжевый цвет для статуса "В процессе проверки"
+          : status.value === 'Согласованный'
+            ? 'text-green-500' // Зеленый цвет для статуса "Согласованный"
+            : 'text-muted-foreground' // Дефолтный цвет для других статусов
+
       return (
-        <div className="flex h-10 items-center justify-center">
+        <div className="flex h-10 items-center justify-start">
           {status.icon && (
-            <status.icon className="text-muted-foreground mr-2 h-4 w-4" />
+            <status.icon className={`mr-2 h-4 w-4 ${iconColorClass}`} />
           )}
           <span>{status.label}</span>
         </div>

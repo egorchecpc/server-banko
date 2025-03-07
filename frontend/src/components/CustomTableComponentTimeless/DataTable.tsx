@@ -115,9 +115,9 @@ export function DataTable<TData extends { id: string }, TValue>({
 
   const TableContent = (
     <div
-      className={`overflow-auto rounded-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}
+      className={`h-full w-full overflow-auto rounded-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}
     >
-      <Table className="w-full table-auto">
+      <Table className="!h-full min-h-screen w-full table-auto">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="hover:bg-transparent">

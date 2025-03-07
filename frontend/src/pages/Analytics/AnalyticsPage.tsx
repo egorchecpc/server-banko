@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   BarChart,
   Bar,
@@ -26,13 +26,63 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Link, useNavigate, useSearch } from '@tanstack/react-router'
-import Footer from '@/components/FooterComponent/Footer'
 
-// Mock data - replace with your actual data
+// Type definitions
+type RiskVariant = 'high-risk' | 'medium-risk' | 'low-risk'
+
+interface RiskSummaryCardProps {
+  value: number
+  label: string
+  percentage: number
+  variant?: RiskVariant
+}
+
+interface TransactionRiskDataItem {
+  month: string
+  risk: number
+  reservationPercent: number
+}
+
+interface ScatterDataItem {
+  x: number
+  y: number
+  z: number
+  id: number
+  risk: string
+}
+
+interface CreditDataChild {
+  name: string
+  value: number
+}
+
+interface CreditDataParent {
+  name: string
+  value: number
+  children: CreditDataChild[]
+}
+
+interface CreditDataOuter extends CreditDataChild {
+  parentName: string
+}
+
+interface RiskyAssetItem {
+  name: string
+  type: string
+}
+
+interface DebtorTypeHelper {
+  [key: string]: string
+}
 
 // Risk Summary Card Component
-const RiskSummaryCard = ({ value, label, percentage, variant }) => {
-  const variantStyles = {
+const RiskSummaryCard: React.FC<RiskSummaryCardProps> = ({
+  value,
+  label,
+  percentage,
+  variant,
+}) => {
+  const variantStyles: Record<RiskVariant, string> = {
     'high-risk': 'bg-red-100 text-red-800',
     'medium-risk': 'bg-yellow-100 text-yellow-800',
     'low-risk': 'bg-green-100 text-green-800',
@@ -41,7 +91,7 @@ const RiskSummaryCard = ({ value, label, percentage, variant }) => {
   return (
     <Card className="relative w-full">
       <Badge
-        className={`absolute right-2 top-2 ${variantStyles[variant] || 'bg-blue-100 text-blue-800'}`}
+        className={`absolute right-2 top-2 ${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
       >
         {variant ? `${variant.replace('-', ' ').toUpperCase()}` : 'RISK'}
       </Badge>
@@ -58,26 +108,31 @@ const RiskSummaryCard = ({ value, label, percentage, variant }) => {
   )
 }
 
-const transactionRiskData = [
-  { month: 'Янв', risk: 2.5 },
-  { month: 'Фев', risk: 3.0 },
-  { month: 'Март', risk: 3.5 },
-  { month: 'Апр', risk: 3.2 },
-  { month: 'Май', risk: 4.0 },
-  { month: 'Июн', risk: 4.5 },
-  { month: 'Июл', risk: 4.2 },
-  { month: 'Авг', risk: 4.7 },
-  { month: 'Сент', risk: 4.3 },
-  { month: 'Окт', risk: 4.8 },
-  { month: 'Нояб', risk: 5.0 },
-  { month: 'Дек', risk: 4.9 },
-].map((item) => ({ ...item, reservationPercent: item.risk }))
+const transactionRiskData: TransactionRiskDataItem[] = [
+  { month: 'Янв', risk: 2.5, reservationPercent: 2.5 },
+  { month: 'Фев', risk: 3.0, reservationPercent: 3.0 },
+  { month: 'Март', risk: 3.5, reservationPercent: 3.5 },
+  { month: 'Апр', risk: 3.2, reservationPercent: 3.2 },
+  { month: 'Май', risk: 4.0, reservationPercent: 4.0 },
+  { month: 'Июн', risk: 4.5, reservationPercent: 4.5 },
+  { month: 'Июл', risk: 4.2, reservationPercent: 4.2 },
+  { month: 'Авг', risk: 4.7, reservationPercent: 4.7 },
+  { month: 'Сент', risk: 4.3, reservationPercent: 4.3 },
+  { month: 'Окт', risk: 4.8, reservationPercent: 4.8 },
+  { month: 'Нояб', risk: 5.0, reservationPercent: 5.0 },
+  { month: 'Дек', risk: 4.9, reservationPercent: 4.9 },
+]
 
-const TransactionRiskChart = () => {
-  const [timeframe, setTimeframe] = useState('Month')
-  const [selectedTimeframe, setSelectedTimeframe] = useState('Месяц')
+interface CustomTooltipProps {
+  active?: boolean
+  payload?: Array<any>
+}
 
-  const CustomTooltip = ({ active, payload }) => {
+const TransactionRiskChart: React.FC = () => {
+  const [timeframe, setTimeframe] = useState<string>('Month')
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>('Месяц')
+
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
         <div className="rounded border bg-white p-4 shadow-lg">
@@ -146,12 +201,13 @@ const TransactionRiskChart = () => {
     </div>
   )
 }
-// Control Points Component
-const RiskyAssets = () => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterType, setFilterType] = useState('all')
 
-  const riskyAssetsList = [
+// Control Points Component
+const RiskyAssets: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [filterType, setFilterType] = useState<string>('all')
+
+  const riskyAssetsList: RiskyAssetItem[] = [
     { name: 'Empty Tax Field', type: 'financial' },
     { name: 'Unusual Amount', type: 'transaction' },
     { name: 'Complex Structure', type: 'legal' },
@@ -212,9 +268,9 @@ const RiskyAssets = () => {
 }
 
 // Risk Scatter Plot Component
-const RiskScatterPlot = () => {
+const RiskScatterPlot: React.FC = () => {
   // More realistic data representing credit volume, borrower income, and ECL (Expected Credit Loss)
-  const scatterData = [
+  const scatterData: ScatterDataItem[] = [
     { x: 50000, y: 30000, z: 5, id: 1, risk: 'Низкий' },
     { x: 120000, y: 45000, z: 15, id: 2, risk: 'Умеренный' },
     { x: 200000, y: 60000, z: 25, id: 3, risk: 'Умеренный' },
@@ -225,8 +281,16 @@ const RiskScatterPlot = () => {
     { x: 400000, y: 90000, z: 50, id: 8, risk: 'Высокий' },
   ]
 
+  interface CustomScatterTooltipProps {
+    active?: boolean
+    payload?: Array<any>
+  }
+
   // Custom tooltip to display more information
-  const CustomTooltip = ({ active, payload }) => {
+  const CustomTooltip: React.FC<CustomScatterTooltipProps> = ({
+    active,
+    payload,
+  }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
@@ -285,8 +349,14 @@ const RiskScatterPlot = () => {
   )
 }
 
-const CreditTypesSunburstChart = () => {
-  const creditData = [
+interface PieItemProps {
+  name: string
+  percent: number
+  parentName?: string
+}
+
+const CreditTypesSunburstChart: React.FC = () => {
+  const creditData: CreditDataParent[] = [
     {
       name: 'Розничные',
       value: 100,
@@ -330,7 +400,7 @@ const CreditTypesSunburstChart = () => {
   ]
 
   // Flatten the data for the outer ring
-  const outerData = creditData.flatMap((parent) =>
+  const outerData: CreditDataOuter[] = creditData.flatMap((parent) =>
     parent.children.map((child) => ({
       ...child,
       parentName: parent.name,
@@ -338,13 +408,13 @@ const CreditTypesSunburstChart = () => {
   )
 
   // Color palettes
-  const COLORS_INNER = [
+  const COLORS_INNER: string[] = [
     '#1e90ff', // Dodger Blue
     '#4169e1', // Royal Blue
     '#0000cd', // Medium Blue
     '#00008b', // Dark Blue
   ]
-  const COLORS_OUTER = [
+  const COLORS_OUTER: string[] = [
     '#87cefa', // Light Sky Blue
     '#87ceeb', // Sky Blue
     '#6495ed', // Cornflower Blue
@@ -356,7 +426,7 @@ const CreditTypesSunburstChart = () => {
   ]
 
   // Custom label for inner ring
-  const renderInnerLabel = ({ name, percent }) => {
+  const renderInnerLabel = ({ name, percent }: PieItemProps) => {
     return (
       <text
         x={0}
@@ -372,7 +442,7 @@ const CreditTypesSunburstChart = () => {
   }
 
   // Custom label for outer ring
-  const renderOuterLabel = ({ name, percent, parentName }) => {
+  const renderOuterLabel = ({ name, percent, parentName }: PieItemProps) => {
     return `${parentName}: ${name} (${(percent * 100).toFixed(0)}%)`
   }
 
@@ -443,15 +513,15 @@ const CreditTypesSunburstChart = () => {
   )
 }
 
-const debtorTypeHelper = {
+const debtorTypeHelper: DebtorTypeHelper = {
   retail: 'розничных',
   corporate: 'корпоративных',
   interbank: 'межбанковских',
   sovereign: 'суверенных',
 }
 
-const FinancialDashboard = () => {
-  const search: { type: string } = useSearch({
+const FinancialDashboard: React.FC = () => {
+  const search = useSearch<{ type: string }>({
     strict: false,
   })
   const navigate = useNavigate()
@@ -461,9 +531,11 @@ const FinancialDashboard = () => {
   return (
     <div className="h-full w-full space-y-6 p-6">
       <div className="flex items-center justify-between px-1.5">
-        <div className="text-2xl font-bold leading-38 text-black-900">
-          Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов
-        </div>
+        <Link to="/apps" className="flex items-center">
+          <div className="text-2xl font-bold leading-38 text-black-900">
+            Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов
+          </div>
+        </Link>
         <Button variant={'primary'} onClick={handleContinue}>
           Перейти к отчётам
         </Button>

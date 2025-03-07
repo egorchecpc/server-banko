@@ -38,7 +38,8 @@ const AuthPage = () => {
       localStorage.setItem('token', response.data.token)
       navigate({ to: '/apps' })
     } catch (err) {
-      setError('Неверный email или пароль')
+      setIsLoading((prev) => !prev)
+      setError('Пользователь не найден')
       console.log(err)
     }
   }
@@ -52,7 +53,9 @@ const AuthPage = () => {
 
         <Card className="border-none p-2 shadow-lg">
           <CardHeader className="space-y-1">
-            <div className="text-center text-2xl font-bold">Вход в систему</div>
+            <div className="mb-1 text-center text-2xl font-bold">
+              Вход в систему
+            </div>
             <CardDescription className="text-center">
               Введите email для входа в аккаунт
             </CardDescription>
@@ -82,18 +85,12 @@ const AuthPage = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Пароль</Label>
-                  <Link
-                    to="/auth"
-                    className="text-sm text-blue-600 hover:text-blue-800"
-                  >
-                    Забыли пароль?
-                  </Link>
                 </div>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
+                    placeholder="Пароль"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -109,20 +106,29 @@ const AuthPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="remember"
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => {
-                    if (typeof checked === 'boolean') setRememberMe(checked)
-                  }}
-                />
-                <label
-                  htmlFor="remember"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              <div className="flex items-center justify-between space-x-2">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="remember"
+                    checked={rememberMe}
+                    onCheckedChange={(checked) => {
+                      if (typeof checked === 'boolean') setRememberMe(checked)
+                    }}
+                  />
+
+                  <label
+                    htmlFor="remember"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Запомнить меня
+                  </label>
+                </div>
+                <Link
+                  to="/auth"
+                  className="text-sm text-blue-600 hover:text-blue-800"
                 >
-                  Запомнить меня
-                </label>
+                  Забыли пароль?
+                </Link>
               </div>
 
               <Button type="submit" variant="primary" className="h-10 w-full">
@@ -130,31 +136,6 @@ const AuthPage = () => {
               </Button>
             </form>
           </CardContent>
-
-          <CardFooter className="flex flex-col gap-4">
-            <div className="relative w-full">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-500">или</span>
-              </div>
-            </div>
-
-            <Button variant="outline" className="h-10 w-full">
-              Продолжить с Google
-            </Button>
-
-            <p className="mt-2 text-center text-sm">
-              Нет аккаунта?{' '}
-              <Link
-                to="/register"
-                className="font-medium text-blue-600 hover:text-blue-800"
-              >
-                Зарегистрироваться
-              </Link>
-            </p>
-          </CardFooter>
         </Card>
       </div>
     </div>

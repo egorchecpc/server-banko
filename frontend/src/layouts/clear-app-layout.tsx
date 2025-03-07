@@ -7,14 +7,14 @@ import { PageWrapper } from '@/components/PageWrapper/PageWrapper'
 export const ClearAppLayout = () => {
   return (
     <SidebarProvider>
-      <div className="flex w-[1920px] flex-col overflow-hidden">
+      <div className="flex h-full w-full flex-col overflow-hidden">
         <HeaderModule
           withoutNav={true}
           withoutSidebar={true}
           withoutExportBtn={true}
           withBackBtn={true}
         />
-        <main className="mx-5">
+        <main className="mx-5 flex-1">
           <div>
             <PageWrapper>
               <Outlet />
