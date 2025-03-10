@@ -1,8 +1,10 @@
 export type CategoryChartItem = {
-  category: string
+  creditType: string
+  product: string | null
   without: number
-  overdue0: number
-  overdue30: number
-  overdue60: number
-  overdue90: number
+  between1To30: number
+  between31To60: number
+  between61To90: number
+  moreThen90: number
+  products?: CategoryChartItem[] | null
 }

@@ -172,7 +172,10 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
               <TableRow
                 className={`${row.creditType === TOTAL_LABEL ? 'border-t bg-grey-300 shadow' : 'border-0'} last:border-b`}
               >
-                <TableCell className="w-48 min-w-48 max-w-48 border-0 text-left font-medium">
+                <TableCell
+                  className="w-48 min-w-48 max-w-48 border-0 text-left font-medium"
+                  onClick={() => toggleRow(index)}
+                >
                   {isFirst && row.products && row.products.length > 0 && (
                     <Button
                       variant="ghost"
@@ -228,34 +231,92 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
                       <TableCell className="border-none pl-8 text-left">
                         {product.product || 'Неизвестный продукт'}
                       </TableCell>
-                      {STAGES.map((stage) => (
-                        <React.Fragment key={stage.key}>
-                          <TableCell className="border-x text-center">
-                            {formatCurrency(product.grossCarryingAmount || 0)}
-                          </TableCell>
-                          <TableCell className="border-x text-center">
-                            {showDelta && productDiff
-                              ? renderProductCellWithDelta(
-                                  product.estimatedReservation || 0,
-                                  productDiff.estimatedReservation
-                                )
-                              : formatCurrency(
-                                  product.estimatedReservation || 0
-                                )}
-                          </TableCell>
-                          <TableCell className="border-x text-center">
-                            {showDelta && productDiff
-                              ? renderProductCellWithDelta(
-                                  product.reservationPercentage || 0,
-                                  productDiff.reservationPercentage,
-                                  true
-                                )
-                              : formatPercent(
-                                  product.reservationPercentage || 0
-                                )}
-                          </TableCell>
-                        </React.Fragment>
-                      ))}
+
+                      {/* Стадия 1 */}
+                      <TableCell className="border-x text-center">
+                        {formatCurrency(
+                          product.stage1Data?.grossCarryingAmount || 0
+                        )}
+                      </TableCell>
+                      <TableCell className="border-x text-center">
+                        {showDelta && productDiff
+                          ? renderProductCellWithDelta(
+                              product.stage1Data?.estimatedReservation || 0,
+                              productDiff.stage1Data?.estimatedReservation
+                            )
+                          : formatCurrency(
+                              product.stage1Data?.estimatedReservation || 0
+                            )}
+                      </TableCell>
+                      <TableCell className="border-x text-center">
+                        {showDelta && productDiff
+                          ? renderProductCellWithDelta(
+                              product.stage1Data?.reservationPercentage || 0,
+                              productDiff.stage1Data?.reservationPercentage,
+                              true
+                            )
+                          : formatPercent(
+                              product.stage1Data?.reservationPercentage || 0
+                            )}
+                      </TableCell>
+
+                      {/* Стадия 2 */}
+                      <TableCell className="border-x text-center">
+                        {formatCurrency(
+                          product.stage2Data?.grossCarryingAmount || 0
+                        )}
+                      </TableCell>
+                      <TableCell className="border-x text-center">
+                        {showDelta && productDiff
+                          ? renderProductCellWithDelta(
+                              product.stage2Data?.estimatedReservation || 0,
+                              productDiff.stage2Data?.estimatedReservation
+                            )
+                          : formatCurrency(
+                              product.stage2Data?.estimatedReservation || 0
+                            )}
+                      </TableCell>
+                      <TableCell className="border-x text-center">
+                        {showDelta && productDiff
+                          ? renderProductCellWithDelta(
+                              product.stage2Data?.reservationPercentage || 0,
+                              productDiff.stage2Data?.reservationPercentage,
+                              true
+                            )
+                          : formatPercent(
+                              product.stage2Data?.reservationPercentage || 0
+                            )}
+                      </TableCell>
+
+                      {/* Стадия 3 */}
+                      <TableCell className="border-x text-center">
+                        {formatCurrency(
+                          product.stage3Data?.grossCarryingAmount || 0
+                        )}
+                      </TableCell>
+                      <TableCell className="border-x text-center">
+                        {showDelta && productDiff
+                          ? renderProductCellWithDelta(
+                              product.stage3Data?.estimatedReservation || 0,
+                              productDiff.stage3Data?.estimatedReservation
+                            )
+                          : formatCurrency(
+                              product.stage3Data?.estimatedReservation || 0
+                            )}
+                      </TableCell>
+                      <TableCell className="border-x text-center">
+                        {showDelta && productDiff
+                          ? renderProductCellWithDelta(
+                              product.stage3Data?.reservationPercentage || 0,
+                              productDiff.stage3Data?.reservationPercentage,
+                              true
+                            )
+                          : formatPercent(
+                              product.stage3Data?.reservationPercentage || 0
+                            )}
+                      </TableCell>
+
+                      {/* Итого */}
                       <TableCell className="border-x text-center">
                         {formatCurrency(product.grossCarryingAmount || 0)}
                       </TableCell>

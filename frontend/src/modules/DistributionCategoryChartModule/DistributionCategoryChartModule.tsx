@@ -36,8 +36,32 @@ export const DistributionCategoryChartModule: React.FC<
   DistributionCategoryChartModuleProps
 > = ({ amountData, countData }) => {
   const [isAmountMode, setIsAmountMode] = useState(true)
+  const [groupByProduct, setGroupByProduct] = useState(false)
 
-  const data = isAmountMode ? amountData : countData
+  // Преобразуем данные в зависимости от выбранного режима группировки
+  const prepareData = (data: CategoryChartItem[]) => {
+    if (!groupByProduct) {
+      // Группировка по типам кредитов (верхний уровень)
+      return data.map((item) => ({
+        ...item,
+        // Используем creditType вместо product для отображения на оси X
+        product: item.creditType,
+      }))
+    } else {
+      // Разворачиваем и добавляем все продукты
+      return data.flatMap((creditType) =>
+        creditType.products
+          ? creditType.products.map((product) => ({
+              ...product,
+              // Добавляем префикс типа кредита для улучшения читаемости
+              product: `${product.product}`,
+            }))
+          : []
+      )
+    }
+  }
+
+  const data = prepareData(isAmountMode ? amountData : countData)
 
   const formatValue = (value: number) => {
     return new Intl.NumberFormat('ru-RU').format(Math.round(value))
@@ -50,6 +74,10 @@ export const DistributionCategoryChartModule: React.FC<
       return (
         <div className="rounded-md border bg-white p-2 shadow-md">
           <p className="mb-2 font-bold">{dataPoint.product}</p>
+          {dataPoint.creditType &&
+            dataPoint.creditType !== dataPoint.product && (
+              <p className="mb-2 text-gray-600">{dataPoint.creditType}</p>
+            )}
           <div>
             <div className="flex justify-between">
               <span>Без просрочки:</span>
@@ -83,7 +111,8 @@ export const DistributionCategoryChartModule: React.FC<
       <ContainerHeader>
         <div className="flex items-center">
           <div className="text-xl font-bold leading-24 text-black-800">
-            Распределение {isAmountMode ? 'ВБС' : 'количества'} по категориям
+            Распределение {isAmountMode ? 'ВБС' : 'количества'} по{' '}
+            {groupByProduct ? 'продуктам' : 'типам кредитов'}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -103,6 +132,17 @@ export const DistributionCategoryChartModule: React.FC<
                   id="data-mode"
                   checked={isAmountMode}
                   onCheckedChange={setIsAmountMode}
+                />
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                className="flex items-center justify-between p-3"
+              >
+                <Label htmlFor="group-mode">Группировать по продуктам</Label>
+                <Switch
+                  id="group-mode"
+                  checked={groupByProduct}
+                  onCheckedChange={setGroupByProduct}
                 />
               </DropdownMenuItem>
             </DropdownMenuContent>

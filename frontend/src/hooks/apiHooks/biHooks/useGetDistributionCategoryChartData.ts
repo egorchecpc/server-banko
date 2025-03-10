@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import axiosConfig from '@/services/axiosConfig'
 import { CategoryChartItem } from '@/models/CategoryChartItem'
 import axios from 'axios'
 

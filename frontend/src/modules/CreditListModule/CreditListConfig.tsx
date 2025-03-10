@@ -1,7 +1,8 @@
 import { ColumnDef, Row } from '@tanstack/react-table'
 import { DataTableColumnHeader } from '@/components/CustomTableComponents/DataTableColumnHeader'
 import { CreditListData } from '@/models/CreditList'
-import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
+import { AlertTriangle, CheckCircle, XCircle, ArrowUpDown } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 const stageIcons = {
   '1': <CheckCircle className="h-5 w-5 text-green-500" />,
@@ -20,7 +21,7 @@ const customFilterFn = (
   return row.getValue(columnId) === filterValue
 }
 
-export const columns: ColumnDef<{ id: string }, unknown>[] = [
+export const columns: ColumnDef<CreditListData, unknown>[] = [
   {
     accessorKey: 'clientId',
     header: ({ column }) => (
@@ -129,11 +130,14 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
   {
     accessorKey: 'date',
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Дата выдачи"
-        allowHide={true}
-      />
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className="p-0 font-medium"
+      >
+        Дата выдачи
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
     cell: ({ row }) => (
       <div className="flex h-10 w-full items-center justify-center whitespace-nowrap">
@@ -146,7 +150,14 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
   {
     accessorKey: 'loanRepaymentDate',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата выдачи" />
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className="p-0 font-medium"
+      >
+        Дата погашения
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
     cell: ({ row }) => (
       <div className="flex h-10 w-full items-center justify-center">
@@ -159,11 +170,24 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
   {
     accessorKey: 'grossCarryingAmount',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ВБС" allowHide={true} />
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className="p-0 font-medium"
+      >
+        ВБС
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
     cell: ({ row }) => (
       <div className="flex h-10 w-full items-center justify-center">
-        {row.getValue('grossCarryingAmount')}
+        {typeof row.getValue('grossCarryingAmount') === 'number'
+          ? new Intl.NumberFormat('ru-RU', {
+              style: 'decimal',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(row.getValue('grossCarryingAmount'))
+          : row.getValue('grossCarryingAmount')}
       </div>
     ),
     enableSorting: true,
@@ -198,11 +222,24 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
   {
     accessorKey: 'expectedCreditLossesAmount',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ECL" allowHide={true} />
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className="p-0 font-medium"
+      >
+        ECL
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
     cell: ({ row }) => (
       <div className="flex h-10 w-full items-center justify-center">
-        {row.getValue('expectedCreditLossesAmount')}
+        {typeof row.getValue('expectedCreditLossesAmount') === 'number'
+          ? new Intl.NumberFormat('ru-RU', {
+              style: 'decimal',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }).format(row.getValue('expectedCreditLossesAmount'))
+          : row.getValue('expectedCreditLossesAmount')}
       </div>
     ),
     enableSorting: true,
@@ -211,7 +248,14 @@ export const columns: ColumnDef<{ id: string }, unknown>[] = [
   {
     accessorKey: 'reservationPercentage',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="%" allowHide={true} />
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className="p-0 font-medium"
+      >
+        %
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
     ),
     cell: ({ row }) => {
       const value = row.getValue<number>('reservationPercentage')

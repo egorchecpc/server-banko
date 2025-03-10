@@ -6,20 +6,76 @@ import {
   stage_types,
   titles,
 } from '@/modules/CreditListModule/CreditListConfig'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { ExportCreditList } from '@/components/ExportCreditListComponent/ExportCreditList'
 import { useGetCreditListData } from '@/hooks/apiHooks/commonHooks/useGetCreditListData'
 import { DataTable } from '@/components/CustomTableComponentTimeless/DataTable'
-import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { SortingState, ColumnFiltersState } from '@tanstack/react-table'
+import { useLoading } from '@/context/LoadingContext'
 
 export const CreditListModule: FC = () => {
   const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(20)
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-  const { data, isLoading } = useGetCreditListData(page, pageSize)
-  if (isLoading) {
-    return <LoadingSpinner />
+  // Extract field name and direction for sorting
+  const sortField = sorting.length > 0 ? sorting[0].id : undefined
+  const sortDirection =
+    sorting.length > 0 ? (sorting[0].desc ? 'DESC' : 'ASC') : undefined
+
+  // Handle different types of filters
+  const activeFilter = columnFilters.find((filter) =>
+    ['ownerType', 'creditType', 'product', 'stage'].includes(filter.id)
+  )
+
+  // Check if we have a search filter for contractId
+  const searchFilter = columnFilters.find((filter) => filter.id === 'clientId')
+
+  // Determine filter property and value
+  let filterProperty: string | undefined
+  let filterValue: string | undefined
+
+  if (activeFilter) {
+    filterProperty = activeFilter.id
+    filterValue =
+      Array.isArray(activeFilter.value) && activeFilter.value.length
+        ? activeFilter.value[0]
+        : (activeFilter.value as string)
   }
+
+  let searchText: string | undefined
+  if (searchFilter) {
+    searchText = searchFilter.value as string
+  }
+
+  const { data, isLoading } = useGetCreditListData(
+    page,
+    pageSize,
+    sortField,
+    sortDirection,
+    filterProperty,
+    filterValue,
+    searchText
+  )
+  const { setIsLoading } = useLoading()
+  useEffect(() => {
+    setIsLoading(isLoading)
+    return () => {
+      setIsLoading(false)
+    }
+  }, [isLoading, setIsLoading])
+
+  const handleSortingChange = (newSorting: SortingState) => {
+    setSorting(newSorting)
+    setPage(0)
+  }
+
+  const handleFiltersChange = (newFilters: ColumnFiltersState) => {
+    setColumnFilters(newFilters)
+    setPage(0)
+  }
+
   return (
     <div className="hidden h-full w-full flex-1 flex-col md:flex">
       <div className="flex items-center justify-between">
@@ -62,6 +118,10 @@ export const CreditListModule: FC = () => {
         totalPages={data?.totalPages ?? 0}
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
+        initialSorting={sorting}
+        onSortingChange={handleSortingChange}
+        initialFilters={columnFilters}
+        onFiltersChange={handleFiltersChange}
       />
     </div>
   )

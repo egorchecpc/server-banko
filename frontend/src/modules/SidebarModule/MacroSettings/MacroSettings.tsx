@@ -1,5 +1,9 @@
 import React, { FC, useEffect, useState } from 'react'
-import { DownloadIcon, PlusCircle } from 'lucide-react'
+import {
+  DownloadIcon,
+  PlusCircle,
+  AlignHorizontalDistributeCenter,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MacroTable } from '@/components/Tables/MacroTable/MacroTable'
 import { MacroSettingsModal } from './MacroSettingsModal/MacroSettingsModal'
@@ -9,6 +13,8 @@ import { useGetReportDataById } from '@/hooks/apiHooks/commonHooks/useGetReports
 import { useParams } from '@tanstack/react-router'
 import { MacroTemplateModal } from '@/modules/SidebarModule/MacroSettings/MacroTemplateModal/MacroTemplateModal'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { toast } from 'sonner'
+import { ModelSelectionModal } from '@/modules/SidebarModule/MacroSettings/ModelSelectionModal/ModelSelectionModal'
 
 interface MacroSettingsProps {
   setMacroData: React.Dispatch<
@@ -39,6 +45,8 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
   const [indicators, setIndicators] = useState<MacroSettings[]>(
     macroData ? macroData : []
   )
+  const [isModelModalOpen, setIsModelModalOpen] = useState(false)
+  const [selectedModel, setSelectedModel] = useState<string>('Banko')
 
   useEffect(() => {
     if (macroData) {
@@ -92,6 +100,12 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
     setIsTemplateModalOpen(false)
   }
 
+  const handleModelSelect = (model: string) => {
+    setSelectedModel(model)
+    setIsModelModalOpen(false)
+    toast.success(`Успешно выбрана модель ${model}`)
+  }
+
   const scenarios = ['worst', 'norm', 'best']
 
   return (
@@ -108,6 +122,14 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
             }}
           >
             <DownloadIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            className="p-0 text-blue-900 hover:text-charts-60"
+            onClick={() => {
+              setIsModelModalOpen(true)
+            }}
+          >
+            <AlignHorizontalDistributeCenter className="h-4 w-4" />
           </Button>
         </div>
         <Button
@@ -161,6 +183,12 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
         isOpen={isTemplateModalOpen}
         onClose={() => setIsTemplateModalOpen(false)}
         onTemplateSelect={handleTemplateSelect}
+      />
+
+      <ModelSelectionModal
+        isOpen={isModelModalOpen}
+        onClose={() => setIsModelModalOpen(false)}
+        onModelSelect={handleModelSelect}
       />
     </div>
   )

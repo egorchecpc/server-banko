@@ -25,7 +25,18 @@ import {
   ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
 import { GearIcon } from '@radix-ui/react-icons'
-import { ProductData } from '@/models/AgeingAmount'
+
+// Обновленная структура данных
+export type ProductData = {
+  creditType: string
+  product: string | null
+  without: number
+  between1To30: number
+  between31To60: number
+  between61To90: number
+  moreThen90: number
+  products?: ProductData[] | null
+}
 
 type DetailedPeriodData = {
   name: string
@@ -50,7 +61,8 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
 }) => {
   const [showPercentage, setShowPercentage] = useState(false)
   const [isAmountMode, setIsAmountMode] = useState(true)
-  const data = isAmountMode ? amountData : countData
+  const [groupByProduct, setGroupByProduct] = useState(false)
+  const rawData = isAmountMode ? amountData : countData
   const [productSettings, setProductSettings] = useState<
     {
       productName: string
@@ -59,17 +71,45 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
     }[]
   >([])
 
+  // Преобразуем данные в зависимости от режима группировки
+  const data = useMemo(() => {
+    if (groupByProduct) {
+      // Извлекаем все продукты из структуры данных
+      return rawData.flatMap((item) =>
+        item.products ? item.products.filter((p) => p.product !== null) : []
+      )
+    } else {
+      // Используем данные верхнего уровня (по типам кредитов)
+      return rawData
+    }
+  }, [rawData, groupByProduct])
+
   useEffect(() => {
     if (data) {
-      setProductSettings(
-        data.map((product) => ({
-          productName: product.product,
-          isVisible: true,
-          color: CONFIG.colors[product.product as keyof typeof CONFIG.colors],
-        }))
+      // Определяем отображаемые элементы в зависимости от режима группировки
+      const displayItems = data.map((item) => ({
+        productName: groupByProduct
+          ? item.product || 'Неизвестный продукт'
+          : item.creditType,
+        isVisible: true,
+        // Пытаемся получить цвет из конфига или используем запасной вариант
+        color:
+          CONFIG.colors[
+            (groupByProduct
+              ? item.product
+              : item.creditType) as keyof typeof CONFIG.colors
+          ] || '#CCCCCC',
+      }))
+
+      // Фильтруем дубликаты, которые могут возникнуть из-за продуктов с одинаковыми именами
+      const uniqueItems = displayItems.filter(
+        (item, index, self) =>
+          index === self.findIndex((t) => t.productName === item.productName)
       )
+
+      setProductSettings(uniqueItems)
     }
-  }, [data])
+  }, [data, groupByProduct])
 
   const toggleProduct = (productName: string) => {
     setProductSettings((prev) =>
@@ -109,17 +149,24 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
       periodDetails[period] = {}
     })
 
-    data.forEach((product) => {
+    // Рассчитываем общие суммы для каждого периода по всем данным
+    data.forEach((item) => {
       Object.entries(periodMappings).forEach(([oldKey, newKey]) => {
-        periodTotals[oldKey] += product[newKey as keyof ProductData] as number
+        periodTotals[oldKey] += item[newKey as keyof ProductData] as number
       })
     })
 
+    // Фильтруем видимые элементы и собираем детальную информацию
     visibleProducts.forEach((setting) => {
-      const productData = data.find((p) => p.product === setting.productName)
-      if (productData) {
+      const itemData = data.find((p) =>
+        groupByProduct
+          ? p.product === setting.productName
+          : p.creditType === setting.productName
+      )
+
+      if (itemData) {
         Object.entries(periodMappings).forEach(([oldKey, newKey]) => {
-          periodDetails[oldKey][setting.productName] = productData[
+          periodDetails[oldKey][setting.productName] = itemData[
             newKey as keyof ProductData
           ] as number
         })
@@ -151,7 +198,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
     )
 
     return result.filter((item) => item.absoluteValue > 0)
-  }, [data, productSettings, showPercentage])
+  }, [data, productSettings, showPercentage, groupByProduct])
 
   const formatValue = (value: number) => {
     if (showPercentage) {
@@ -177,7 +224,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
                     color:
                       CONFIG.colors[
                         detail.productName as keyof typeof CONFIG.colors
-                      ],
+                      ] || '#666666',
                   }}
                 >
                   {detail.productName}:
@@ -211,7 +258,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="flex items-center">
+        <div className="flex w-full items-center">
           <div className="text-xl font-bold leading-24 text-black-800">
             Распределение {isAmountMode ? 'ВБС' : 'количества'} по срокам
             просрочки {showPercentage ? ' (%)' : ''}
@@ -247,8 +294,21 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
                   onCheckedChange={setIsAmountMode}
                 />
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()}
+                className="flex items-center justify-between p-3"
+              >
+                <Label htmlFor="group-mode">Группировать по продуктам</Label>
+                <Switch
+                  id="group-mode"
+                  checked={groupByProduct}
+                  onCheckedChange={setGroupByProduct}
+                />
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuLabel>Отображаемые продукты</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                Отображаемые {groupByProduct ? 'продукты' : 'типы кредитов'}
+              </DropdownMenuLabel>
               {productSettings.map((setting) => (
                 <DropdownMenuItem
                   key={setting.productName}
@@ -279,7 +339,7 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
             <PieChart>
               {pieData.length > 0 && (
                 <Pie
-                  key={Math.random()} // fix animation bug from recharts library, delete this if performance dying
+                  key={groupByProduct ? 'product-view' : 'credit-type-view'} // Используем более надежный ключ
                   data={pieData}
                   cx="50%"
                   cy="50%"

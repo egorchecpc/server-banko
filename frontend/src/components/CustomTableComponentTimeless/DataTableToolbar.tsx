@@ -34,6 +34,34 @@ export function DataTableToolbar<TData, TTitles>({
 }: DataTableToolbarProps<TData, TTitles>) {
   const isFiltered = table.getState().columnFilters.length > 0
   const { t } = useTranslation()
+
+  // Определяем, является ли текущий фильтр серверным
+  const isServerSideFilter = (columnId: string) => {
+    // Список фильтров, которые должны обрабатываться на сервере
+    const serverSideFilters = [
+      'ownerType',
+      'product',
+      'creditType',
+      'stage',
+      'clientId',
+    ]
+    return serverSideFilters.includes(columnId)
+  }
+
+  // Функция для сброса только серверных фильтров
+  const resetServerFilters = () => {
+    const currentFilters = table.getState().columnFilters
+    const newFilters = currentFilters.filter(
+      (filter) => !isServerSideFilter(filter.id)
+    )
+    table.resetColumnFilters(false) // Не вызываем обработчики сразу
+
+    // Применяем только клиентские фильтры
+    newFilters.forEach((filter) => {
+      table.getColumn(filter.id)?.setFilterValue(filter.value)
+    })
+  }
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -61,7 +89,7 @@ export function DataTableToolbar<TData, TTitles>({
         {isFiltered && (
           <Button
             variant="outline"
-            onClick={() => table.resetColumnFilters()}
+            onClick={resetServerFilters}
             className="h-8 px-2 lg:px-3"
           >
             {t('customTable.toolbar.reset')}

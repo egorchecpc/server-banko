@@ -142,9 +142,11 @@ export function calculateECLDiff(
 }
 
 // Функция для расчета разницы между продуктами
+// Функция для расчета разницы между продуктами
 function calculateProductsDiff(
   oldProducts: any[] = [],
-  newProducts: any[]
+  newProducts: any[],
+  isECLv1: boolean = true
 ): ProductDiff[] {
   return newProducts.map((newProduct) => {
     const oldProduct = oldProducts.find(
@@ -152,11 +154,43 @@ function calculateProductsDiff(
     )
 
     if (!oldProduct) {
-      return {
-        product: newProduct.product,
-        grossCarryingAmount: newProduct.grossCarryingAmount,
-        estimatedReservation: 0, // 0% изменения
-        reservationPercentage: newProduct.reservationPercentage,
+      // Для ECLv1 добавляем данные по стадиям
+      if (isECLv1) {
+        return {
+          product: newProduct.product,
+          grossCarryingAmount: newProduct.grossCarryingAmount,
+          estimatedReservation: 0, // 0% изменения
+          reservationPercentage: newProduct.reservationPercentage,
+          stage1Data: {
+            grossCarryingAmount:
+              newProduct.stage1Data?.grossCarryingAmount || 0,
+            estimatedReservation: 0,
+            reservationPercentage:
+              newProduct.stage1Data?.reservationPercentage || 0,
+          },
+          stage2Data: {
+            grossCarryingAmount:
+              newProduct.stage2Data?.grossCarryingAmount || 0,
+            estimatedReservation: 0,
+            reservationPercentage:
+              newProduct.stage2Data?.reservationPercentage || 0,
+          },
+          stage3Data: {
+            grossCarryingAmount:
+              newProduct.stage3Data?.grossCarryingAmount || 0,
+            estimatedReservation: 0,
+            reservationPercentage:
+              newProduct.stage3Data?.reservationPercentage || 0,
+          },
+        }
+      } else {
+        // Для ECLv2 оставляем прежнюю структуру
+        return {
+          product: newProduct.product,
+          grossCarryingAmount: newProduct.grossCarryingAmount,
+          estimatedReservation: 0, // 0% изменения
+          reservationPercentage: newProduct.reservationPercentage,
+        }
       }
     }
 
@@ -165,7 +199,8 @@ function calculateProductsDiff(
       return ((newValue - oldValue) / oldValue) * 100
     }
 
-    return {
+    // Базовый результат, общий для ECLv1 и ECLv2
+    const result = {
       product: newProduct.product,
       grossCarryingAmount:
         newProduct.grossCarryingAmount - oldProduct.grossCarryingAmount,
@@ -175,6 +210,52 @@ function calculateProductsDiff(
       ),
       reservationPercentage:
         newProduct.reservationPercentage - oldProduct.reservationPercentage,
+    }
+
+    // Для ECLv1 добавляем данные по стадиям
+    if (isECLv1) {
+      return {
+        ...result,
+        stage1Data: {
+          grossCarryingAmount:
+            (newProduct.stage1Data?.grossCarryingAmount || 0) -
+            (oldProduct.stage1Data?.grossCarryingAmount || 0),
+          estimatedReservation: calculateReservationChange(
+            newProduct.stage1Data?.estimatedReservation || 0,
+            oldProduct.stage1Data?.estimatedReservation || 0
+          ),
+          reservationPercentage:
+            (newProduct.stage1Data?.reservationPercentage || 0) -
+            (oldProduct.stage1Data?.reservationPercentage || 0),
+        },
+        stage2Data: {
+          grossCarryingAmount:
+            (newProduct.stage2Data?.grossCarryingAmount || 0) -
+            (oldProduct.stage2Data?.grossCarryingAmount || 0),
+          estimatedReservation: calculateReservationChange(
+            newProduct.stage2Data?.estimatedReservation || 0,
+            oldProduct.stage2Data?.estimatedReservation || 0
+          ),
+          reservationPercentage:
+            (newProduct.stage2Data?.reservationPercentage || 0) -
+            (oldProduct.stage2Data?.reservationPercentage || 0),
+        },
+        stage3Data: {
+          grossCarryingAmount:
+            (newProduct.stage3Data?.grossCarryingAmount || 0) -
+            (oldProduct.stage3Data?.grossCarryingAmount || 0),
+          estimatedReservation: calculateReservationChange(
+            newProduct.stage3Data?.estimatedReservation || 0,
+            oldProduct.stage3Data?.estimatedReservation || 0
+          ),
+          reservationPercentage:
+            (newProduct.stage3Data?.reservationPercentage || 0) -
+            (oldProduct.stage3Data?.reservationPercentage || 0),
+        },
+      }
+    } else {
+      // Для ECLv2 возвращаем базовый результат без дополнительных полей
+      return result
     }
   })
 }

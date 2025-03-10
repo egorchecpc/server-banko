@@ -61,11 +61,11 @@ const AutocorrelationChart = () => {
 
           {/* Confidence interval lines */}
           <div
-            className="absolute h-full w-px border-l border-dashed border-red-500"
+            className="absolute h-full w-px border-l border-dashed border-black-900"
             style={{ left: '35%' }}
           ></div>
           <div
-            className="absolute h-full w-px border-l border-dashed border-red-500"
+            className="absolute h-full w-px border-l border-dashed border-black-900"
             style={{ right: '35%' }}
           ></div>
 
@@ -108,11 +108,11 @@ const AutocorrelationChart = () => {
 
           {/* Confidence interval lines */}
           <div
-            className="absolute h-full w-px border-l border-dashed border-red-500"
+            className="absolute h-full w-px border-l border-dashed border-black-900"
             style={{ left: '35%' }}
           ></div>
           <div
-            className="absolute h-full w-px border-l border-dashed border-red-500"
+            className="absolute h-full w-px border-l border-dashed border-black-900"
             style={{ right: '35%' }}
           ></div>
 

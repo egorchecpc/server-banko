@@ -32,9 +32,19 @@ export const transformECLDataFromServer = (
   type: ECLType = ECLType.PRODUCT
 ): ECLData => {
   if (type === ECLType.PRODUCT) {
-    // Логика для продуктов (существующая)
+    // Логика для продуктов (исправленная)
     const creditTypes = new Set<string>()
     data.stage1.forEach((item) => {
+      if (item.creditType && item.creditType !== 'погашен') {
+        creditTypes.add(item.creditType)
+      }
+    })
+    data.stage2.forEach((item) => {
+      if (item.creditType && item.creditType !== 'погашен') {
+        creditTypes.add(item.creditType)
+      }
+    })
+    data.stage3.forEach((item) => {
       if (item.creditType && item.creditType !== 'погашен') {
         creditTypes.add(item.creditType)
       }
@@ -55,6 +65,86 @@ export const transformECLDataFromServer = (
           (item) => item.creditType === creditType
         )
 
+        // Получаем продукты из каждой стадии
+        const stage1Products =
+          data.stage1.find((item) => item.creditType === creditType)
+            ?.products || []
+
+        const stage2Products =
+          data.stage2.find((item) => item.creditType === creditType)
+            ?.products || []
+
+        const stage3Products =
+          data.stage3.find((item) => item.creditType === creditType)
+            ?.products || []
+
+        // Объединяем все уникальные продукты из всех стадий
+        const allProductNames = new Set<string>()
+
+        // Добавляем имена продуктов из всех стадий
+        stage1Products.forEach((product) => {
+          if (product.product) allProductNames.add(product.product)
+        })
+        stage2Products.forEach((product) => {
+          if (product.product) allProductNames.add(product.product)
+        })
+        stage3Products.forEach((product) => {
+          if (product.product) allProductNames.add(product.product)
+        })
+
+        // Создаем объект для каждого уникального продукта со всеми его стадиями
+        const combinedProducts = Array.from(allProductNames).map(
+          (productName) => {
+            // Находим данные продукта для каждой стадии
+            const stage1Product = stage1Products.find(
+              (p) => p.product === productName
+            )
+            const stage2Product = stage2Products.find(
+              (p) => p.product === productName
+            )
+            const stage3Product = stage3Products.find(
+              (p) => p.product === productName
+            )
+
+            // Сумма для итогов
+            const totalGrossAmount =
+              (stage1Product?.grossCarryingAmount || 0) +
+              (stage2Product?.grossCarryingAmount || 0) +
+              (stage3Product?.grossCarryingAmount || 0)
+
+            const totalReservation =
+              (stage1Product?.estimatedReservation || 0) +
+              (stage2Product?.estimatedReservation || 0) +
+              (stage3Product?.estimatedReservation || 0)
+
+            // Создаем объект с данными продукта по всем стадиям
+            return {
+              product: productName,
+              // Данные по стадиям
+              stage1Data: stage1Product || {
+                grossCarryingAmount: 0,
+                estimatedReservation: 0,
+                reservationPercentage: 0,
+              },
+              stage2Data: stage2Product || {
+                grossCarryingAmount: 0,
+                estimatedReservation: 0,
+                reservationPercentage: 0,
+              },
+              stage3Data: stage3Product || {
+                grossCarryingAmount: 0,
+                estimatedReservation: 0,
+                reservationPercentage: 0,
+              },
+              // Общие данные для итогов
+              grossCarryingAmount: totalGrossAmount,
+              estimatedReservation: totalReservation,
+              reservationPercentage:
+                totalGrossAmount > 0 ? totalReservation / totalGrossAmount : 0,
+            }
+          }
+        )
+
         const result: any = {
           creditType,
           stage1: getStageData(data.stage1),
@@ -64,9 +154,7 @@ export const transformECLDataFromServer = (
             balance: formatCurrency(summaryItem?.grossCarryingAmount || 0),
             reserve: formatCurrency(summaryItem?.estimatedReservation || 0),
           },
-          products:
-            data.stage1.find((item) => item.creditType === creditType)
-              ?.products || [],
+          products: combinedProducts,
         }
 
         return result
@@ -103,7 +191,7 @@ export const transformECLDataFromServer = (
               ?.grossCarryingAmount || 0
           ),
           reserve: formatCurrency(
-            data.stage3.find((item) => item.creditType === null)
+            data.stage3.find((item) => item.delay === null)
               ?.estimatedReservation || 0
           ),
           percent: formatPercent(

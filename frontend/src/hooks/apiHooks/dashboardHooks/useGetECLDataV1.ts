@@ -9,13 +9,6 @@ const filterUnwantedProducts = (data: ECLData) => {
   Object.keys(filteredData).forEach((stageKey) => {
     if (Array.isArray(filteredData[stageKey])) {
       filteredData[stageKey] = filteredData[stageKey].map((creditTypeItem) => {
-        if (creditTypeItem.products && Array.isArray(creditTypeItem.products)) {
-          creditTypeItem.products = creditTypeItem.products.filter(
-            (product) =>
-              product.product !== 'Ипотека 10 лет' &&
-              product.product !== 'На самое важное'
-          )
-        }
         return creditTypeItem
       })
     }

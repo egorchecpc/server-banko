@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { ReportsModule } from '@/modules/ReportsModule/ReportsModule'
-import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
 import { useProfile } from '@/hooks/apiHooks/profileHooks/useProfile'
 import { useTemplates } from '@/hooks/apiHooks/commonHooks/useTemplate'
@@ -12,6 +11,7 @@ import { ProfileEditDialog } from '@/pages/Profile/ProfileEditDialog/ProfileEdit
 import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
 import { RModelSettingsPage } from '@/modules/ModelSettingsModule/RModelSettingsPage'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { useLoading } from '@/context/LoadingContext'
 
 export const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('about')
@@ -20,7 +20,15 @@ export const ProfilePage = () => {
     useTemplates()
   const [profileDialogOpen, setProfileDialogOpen] = useState(false)
   const [editedProfile, setEditedProfile] = useState<ProfileData | null>(null)
-  const { data: ProfileReportsData } = useGetReportsData()
+  const { data: ProfileReportsData, isLoading } = useGetReportsData()
+  const { setIsLoading } = useLoading()
+
+  useEffect(() => {
+    setIsLoading(isTemplatesLoading || isProfileLoading || isLoading)
+    return () => {
+      setIsLoading(false) // Сбрасываем при размонтировании
+    }
+  }, [isLoading, isTemplatesLoading, isProfileLoading, setIsLoading])
 
   useEffect(() => {
     if (profile) {
@@ -43,7 +51,7 @@ export const ProfilePage = () => {
   }
 
   if (isProfileLoading) {
-    return <LoadingSpinner />
+    return <div></div>
   }
 
   if (!profile) {

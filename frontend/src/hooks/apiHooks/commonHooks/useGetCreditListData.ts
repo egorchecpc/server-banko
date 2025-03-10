@@ -5,26 +5,66 @@ import axios from 'axios'
 export const useGetCreditListData = (
   page: number,
   size: number,
-  sort?: string
+  sortField?: string,
+  sortDirection?: string,
+  filterProperty?: string,
+  filterValue?: string,
+  searchText?: string
 ) => {
   return useQuery<PaginatedResponse<CreditListData>, Error>({
-    queryKey: ['CreditListData', page, size, sort],
+    queryKey: [
+      'CreditListData',
+      page,
+      size,
+      sortField,
+      sortDirection,
+      filterProperty,
+      filterValue,
+      searchText,
+    ],
     queryFn: async () => {
       const params = new URLSearchParams({
         page: page.toString(),
         size: size.toString(),
-        ...(sort ? { sort } : {}),
       })
+
+      // Add sort field and direction if available
+      if (sortField) {
+        params.append('sortProperties', sortField)
+
+        // Add direction if available
+        if (sortDirection) {
+          params.append('direction', sortDirection)
+        }
+      }
+
+      // Add filter parameters if they exist
+      if (filterProperty && filterValue) {
+        params.append('filterProperty', filterProperty)
+        params.append('filterValue', filterValue)
+      }
+
+      // Add search by contractId if search text exists
+      if (searchText) {
+        params.append('filterProperty', 'contractId')
+        params.append('filterValue', searchText)
+      }
+
       console.log('Requesting with params:', {
         page,
         size,
-        sort,
+        sortField,
+        sortDirection,
+        filterProperty,
+        filterValue,
+        searchText,
         url: `${'https://banko-r-backend.stacklevel.group/api/contracts'}?${params.toString()}`,
       })
+
       const { data } = await axios.get(
         `${'https://banko-r-backend.stacklevel.group/api/contracts'}?${params.toString()}`
       )
-      console.log('Received data:', data)
+
       return data
     },
   })

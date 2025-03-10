@@ -6,7 +6,7 @@ import AveragePDChartModule from '@/modules/AveragePDChartModule/AveragePDChartM
 import HeatmapChartModule from '@/modules/HeatmapChartModule/HeatmapChartModule'
 import TotalAmountOverdueChartModule from '@/modules/TotalAmountOverdueChartModule/TotalAmountOverdueChartModule'
 import AgeingAmountChartModule from '@/modules/AgeingAmountsChartModule/AgeingAmountChartModule'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { BIAnalyticsSettings } from '@/modules/BISettings/BISettings'
 import {
   Breadcrumb,
@@ -17,10 +17,10 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Link, useParams } from '@tanstack/react-router'
-import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { DistributionCategoryChartModule } from '@/modules/DistributionCategoryChartModule/DistributionCategoryChartModule'
 import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
+import { useLoading } from '@/context/LoadingContext'
 
 interface visabilitySettings {
   gbv: boolean
@@ -49,6 +49,14 @@ export const BIAnalyticsPage = () => {
     .join('-')
   const date = fixDate(reportDate)
   const { data, isLoading, isError } = useGetBIAnalyticsData(date)
+  const { setIsLoading } = useLoading()
+
+  useEffect(() => {
+    setIsLoading(isLoading)
+    return () => {
+      setIsLoading(false) // Сбрасываем при размонтировании
+    }
+  }, [isLoading, setIsLoading])
 
   const [chartVisibility, setChartVisibility] = useState({
     gbv: true,
@@ -69,7 +77,7 @@ export const BIAnalyticsPage = () => {
   )
 
   if (isLoading) {
-    return <LoadingSpinner />
+    return <div></div>
   }
   if (isError) {
     return <div>Error occurred while fetching data</div>

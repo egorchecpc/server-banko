@@ -48,9 +48,13 @@ interface DataTableProps<TData, TValue> {
   totalPages: number
   onPageChange: (page: number) => void
   onPageSizeChange: (size: number) => void
+  // Новые пропсы для серверной сортировки и фильтрации
+  initialSorting?: SortingState
+  onSortingChange?: (sorting: SortingState) => void
+  initialFilters?: ColumnFiltersState
+  onFiltersChange?: (filters: ColumnFiltersState) => void
 }
 
-// Исправленный код для компонента DataTable
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
@@ -68,11 +72,16 @@ export function DataTable<TData extends { id: string }, TValue>({
   totalPages,
   onPageChange,
   onPageSizeChange,
+  initialSorting = [],
+  onSortingChange,
+  initialFilters = [],
+  onFiltersChange,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] =
+    useState<ColumnFiltersState>(initialFilters)
+  const [sorting, setSorting] = useState<SortingState>(initialSorting)
   const [selectedRowId, setSelectedRowId] = useState<string | null>(
     initialSelectedId || null
   )
@@ -86,7 +95,6 @@ export function DataTable<TData extends { id: string }, TValue>({
     }
   }, [initialSelectedId, data])
 
-  // Создаем таблицу БЕЗ клиентской пагинации
   const table = useReactTable({
     data,
     columns,
@@ -95,22 +103,43 @@ export function DataTable<TData extends { id: string }, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
-      // Мы НЕ устанавливаем pagination здесь, т.к. используем серверную пагинацию
     },
-    manualPagination: true, // Указываем, что пагинация управляется вручную (серверная)
+    manualPagination: true,
+    manualSorting: true,
+    manualFiltering: true,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: (newSorting) => {
+      setSorting(newSorting)
+      if (onSortingChange) {
+        onSortingChange(newSorting)
+      }
+    },
+    onColumnFiltersChange: (newFilters) => {
+      setColumnFilters(newFilters)
+      if (onFiltersChange) {
+        onFiltersChange(newFilters)
+      }
+    },
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    // Убираем клиентскую пагинацию
-    // getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
+  useEffect(() => {
+    if (JSON.stringify(initialSorting) !== JSON.stringify(sorting)) {
+      setSorting(initialSorting)
+    }
+  }, [initialSorting])
+
+  useEffect(() => {
+    if (JSON.stringify(initialFilters) !== JSON.stringify(columnFilters)) {
+      setColumnFilters(initialFilters)
+    }
+  }, [initialFilters])
 
   const handleRowClick = (id: string) => {
     setSelectedRowId(id)
@@ -121,7 +150,9 @@ export function DataTable<TData extends { id: string }, TValue>({
   useEffect(() => {
     console.log('Data length:', data.length)
     console.log('Table rows:', table.getRowModel().rows)
-  }, [data, table])
+    console.log('Current sorting:', sorting)
+    console.log('Current filters:', columnFilters)
+  }, [data, table, sorting, columnFilters])
 
   const TableContent = (
     <div
