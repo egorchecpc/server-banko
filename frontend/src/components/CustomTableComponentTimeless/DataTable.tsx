@@ -146,14 +146,6 @@ export function DataTable<TData extends { id: string }, TValue>({
     onRowClick?.(id)
   }
 
-  // Для отладки
-  useEffect(() => {
-    console.log('Data length:', data.length)
-    console.log('Table rows:', table.getRowModel().rows)
-    console.log('Current sorting:', sorting)
-    console.log('Current filters:', columnFilters)
-  }, [data, table, sorting, columnFilters])
-
   const TableContent = (
     <div
       className={`h-full w-full overflow-auto rounded-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}

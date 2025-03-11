@@ -1,19 +1,20 @@
 import { CreditListModule } from '@/modules/CreditListModule/CreditListModule'
 import { useGetCreditListData } from '@/hooks/apiHooks/dashboardHooks/useGetCreditListData'
-import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
+import { useLoading } from '@/context/LoadingContext'
+import { useEffect } from 'react'
 
 export const CreditListPage = () => {
-  const {
-    data: CreditListData,
-    isLoading: creditListLoading,
-    isError: creditListError,
-  } = useGetCreditListData()
-  const isLoading = creditListLoading
-  const isError = creditListError
+  const { data: CreditListData, isLoading, isError } = useGetCreditListData()
 
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
+  const { setIsLoading } = useLoading()
+
+  useEffect(() => {
+    setIsLoading(isLoading)
+    return () => {
+      setIsLoading(false)
+    }
+  }, [isLoading, setIsLoading])
+
   if (isError) {
     return <div>Error occurred while fetching data</div>
   }

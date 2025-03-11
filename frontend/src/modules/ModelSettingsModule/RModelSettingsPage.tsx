@@ -75,7 +75,7 @@ const ProductTypeItem: React.FC<ProductTypeItemProps> = ({
   productLabel,
   onEditClick,
 }) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   return (
     <div className="mb-2 rounded-lg border border-gray-200">
@@ -128,6 +128,7 @@ export const RModelSettingsPage: React.FC = () => {
         title={'Виды продуктов и корзины просрочки'}
       >
         <ContainerBody isScrolling={false}>
+          <div className="mt-2"></div>
           {Object.entries(PRODUCT_TYPES).map(([key, label]) => (
             <ProductTypeItem
               key={key}

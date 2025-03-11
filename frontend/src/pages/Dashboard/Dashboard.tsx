@@ -32,6 +32,7 @@ import {
   processYearlyData,
 } from '@/modules/PDDisplayModule/multiplyPd'
 import { processLgdData } from '@/components/Tables/LGDTable/multiplyLGD'
+import { useLoading } from '@/context/LoadingContext'
 
 interface VisibilitySettings {
   pd: boolean
@@ -40,13 +41,6 @@ interface VisibilitySettings {
   ecl: boolean
   kpi: boolean
   risk: boolean
-}
-
-export const creditType = {
-  consumer: 'по потребительским',
-  mortgage: 'по ипотечным',
-  overdraft: 'по овердрафтам',
-  cards: 'по кредитным картам',
 }
 
 export const DashboardPage = () => {
@@ -65,7 +59,16 @@ export const DashboardPage = () => {
     .reverse()
     .join('-')
   const date = fixDate(reportDate)
-  const { data, isError } = useGetDashboardData(date)
+  const { data, isError, isLoading } = useGetDashboardData(date)
+  const { setIsLoading } = useLoading()
+
+  useEffect(() => {
+    setIsLoading(isLoading)
+    return () => {
+      setIsLoading(false) // Сбрасываем при размонтировании
+    }
+  }, [isLoading, setIsLoading])
+
   const [tableVisibility, setTableVisibility] = useState({
     pd: true,
     lgd: true,

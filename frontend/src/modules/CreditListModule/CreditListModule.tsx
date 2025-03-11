@@ -6,12 +6,11 @@ import {
   stage_types,
   titles,
 } from '@/modules/CreditListModule/CreditListConfig'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { ExportCreditList } from '@/components/ExportCreditListComponent/ExportCreditList'
 import { useGetCreditListData } from '@/hooks/apiHooks/commonHooks/useGetCreditListData'
 import { DataTable } from '@/components/CustomTableComponentTimeless/DataTable'
 import { SortingState, ColumnFiltersState } from '@tanstack/react-table'
-import { useLoading } from '@/context/LoadingContext'
 
 export const CreditListModule: FC = () => {
   const [page, setPage] = useState(0)
@@ -19,7 +18,6 @@ export const CreditListModule: FC = () => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-  // Extract field name and direction for sorting
   const sortField = sorting.length > 0 ? sorting[0].id : undefined
   const sortDirection =
     sorting.length > 0 ? (sorting[0].desc ? 'DESC' : 'ASC') : undefined
@@ -58,13 +56,6 @@ export const CreditListModule: FC = () => {
     filterValue,
     searchText
   )
-  const { setIsLoading } = useLoading()
-  useEffect(() => {
-    setIsLoading(isLoading)
-    return () => {
-      setIsLoading(false)
-    }
-  }, [isLoading, setIsLoading])
 
   const handleSortingChange = (newSorting: SortingState) => {
     setSorting(newSorting)

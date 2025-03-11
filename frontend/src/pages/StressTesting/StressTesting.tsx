@@ -11,6 +11,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Cell,
+  CartesianGrid,
 } from 'recharts'
 import HeatmapChartModule from '@/modules/HeatmapChartModule/HeatmapChartModule'
 import {
@@ -34,12 +36,26 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Link } from '@tanstack/react-router'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface MacroFactor {
+  id: string
   name: string
   currentValue: number
   newValue: number
   visible: boolean
+}
+
+interface TornadoChartData {
+  parameter: string
+  value: number
+  effect: 'positive' | 'negative'
 }
 
 interface StressDashboardProps {
@@ -49,33 +65,83 @@ interface StressDashboardProps {
 export const StressTestingPage: React.FC<StressDashboardProps> = ({
   reportDate = new Date().toLocaleDateString(),
 }) => {
-  const [macroFactors, setMacroFactors] = useState<MacroFactor[]>([
+  // List of all available parameters
+  const allMacroFactors: MacroFactor[] = [
     {
-      name: 'Рентабельность продукции',
+      id: 'profitability',
+      name: 'Рентабельность реализованной продукции',
       currentValue: 122500,
       newValue: 122500,
       visible: true,
     },
     {
-      name: 'Реальная заработная плата',
+      id: 'nominalSalary',
+      name: 'Номинальная начисленная заработная плата',
       currentValue: 10480,
       newValue: 10480,
-      visible: true,
-    },
-    { name: 'ВВП', currentValue: 10480, newValue: 10480, visible: true },
-    {
-      name: 'Реально располагаемые доходы населения',
-      currentValue: 10480,
-      newValue: 10480,
-      visible: true,
+      visible: false,
     },
     {
-      name: 'Средняя месячная зарплата',
+      id: 'gdp',
+      name: 'Валовой внутренний продукт',
       currentValue: 10480,
       newValue: 10480,
       visible: true,
     },
-  ])
+    {
+      id: 'disposableIncome',
+      name: 'Реальные располагаемые доходы населения',
+      currentValue: 10480,
+      newValue: 10480,
+      visible: false,
+    },
+    {
+      id: 'averageSalary',
+      name: 'Среднемесячная заработная плата',
+      currentValue: 10480,
+      newValue: 10480,
+      visible: true,
+    },
+    {
+      id: 'inflation',
+      name: 'Инфляция',
+      currentValue: 5.4,
+      newValue: 5.4,
+      visible: false,
+    },
+    {
+      id: 'refinancingRate',
+      name: 'Ставка рефинансирования',
+      currentValue: 7.5,
+      newValue: 7.5,
+      visible: false,
+    },
+    {
+      id: 'pdTTC',
+      name: 'PD_TTC',
+      currentValue: 3.2,
+      newValue: 3.2,
+      visible: false,
+    },
+    {
+      id: 'lgd',
+      name: 'LGD',
+      currentValue: 45.0,
+      newValue: 45.0,
+      visible: false,
+    },
+    {
+      id: 'unemploymentRate',
+      name: 'Уровень безработицы',
+      currentValue: 4.8,
+      newValue: 4.8,
+      visible: false,
+    },
+  ]
+
+  const [macroFactors, setMacroFactors] =
+    useState<MacroFactor[]>(allMacroFactors)
+  const [selectedFactorId, setSelectedFactorId] = useState<string>('')
 
   const [pdHeatmapData, setPDHeatmapData] = useState<HeatmapData>({
     categories: [
@@ -102,6 +168,15 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
     { name: 'Стресс +50% PD', ecl: 15720 },
   ])
 
+  // Tornado chart data
+  const [tornadoData, setTornadoData] = useState<TornadoChartData[]>([
+    { parameter: 'Рост дефолтов', value: 40, effect: 'positive' },
+    { parameter: 'Уровень безработицы', value: -20, effect: 'negative' },
+    { parameter: 'Снижение ВВП', value: 15, effect: 'positive' },
+    { parameter: 'Изменение % ставки', value: -8, effect: 'negative' },
+    { parameter: 'Изменение LTV', value: 5, effect: 'positive' },
+  ])
+
   const toggleMacroFactorVisibility = (index: number) => {
     const updatedFactors = [...macroFactors]
     updatedFactors[index].visible = !updatedFactors[index].visible
@@ -112,6 +187,19 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
     const updatedFactors = [...macroFactors]
     updatedFactors[index].newValue = value
     setMacroFactors(updatedFactors)
+  }
+
+  const handleAddFactor = () => {
+    if (!selectedFactorId) return
+
+    const updatedFactors = [...macroFactors]
+    const index = updatedFactors.findIndex((f) => f.id === selectedFactorId)
+
+    if (index !== -1) {
+      updatedFactors[index].visible = true
+      setMacroFactors(updatedFactors)
+      setSelectedFactorId('')
+    }
   }
 
   const recalculateStressScenario = () => {
@@ -149,86 +237,169 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
           </div>
         </div>
       </div>
-      <ContainerComponent withBg={true}>
-        <ContainerHeader>
-          <div className="my-1 flex items-center gap-3">
-            <div className="text-xl font-bold leading-24 text-black-800">
-              Макропоказатели
-            </div>
-            <Popover>
-              <PopoverTrigger>
-                <Settings className="h-5 w-5 text-gray-500 hover:text-gray-700" />
-              </PopoverTrigger>
-              <PopoverContent className="w-64">
-                <div className="space-y-2">
-                  {macroFactors.map((factor, index) => (
-                    <div
-                      key={factor.name}
-                      className="flex items-center space-x-2"
-                    >
-                      <Checkbox
-                        checked={factor.visible}
-                        onCheckedChange={() =>
-                          toggleMacroFactorVisibility(index)
-                        }
-                      />
-                      <Label>{factor.name}</Label>
-                    </div>
-                  ))}
+
+      {/* Макропоказатели и ECL в одной строке */}
+      <div className="flex flex-row gap-4">
+        {/* Макропоказатели (2/3 ширины) */}
+        <div className="w-full">
+          <ContainerComponent withBg={true}>
+            <ContainerHeader>
+              <div className="my-1 flex items-center justify-between gap-2">
+                <div className="text-xl font-bold leading-24 text-black-800">
+                  Макропоказатели
                 </div>
-              </PopoverContent>
-            </Popover>
-          </div>
-        </ContainerHeader>
+                <div className="flex items-center gap-3">
+                  <Popover>
+                    <PopoverTrigger>
+                      <Settings className="h-5 w-5 text-gray-500 hover:text-gray-700" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-64">
+                      <div className="space-y-2">
+                        {macroFactors.map((factor, index) => (
+                          <div
+                            key={factor.id}
+                            className="flex items-center space-x-2"
+                          >
+                            <Checkbox
+                              checked={factor.visible}
+                              onCheckedChange={() =>
+                                toggleMacroFactorVisibility(index)
+                              }
+                            />
+                            <Label>{factor.name}</Label>
+                          </div>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+            </ContainerHeader>
 
-        <ContainerBody isScrolling={true} orientation={'horizontal'}>
-          <div className="p-5">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col justify-between space-y-4">
-                {macroFactors
-                  .filter((f) => f.visible)
-                  .map((factor) => (
-                    <Label key={factor.name} className="block">
-                      {factor.name}
-                    </Label>
-                  ))}
-              </div>
-              <div className="space-y-4">
-                {macroFactors
-                  .filter((f) => f.visible)
-                  .map((factor, index) => (
-                    <Input
-                      key={index}
-                      type="text"
-                      value={factor.newValue}
-                      onChange={(e) =>
-                        handleMacroFactorChange(
-                          macroFactors.findIndex((f) => f.name === factor.name),
-                          Number(e.target.value)
-                        )
-                      }
-                    />
-                  ))}
-              </div>
-              <div className="col-span-2 mt-4 flex justify-center">
-                <Button onClick={recalculateStressScenario} variant="primary">
-                  Пересчитать сценарий
-                </Button>
-              </div>
-            </div>
-          </div>
-        </ContainerBody>
-      </ContainerComponent>
+            <ContainerBody isScrolling={true} orientation={'horizontal'}>
+              <div className="p-5">
+                <div className="grid grid-cols-1 gap-4">
+                  {/* Parameter selector section */}
+                  <div className="mb-4 flex items-end gap-4">
+                    <div className="flex-grow">
+                      <Label htmlFor="parameter-select" className="mb-2 block">
+                        Выберите параметр для стресс-тестирования
+                      </Label>
+                      <Select
+                        value={selectedFactorId}
+                        onValueChange={setSelectedFactorId}
+                      >
+                        <SelectTrigger id="parameter-select" className="w-full">
+                          <SelectValue placeholder="Выберите параметр" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {macroFactors
+                            .filter((f) => !f.visible)
+                            .map((factor) => (
+                              <SelectItem key={factor.id} value={factor.id}>
+                                {factor.name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button onClick={handleAddFactor} variant="outline">
+                      Добавить
+                    </Button>
+                  </div>
 
-      <div className="flex gap-3">
-        <div className="flex-grow-[2]">
-          <HeatmapChartModule
-            data={pdHeatmapData}
-            title="Тепловая карта: Изменения PD при стресс-сценарии"
-          />
+                  {/* Parameters input section */}
+                  <div className="mb-4 grid grid-cols-2 gap-4">
+                    <div className="flex flex-col justify-between space-y-4">
+                      {macroFactors
+                        .filter((f) => f.visible)
+                        .map((factor) => (
+                          <Label key={factor.id} className="block">
+                            {factor.name}
+                          </Label>
+                        ))}
+                    </div>
+                    <div className="space-y-4">
+                      {macroFactors
+                        .filter((f) => f.visible)
+                        .map((factor, index) => (
+                          <Input
+                            key={index}
+                            type="text"
+                            value={factor.newValue}
+                            onChange={(e) =>
+                              handleMacroFactorChange(
+                                macroFactors.findIndex(
+                                  (f) => f.id === factor.id
+                                ),
+                                Number(e.target.value)
+                              )
+                            }
+                          />
+                        ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex justify-center">
+                    <Button
+                      onClick={recalculateStressScenario}
+                      variant="primary"
+                    >
+                      Пересчитать сценарий
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </ContainerBody>
+          </ContainerComponent>
         </div>
 
-        <div className="flex-grow">
+        {/* Изменение ECL (1/3 ширины) */}
+      </div>
+
+      {/* Тепловая карта на всю ширину */}
+      <div className="w-full">
+        <HeatmapChartModule
+          data={pdHeatmapData}
+          title="Тепловая карта: Изменения PD при стресс-сценарии"
+        />
+      </div>
+
+      {/* Tornado Chart */}
+      <div className="flex gap-4">
+        <div className="w-2/3">
+          <ContainerComponent
+            withBg={true}
+            title={'Торнадо-диаграмма чувствительности параметров'}
+          >
+            <ContainerBody isScrolling={true} orientation={'horizontal'}>
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart
+                  data={tornadoData}
+                  layout="vertical"
+                  barCategoryGap={10}
+                  margin={{ top: 20, right: 30, left: 150, bottom: 5 }}
+                >
+                  <XAxis type="number" domain={[-35, 45]} tickCount={10} />
+                  <YAxis type="category" dataKey="parameter" width={150} />
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <Tooltip />
+                  <Bar dataKey="value">
+                    {tornadoData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          entry.effect === 'positive' ? '#0000FF' : '#FF0000'
+                        }
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </ContainerBody>
+          </ContainerComponent>
+        </div>
+        <div className="w-1/3">
           <ContainerComponent withBg={true} title={'Изменение ECL'}>
             <ContainerBody isScrolling={true} orientation={'horizontal'}>
               <ResponsiveContainer width="100%" height={350}>

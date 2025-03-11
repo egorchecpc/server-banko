@@ -10,7 +10,6 @@ import { TemplatesView } from '@/pages/Profile/TemplatesView/TemplatesView'
 import { ProfileEditDialog } from '@/pages/Profile/ProfileEditDialog/ProfileEditDialog'
 import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
 import { RModelSettingsPage } from '@/modules/ModelSettingsModule/RModelSettingsPage'
-import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 import { useLoading } from '@/context/LoadingContext'
 
 export const ProfilePage = () => {
@@ -26,7 +25,7 @@ export const ProfilePage = () => {
   useEffect(() => {
     setIsLoading(isTemplatesLoading || isProfileLoading || isLoading)
     return () => {
-      setIsLoading(false) // Сбрасываем при размонтировании
+      setIsLoading(false)
     }
   }, [isLoading, isTemplatesLoading, isProfileLoading, setIsLoading])
 
@@ -48,10 +47,6 @@ export const ProfilePage = () => {
       updateProfile(editedProfile)
       setProfileDialogOpen(false)
     }
-  }
-
-  if (isProfileLoading) {
-    return <div></div>
   }
 
   if (!profile) {

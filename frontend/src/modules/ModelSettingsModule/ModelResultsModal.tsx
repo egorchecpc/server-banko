@@ -224,14 +224,15 @@ const ModelResultsModal: React.FC<ModelResultsModalProps> = ({
         <DialogContent className="max-w-4xl">
           <DialogHeader>
             <div className="flex w-full items-center justify-between">
-              <div className="flex items-center">
+              <div className="mt-2 flex w-full items-center justify-between">
+                <DialogTitle>Результат модели</DialogTitle>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm">
                       View
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
+                  <DropdownMenuContent align="end">
                     <DropdownMenuItem
                       onClick={() => setShowResidualDialog(true)}
                     >
@@ -249,7 +250,6 @@ const ModelResultsModal: React.FC<ModelResultsModalProps> = ({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <DialogTitle className="ml-4">Результат модели</DialogTitle>
               </div>
             </div>
           </DialogHeader>

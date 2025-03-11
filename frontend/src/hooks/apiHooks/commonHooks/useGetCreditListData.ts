@@ -50,17 +50,6 @@ export const useGetCreditListData = (
         params.append('filterValue', searchText)
       }
 
-      console.log('Requesting with params:', {
-        page,
-        size,
-        sortField,
-        sortDirection,
-        filterProperty,
-        filterValue,
-        searchText,
-        url: `${'https://banko-r-backend.stacklevel.group/api/contracts'}?${params.toString()}`,
-      })
-
       const { data } = await axios.get(
         `${'https://banko-r-backend.stacklevel.group/api/contracts'}?${params.toString()}`
       )

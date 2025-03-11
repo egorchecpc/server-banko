@@ -167,7 +167,10 @@ const AutocorrelationChart = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="lag" />
             <YAxis domain={[-1, 1]} />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+            />
             <ReferenceLine y={0} stroke="#000" />
             <ReferenceLine
               y={confidenceInterval}
@@ -179,7 +182,16 @@ const AutocorrelationChart = () => {
               stroke="#ff0000"
               strokeDasharray="3 3"
             />
-            <Bar dataKey="ac" fill="#8884d8" />
+            <Bar
+              dataKey="ac"
+              fill="#8884d8"
+              activeBar={{
+                fill: 'red',
+                fillOpacity: 0.2,
+                stroke: '#8884d8',
+                strokeWidth: 1,
+              }}
+            />
           </BarChart>
         </div>
 
