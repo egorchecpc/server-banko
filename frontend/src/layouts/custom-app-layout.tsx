@@ -9,13 +9,13 @@ export const CustomAppLayout = () => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <div className="flex w-[1920px] flex-col overflow-hidden">
+      <div className="flex h-full w-full flex-col overflow-hidden">
         <HeaderModule
           withoutNav={true}
           withoutSidebar={false}
           isNewReport={true}
         />
-        <main className="mx-5">
+        <main className="mx-auto my-auto h-[125vh] w-full">
           <div>
             <PageWrapper>
               <Outlet />

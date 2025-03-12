@@ -46,7 +46,12 @@ import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  Tooltip as ShadcnTooltip,
+} from '@/components/ui/tooltip'
 // Type definitions
 type RiskVariant = 'high-risk' | 'medium-risk' | 'low-risk'
 
@@ -104,8 +109,8 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
     }
   }
 
-  return (
-    <Card className="relative w-full">
+  const cardContent = (
+    <>
       <Badge
         className={`absolute right-2 top-2 ${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
       >
@@ -120,25 +125,59 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
           {percentage * 100}% в резерве
         </div>
       </CardContent>
-    </Card>
+    </>
   )
+
+  // Для low-risk вариантов добавляем tooltip
+  if (variant === 'low-risk') {
+    return (
+      <TooltipProvider>
+        <ShadcnTooltip>
+          <TooltipTrigger asChild>
+            <Card className="relative w-full cursor-pointer">
+              {cardContent}
+            </Card>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            <p>Процент резерва на прошлую отчетную дату</p>
+          </TooltipContent>
+        </ShadcnTooltip>
+      </TooltipProvider>
+    )
+  }
+
+  // Для остальных вариантов
+  return <Card className="relative w-full">{cardContent}</Card>
 }
 
 const monthData2023 = [
-  { period: '31.12.2022', vbs: 9.1, oky: 7.3 },
-  { period: '31.3.2023', vbs: 9.5, oky: 7.5 },
-  { period: '30.6.2023', vbs: 10.8, oky: 7.9 },
-  { period: '30.9.2023', vbs: 11.2, oky: 8.2 },
-  { period: '31.12.2023', vbs: 13.8, oky: 8.5 },
+  { period: 'Январь', vbs: 9.1, oky: 7.3 },
+  { period: 'Февраль', vbs: 9.3, oky: 7.4 },
+  { period: 'Март', vbs: 9.5, oky: 7.5 },
+  { period: 'Апрель', vbs: 10.0, oky: 7.6 },
+  { period: 'Май', vbs: 10.3, oky: 7.7 },
+  { period: 'Июнь', vbs: 10.8, oky: 7.9 },
+  { period: 'Июль', vbs: 11.0, oky: 8.0 },
+  { period: 'Август', vbs: 11.1, oky: 8.1 },
+  { period: 'Сентябрь', vbs: 11.2, oky: 8.2 },
+  { period: 'Октябрь', vbs: 12.0, oky: 8.3 },
+  { period: 'Ноябрь', vbs: 13.0, oky: 8.4 },
+  { period: 'Декабрь', vbs: 13.8, oky: 8.5 },
 ]
 
-// Данные для месяцев (2022)
 const monthData2022 = [
-  { period: '31.12.2021', vbs: 8.7, oky: 7.0 },
-  { period: '31.3.2022', vbs: 9.0, oky: 7.2 },
-  { period: '30.6.2022', vbs: 9.4, oky: 7.4 },
-  { period: '30.9.2022', vbs: 9.8, oky: 7.5 },
-  { period: '31.12.2022', vbs: 10.2, oky: 7.7 },
+  { period: 'Январь', vbs: 8.7, oky: 7.0 },
+  { period: 'Февраль', vbs: 8.9, oky: 7.1 },
+  { period: 'Март', vbs: 9.0, oky: 7.2 },
+  { period: 'Апрель', vbs: 9.2, oky: 7.3 },
+  { period: 'Май', vbs: 9.3, oky: 7.35 },
+  { period: 'Июнь', vbs: 9.4, oky: 7.4 },
+  { period: 'Июль', vbs: 9.6, oky: 7.45 },
+  { period: 'Август', vbs: 9.7, oky: 7.5 },
+  { period: 'Сентябрь', vbs: 9.8, oky: 7.55 },
+  { period: 'Октябрь', vbs: 10.0, oky: 7.6 },
+  { period: 'Ноябрь', vbs: 10.1, oky: 7.65 },
+  { period: 'Декабрь', vbs: 10.2, oky: 7.7 },
 ]
 
 // Данные для кварталов (2023)
@@ -208,8 +247,8 @@ const VbsChart = () => {
       return (
         <div className="rounded border bg-white p-4 shadow-lg">
           <p className="font-bold">Дата: {payload[0].payload.period}</p>
-          <p>ВБС (по выбранной метрике): {payload[0].value.toFixed(2)}</p>
-          <p>ОКУ (по выбранной метрике): {payload[1].value.toFixed(2)}</p>
+          <p>ВБС (по выбранной метрике): {payload[0].value.toFixed(2)} млн</p>
+          <p>ОКУ (по выбранной метрике): {payload[1].value.toFixed(2)} млн</p>
         </div>
       )
     }
@@ -322,17 +361,17 @@ const VbsChart = () => {
                 yAxisId="left"
                 domain={[0, 'dataMax + 1']}
                 label={{
-                  value: 'Процент',
+                  value: 'ВБС',
                   angle: -90,
                   position: 'insideLeft',
                 }}
-                tickFormatter={(tick) => `${tick.toFixed(2)}%`}
+                tickFormatter={(tick) => `${tick.toFixed(2)} млн`}
               />
               <YAxis
                 yAxisId="right"
                 orientation="right"
                 domain={[0, 'dataMax + 1']}
-                tickFormatter={(tick) => `${tick.toFixed(2)}%`}
+                tickFormatter={(tick) => `${tick.toFixed(2)} млн`}
               />
               <Tooltip content={<CustomTooltip />} />
               <Bar

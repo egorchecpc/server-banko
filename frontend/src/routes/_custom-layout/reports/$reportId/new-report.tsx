@@ -1,8 +1,8 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, redirect, useSearch } from '@tanstack/react-router'
 import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute(
-  '/_custom-layout/reports/$reportId/new-report',
+  '/_custom-layout/reports/$reportId/new-report'
 )({
   beforeLoad: () => {
     if (!isAuthenticated()) {
@@ -19,8 +19,8 @@ export const Route = createFileRoute(
 
 export default function NewReportComponent() {
   return (
-    <div>
-      <div className="mt-[10rem] flex items-center justify-center">
+    <div className="mt-[35vh] flex h-full w-full items-center justify-center">
+      <div className="my-auto flex items-center justify-center">
         <div className="max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-lg">
           <div className="text-center">
             <h1 className="text-xl font-bold text-blue-900">

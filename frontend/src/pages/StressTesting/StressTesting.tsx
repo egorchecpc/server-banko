@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { HeatmapData } from '@/models/Heatmap'
 import {
   BarChart,
@@ -18,15 +15,7 @@ import HeatmapChartModule from '@/modules/HeatmapChartModule/HeatmapChartModule'
 import {
   ContainerBody,
   ContainerComponent,
-  ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Settings } from 'lucide-react'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,21 +25,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { Link } from '@tanstack/react-router'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
-interface MacroFactor {
-  id: string
-  name: string
-  currentValue: number
-  newValue: number
-  visible: boolean
-}
+import MacroFactorsComponent from '@/pages/StressTesting/MacroFactorsComponent'
 
 interface TornadoChartData {
   parameter: string
@@ -65,84 +40,6 @@ interface StressDashboardProps {
 export const StressTestingPage: React.FC<StressDashboardProps> = ({
   reportDate = new Date().toLocaleDateString(),
 }) => {
-  // List of all available parameters
-  const allMacroFactors: MacroFactor[] = [
-    {
-      id: 'profitability',
-      name: 'Рентабельность реализованной продукции',
-      currentValue: 122500,
-      newValue: 122500,
-      visible: true,
-    },
-    {
-      id: 'nominalSalary',
-      name: 'Номинальная начисленная заработная плата',
-      currentValue: 10480,
-      newValue: 10480,
-      visible: false,
-    },
-    {
-      id: 'gdp',
-      name: 'Валовой внутренний продукт',
-      currentValue: 10480,
-      newValue: 10480,
-      visible: true,
-    },
-    {
-      id: 'disposableIncome',
-      name: 'Реальные располагаемые доходы населения',
-      currentValue: 10480,
-      newValue: 10480,
-      visible: false,
-    },
-    {
-      id: 'averageSalary',
-      name: 'Среднемесячная заработная плата',
-      currentValue: 10480,
-      newValue: 10480,
-      visible: true,
-    },
-    {
-      id: 'inflation',
-      name: 'Инфляция',
-      currentValue: 5.4,
-      newValue: 5.4,
-      visible: false,
-    },
-    {
-      id: 'refinancingRate',
-      name: 'Ставка рефинансирования',
-      currentValue: 7.5,
-      newValue: 7.5,
-      visible: false,
-    },
-    {
-      id: 'pdTTC',
-      name: 'PD_TTC',
-      currentValue: 3.2,
-      newValue: 3.2,
-      visible: false,
-    },
-    {
-      id: 'lgd',
-      name: 'LGD',
-      currentValue: 45.0,
-      newValue: 45.0,
-      visible: false,
-    },
-    {
-      id: 'unemploymentRate',
-      name: 'Уровень безработицы',
-      currentValue: 4.8,
-      newValue: 4.8,
-      visible: false,
-    },
-  ]
-
-  const [macroFactors, setMacroFactors] =
-    useState<MacroFactor[]>(allMacroFactors)
-  const [selectedFactorId, setSelectedFactorId] = useState<string>('')
-
   const [pdHeatmapData, setPDHeatmapData] = useState<HeatmapData>({
     categories: [
       'Потребительские кредиты',
@@ -176,31 +73,6 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
     { parameter: 'Изменение % ставки', value: -8, effect: 'negative' },
     { parameter: 'Изменение LTV', value: 5, effect: 'positive' },
   ])
-
-  const toggleMacroFactorVisibility = (index: number) => {
-    const updatedFactors = [...macroFactors]
-    updatedFactors[index].visible = !updatedFactors[index].visible
-    setMacroFactors(updatedFactors)
-  }
-
-  const handleMacroFactorChange = (index: number, value: number) => {
-    const updatedFactors = [...macroFactors]
-    updatedFactors[index].newValue = value
-    setMacroFactors(updatedFactors)
-  }
-
-  const handleAddFactor = () => {
-    if (!selectedFactorId) return
-
-    const updatedFactors = [...macroFactors]
-    const index = updatedFactors.findIndex((f) => f.id === selectedFactorId)
-
-    if (index !== -1) {
-      updatedFactors[index].visible = true
-      setMacroFactors(updatedFactors)
-      setSelectedFactorId('')
-    }
-  }
 
   const recalculateStressScenario = () => {
     setPDHeatmapData((prev) => ({
@@ -237,124 +109,8 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
           </div>
         </div>
       </div>
-
-      {/* Макропоказатели и ECL в одной строке */}
-      <div className="flex flex-row gap-4">
-        {/* Макропоказатели (2/3 ширины) */}
-        <div className="w-full">
-          <ContainerComponent withBg={true}>
-            <ContainerHeader>
-              <div className="my-1 flex items-center justify-between gap-2">
-                <div className="text-xl font-bold leading-24 text-black-800">
-                  Макропоказатели
-                </div>
-                <div className="flex items-center gap-3">
-                  <Popover>
-                    <PopoverTrigger>
-                      <Settings className="h-5 w-5 text-gray-500 hover:text-gray-700" />
-                    </PopoverTrigger>
-                    <PopoverContent className="w-64">
-                      <div className="space-y-2">
-                        {macroFactors.map((factor, index) => (
-                          <div
-                            key={factor.id}
-                            className="flex items-center space-x-2"
-                          >
-                            <Checkbox
-                              checked={factor.visible}
-                              onCheckedChange={() =>
-                                toggleMacroFactorVisibility(index)
-                              }
-                            />
-                            <Label>{factor.name}</Label>
-                          </div>
-                        ))}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
-            </ContainerHeader>
-
-            <ContainerBody isScrolling={true} orientation={'horizontal'}>
-              <div className="p-5">
-                <div className="grid grid-cols-1 gap-4">
-                  {/* Parameter selector section */}
-                  <div className="mb-4 flex items-end gap-4">
-                    <div className="flex-grow">
-                      <Label htmlFor="parameter-select" className="mb-2 block">
-                        Выберите параметр для стресс-тестирования
-                      </Label>
-                      <Select
-                        value={selectedFactorId}
-                        onValueChange={setSelectedFactorId}
-                      >
-                        <SelectTrigger id="parameter-select" className="w-full">
-                          <SelectValue placeholder="Выберите параметр" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {macroFactors
-                            .filter((f) => !f.visible)
-                            .map((factor) => (
-                              <SelectItem key={factor.id} value={factor.id}>
-                                {factor.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button onClick={handleAddFactor} variant="outline">
-                      Добавить
-                    </Button>
-                  </div>
-
-                  {/* Parameters input section */}
-                  <div className="mb-4 grid grid-cols-2 gap-4">
-                    <div className="flex flex-col justify-between space-y-4">
-                      {macroFactors
-                        .filter((f) => f.visible)
-                        .map((factor) => (
-                          <Label key={factor.id} className="block">
-                            {factor.name}
-                          </Label>
-                        ))}
-                    </div>
-                    <div className="space-y-4">
-                      {macroFactors
-                        .filter((f) => f.visible)
-                        .map((factor, index) => (
-                          <Input
-                            key={index}
-                            type="text"
-                            value={factor.newValue}
-                            onChange={(e) =>
-                              handleMacroFactorChange(
-                                macroFactors.findIndex(
-                                  (f) => f.id === factor.id
-                                ),
-                                Number(e.target.value)
-                              )
-                            }
-                          />
-                        ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex justify-center">
-                    <Button
-                      onClick={recalculateStressScenario}
-                      variant="primary"
-                    >
-                      Пересчитать сценарий
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </ContainerBody>
-          </ContainerComponent>
-        </div>
-
-        {/* Изменение ECL (1/3 ширины) */}
+      <div className="my-16">
+        <MacroFactorsComponent onRecalculate={recalculateStressScenario} />
       </div>
 
       {/* Тепловая карта на всю ширину */}

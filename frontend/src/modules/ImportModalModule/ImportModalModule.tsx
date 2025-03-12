@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import {
   Dialog,
   DialogContent,
@@ -34,6 +34,9 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
 }) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const search: { type: string } = useSearch({
+    strict: false,
+  })
   const createReportMutation = useCreateReport()
   const { files, handleFileChange, isAllFilesUploaded } = useFileUpload()
   const [step, setStep] = useState<1 | 2>(1)
@@ -41,13 +44,13 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     name: '',
     isPublic: false,
     description: '',
-    type: '',
+    type: debtorTypeNames[search.type],
   })
 
   const handleSubmit = async () => {
     const payload = createReportPayload({
       name: reportDetails.name,
-      type: reportDetails.type,
+      type: debtorTypeNames[search.type],
       isPublic: reportDetails.isPublic,
       description: reportDetails.description,
     })
@@ -55,7 +58,10 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
       onSuccess: (data) => {
         toast.success(t('reports.creation.success'))
         console.log(payload)
-        navigate({ to: `${data.data.id}/new-report` })
+        navigate({
+          to: `${data.data.id}/new-report`,
+          search: { type: search.type },
+        })
         // navigate({
         //   to: `${data.data.id}/credit-type`,
         //   search: { id: payload.id, type: 'new' },

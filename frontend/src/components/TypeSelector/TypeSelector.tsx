@@ -1,4 +1,4 @@
-import { Check } from 'lucide-react'
+import { Check, LockIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ArrowIcon } from '@/components/TypeSelector/arrow'
 
@@ -31,6 +31,16 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
   onContinue,
   options,
 }) => {
+  // Проверка доступности типа должника (только retail доступен)
+  const isTypeAvailable = (type: DebtorType) => type === 'retail'
+
+  // Обработчик клика по карточке
+  const handleTypeClick = (type: DebtorType) => {
+    if (isTypeAvailable(type)) {
+      onTypeSelect(type)
+    }
+  }
+
   return (
     <div className="flex h-[110vh] min-h-screen w-full items-center justify-center">
       <div className="w-full max-w-xl rounded-2xl bg-white px-5 py-5">
@@ -40,37 +50,57 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
 
         <div className="mb-6 flex justify-center">
           <div className="grid w-3/4 grid-cols-2 gap-6">
-            {options.map((type) => (
-              <div
-                key={type.id}
-                className={`relative flex w-full flex-col rounded-2xl border-2 ${
-                  selectedType === type.id
-                    ? 'border-blue-500'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                {selectedType === type.id && (
-                  <div className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none bg-blue-500">
-                    <Check className="h-4 w-4 text-white" />
-                  </div>
-                )}
+            {options.map((type) => {
+              const isAvailable = isTypeAvailable(type.id)
+
+              return (
                 <div
-                  onClick={() => onTypeSelect(type.id)}
-                  className={`flex h-[11rem] cursor-pointer items-center justify-center rounded-2xl rounded-b-none p-4 transition-all ${
+                  key={type.id}
+                  className={`relative flex w-full flex-col rounded-2xl border-2 ${
                     selectedType === type.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 bg-grey-100 hover:border-gray-300'
-                  } `}
+                      ? 'border-blue-500'
+                      : isAvailable
+                        ? 'border-gray-200 hover:border-gray-300'
+                        : 'border-gray-200 opacity-60'
+                  }`}
                 >
-                  <div className="space-y-3">
-                    <type.icon />
+                  {selectedType === type.id && (
+                    <div className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none bg-blue-500">
+                      <Check className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+
+                  {!isAvailable && (
+                    <div className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none bg-gray-500">
+                      <LockIcon className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+
+                  <div
+                    onClick={() => handleTypeClick(type.id)}
+                    className={`flex h-[11rem] items-center justify-center rounded-2xl rounded-b-none p-4 transition-all ${
+                      selectedType === type.id
+                        ? 'border-blue-500 bg-blue-50'
+                        : isAvailable
+                          ? 'cursor-pointer border-gray-200 bg-grey-100 hover:border-gray-300'
+                          : 'cursor-not-allowed border-gray-200 bg-gray-100'
+                    } `}
+                  >
+                    <div className="space-y-3">
+                      <type.icon />
+                    </div>
+                  </div>
+                  <div className="border-black-900 py-3 text-center text-md font-bold text-gray-700">
+                    {type.title}
+                    {!isAvailable && (
+                      <div className="text-xs font-normal text-gray-500">
+                        Недоступно
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="border-black-900 py-3 text-center text-sm font-bold text-gray-700">
-                  {type.title}
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 

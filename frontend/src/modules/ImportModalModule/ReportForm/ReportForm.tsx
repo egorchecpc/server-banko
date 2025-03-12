@@ -30,8 +30,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
   onNext,
   onCancel,
 }) => {
-  const isDetailsValid =
-    reportDetails.name.length > 0 && reportDetails.type !== ''
+  const isDetailsValid = reportDetails.name.length > 0
 
   return (
     <div className="py-4">
@@ -45,25 +44,25 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         />
       </div>
 
-      <div className="mb-4">
-        <Select
-          value={reportDetails.type}
-          onValueChange={(value) =>
-            onDetailsChange({ ...reportDetails, type: value as ReportType })
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Выберите тип отчёта" />
-          </SelectTrigger>
-          <SelectContent>
-            {REPORT_TYPES.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
-                {type.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {/*<div className="mb-4">*/}
+      {/*  <Select*/}
+      {/*    value={reportDetails.type}*/}
+      {/*    onValueChange={(value) =>*/}
+      {/*      onDetailsChange({ ...reportDetails, type: value as ReportType })*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    <SelectTrigger>*/}
+      {/*      <SelectValue placeholder="Выберите тип отчёта" />*/}
+      {/*    </SelectTrigger>*/}
+      {/*    <SelectContent>*/}
+      {/*      {REPORT_TYPES.map((type) => (*/}
+      {/*        <SelectItem key={type.value} value={type.value}>*/}
+      {/*          {type.label}*/}
+      {/*        </SelectItem>*/}
+      {/*      ))}*/}
+      {/*    </SelectContent>*/}
+      {/*  </Select>*/}
+      {/*</div>*/}
 
       <div className="mb-4 flex items-center justify-between">
         <span>Приватный отчёт</span>

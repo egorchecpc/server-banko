@@ -78,6 +78,54 @@ export const DashboardPage = () => {
     risk: true,
   })
   const { setReportId } = useReportId()
+
+  // В DashboardPage.tsx добавьте:
+  const [processedData, setProcessedData] = useState({
+    yearlyPDData: null,
+    quarterlyPDData: null,
+  })
+
+  const [randomLGDData, setRandomLGDData] = useState({
+    randomLGDData: null,
+  })
+
+  // Используйте useEffect для обработки данных только при изменении исходных данных
+  useEffect(() => {
+    if (data.yearlyPDData && data.quarterlyPDData && data.LGDData) {
+      // Обрабатываем данные один раз и сохраняем результат
+      const processedYearlyData = processYearlyData(
+        data.yearlyPDData as YearlyDataResponse
+      )
+      const processedQuarterlyData = processQuarterlyData(
+        data.quarterlyPDData as QuarterlyDataResponse
+      )
+      const processedLGDData = processLgdData(data.LGDData as LGDItem[])
+      // Создаем объект с обработанными данными для каждого типа кредита
+      const creditTypeProcessedData = {}
+      const creditTypeLGDData = {}
+      creditTypes.forEach((type) => {
+        creditTypeProcessedData[type] = {
+          yearlyPDData: processYearlyData(
+            data.yearlyPDData as YearlyDataResponse
+          ),
+          quarterlyPDData: processQuarterlyData(
+            data.quarterlyPDData as QuarterlyDataResponse
+          ),
+        }
+        creditTypeLGDData[type] = processLgdData(data.LGDData as LGDItem[])
+      })
+      setRandomLGDData({
+        randomLGDData: processedLGDData,
+        creditTypeLGDData: creditTypeLGDData,
+      })
+      setProcessedData({
+        yearlyPDData: processedYearlyData,
+        quarterlyPDData: processedQuarterlyData,
+        creditTypeData: creditTypeProcessedData,
+      })
+    }
+  }, [data.yearlyPDData, data.quarterlyPDData])
+
   useEffect(() => {
     if (reportId) {
       setReportId(reportId)
@@ -136,12 +184,14 @@ export const DashboardPage = () => {
             {creditTypes.map((type, index) => (
               <div key={`pd-${type}-${index}`}>
                 <PDDisplayModule
-                  yearlyPDData={processYearlyData(
-                    data.yearlyPDData as YearlyDataResponse
-                  )}
-                  quarterlyPDData={processQuarterlyData(
-                    data.quarterlyPDData as QuarterlyDataResponse
-                  )}
+                  yearlyPDData={
+                    processedData.creditTypeData?.[type]?.yearlyPDData ||
+                    data.yearlyPDData
+                  }
+                  quarterlyPDData={
+                    processedData.creditTypeData?.[type]?.quarterlyPDData ||
+                    data.quarterlyPDData
+                  }
                   forecastPDData={data.forecastPDData as ForecastDataResponse}
                   customTitle={type}
                 />
@@ -157,7 +207,7 @@ export const DashboardPage = () => {
           {creditTypes.map((type, index) => (
             <div key={`lgd-${type}-${index}`}>
               <LGDTable
-                data={processLgdData(data.LGDData as LGDItem[])}
+                data={randomLGDData.creditTypeLGDData?.[type] || data.LGDData}
                 customTitle={type}
               />
               {index < creditTypes.length - 1 && <div className="mb-3"></div>}
