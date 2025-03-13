@@ -45,19 +45,24 @@ const AuthPage = () => {
   }
   if (isLoading) return <LoadingSpinner />
   return (
-    <div className="flex h-[125vh] w-full items-center justify-center bg-gradient-to-br from-blue-500 via-indigo-400 to-blue-300 p-4">
+    <div className="flex h-[125vh] w-full items-center justify-center bg-grey-300/40 p-4">
+      <img
+        src="/img/logo.svg"
+        alt="BANKO"
+        className="absolute left-12 top-8 w-48"
+      />
       <div className="w-full max-w-md">
         <div className="flex justify-center">
-            <img src="/img/logo.png" alt="BANKO" className="h-36" />
+          <img src="/img/logo-icon.svg" alt="BANKO" className="h-14 w-14" />
         </div>
 
-        <Card className="border-none p-2 shadow-lg">
+        <div className="h-96 border-none p-2 shadow-none">
           <CardHeader className="space-y-1">
             <div className="mb-1 text-center text-2xl font-bold">
               Вход в систему
             </div>
             <CardDescription className="text-center">
-              Введите email для входа в аккаунт
+              Мы приветствуем вас в BANKO!
             </CardDescription>
           </CardHeader>
 
@@ -82,7 +87,7 @@ const AuthPage = () => {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 pt-4">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Пароль</Label>
                 </div>
@@ -106,7 +111,7 @@ const AuthPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between space-x-2">
+              <div className="flex items-center justify-between space-x-2 pt-4">
                 <div className="flex items-center gap-2">
                   <Checkbox
                     id="remember"
@@ -130,13 +135,12 @@ const AuthPage = () => {
                   Забыли пароль?
                 </Link>
               </div>
-
               <Button type="submit" variant="primary" className="h-10 w-full">
                 Войти
               </Button>
             </form>
           </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   )

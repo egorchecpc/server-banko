@@ -25,7 +25,7 @@ export const columns: ColumnDef<CreditListData, unknown>[] = [
   {
     accessorKey: 'clientId',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID клиента" />
+      <DataTableColumnHeader column={column} title="ID договора" />
     ),
     cell: ({ row }) => (
       <div className="flex h-10 w-full items-center justify-center">
@@ -38,7 +38,7 @@ export const columns: ColumnDef<CreditListData, unknown>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID договора" />
+      <DataTableColumnHeader column={column} title="ID клиента" />
     ),
     cell: ({ row }) => (
       <div className="flex h-10 w-full items-center justify-center">

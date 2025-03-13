@@ -58,14 +58,14 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                   key={type.id}
                   className={`relative flex w-full flex-col rounded-2xl border-2 ${
                     selectedType === type.id
-                      ? 'border-blue-500'
+                      ? 'border-blue-1000'
                       : isAvailable
                         ? 'border-gray-200 hover:border-gray-300'
                         : 'border-gray-200 opacity-60'
                   }`}
                 >
                   {selectedType === type.id && (
-                    <div className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none bg-blue-500">
+                    <div className="bg-blue-1000 absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none">
                       <Check className="h-4 w-4 text-white" />
                     </div>
                   )}

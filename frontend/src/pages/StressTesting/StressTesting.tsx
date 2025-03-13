@@ -139,7 +139,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
                   <XAxis type="number" domain={[-35, 45]} tickCount={10} />
                   <YAxis type="category" dataKey="parameter" width={150} />
                   <CartesianGrid strokeDasharray="3 3" />
-                  <Tooltip />
+                  <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
                   <Bar dataKey="value">
                     {tornadoData.map((entry, index) => (
                       <Cell
@@ -162,7 +162,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
                 <BarChart data={eclData}>
                   <XAxis dataKey="name" />
                   <YAxis />
-                  <Tooltip />
+                  <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
                   <Legend />
                   <Bar dataKey="ecl" fill="#8884d8" barSize={30} />
                 </BarChart>

@@ -81,7 +81,7 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
           </div>
           <div>
             <Link to={`/reports/${reportId}/credit-list`}>
-              <p className="mr-4 bg-transparent text-[14px] text-blue-900 hover:text-charts-60">
+              <p className="text-blue-1000 hover:text-blue-1000/40 mr-4 bg-transparent text-[14px]">
                 См. все кредиты
               </p>
             </Link>

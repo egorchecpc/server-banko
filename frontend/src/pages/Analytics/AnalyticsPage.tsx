@@ -109,45 +109,38 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
     }
   }
 
-  const cardContent = (
-    <>
-      <Badge
-        className={`absolute right-2 top-2 ${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
-      >
-        {variant ? getStageText(variant) : 'СТАДИЯ'}
-      </Badge>
-      <CardContent className="pt-6">
-        <div className="py-1.5 text-2xl font-bold">
-          {value.toLocaleString()} BYN
+  return (
+    <TooltipProvider>
+      <Card className="relative w-full">
+        <div className="absolute right-2 top-2 flex items-center gap-1">
+          <Badge
+            className={`${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
+          >
+            {variant ? getStageText(variant) : 'СТАДИЯ'}
+          </Badge>
+          <ShadcnTooltip>
+            <TooltipTrigger asChild>
+              <div className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-xs font-medium">
+                i
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Процент резерва на прошлую отчетную дату</p>
+            </TooltipContent>
+          </ShadcnTooltip>
         </div>
-        <div className="text-muted-foreground py-1.5 text-sm">{label}</div>
-        <div className="py-1.5 text-xs text-green-600">
-          {percentage * 100}% в резерве
-        </div>
-      </CardContent>
-    </>
+        <CardContent className="pt-6">
+          <div className="py-1.5 text-2xl font-bold">
+            {value.toLocaleString()} BYN
+          </div>
+          <div className="text-muted-foreground py-1.5 text-sm">{label}</div>
+          <div className="py-1.5 text-xs text-green-600">
+            {percentage * 100}% в резерве
+          </div>
+        </CardContent>
+      </Card>
+    </TooltipProvider>
   )
-
-  // Для low-risk вариантов добавляем tooltip
-  if (variant === 'low-risk') {
-    return (
-      <TooltipProvider>
-        <ShadcnTooltip>
-          <TooltipTrigger asChild>
-            <Card className="relative w-full cursor-pointer">
-              {cardContent}
-            </Card>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">
-            <p>Процент резерва на прошлую отчетную дату</p>
-          </TooltipContent>
-        </ShadcnTooltip>
-      </TooltipProvider>
-    )
-  }
-
-  // Для остальных вариантов
-  return <Card className="relative w-full">{cardContent}</Card>
 }
 
 const monthData2023 = [
@@ -354,7 +347,11 @@ const VbsChart = () => {
         </CardHeader>
         <CardContent className="h-full">
           <ResponsiveContainer width="100%" height="85%" className="py-1.5">
-            <ComposedChart data={getData()} barSize={30}>
+            <ComposedChart
+              data={getData()}
+              barSize={30}
+              margin={{ left: 20, right: 20, top: 12, bottom: 10 }}
+            >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="period" />
               <YAxis
@@ -373,10 +370,13 @@ const VbsChart = () => {
                 domain={[0, 'dataMax + 1']}
                 tickFormatter={(tick) => `${tick.toFixed(2)} млн`}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+              />
               <Bar
                 dataKey="vbs"
-                fill="#1E55F5"
+                fill="#5CD9C9"
                 yAxisId="left"
                 className="hover:fill-opacity-70 transition-all"
               />

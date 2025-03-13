@@ -10,12 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: '',
-        primary: 'bg-blue-900 text-white hover:bg-blue-700 hover:text-blue-900',
+        primary:
+          'bg-blue-1000 text-white hover:bg-blue-1000/40 hover:text-white',
         outline: 'border border-grey-600 bg-white hover:bg-grey-400',
         secondary: 'bg-blue-700 text-blue-900 hover:bg-charts-20',
         icon: 'bg-white text-grey-900 shadow-sm shadow-grey-300 hover:bg-grey-400 hover:text-black-800',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        export: 'bg-transparent text-blue-900 hover:text-charts-60',
+        export: 'bg-transparent text-blue-1000 hover:text-blue-1000/40',
         table_header: 'font-bold text-black-900',
       },
       size: {
