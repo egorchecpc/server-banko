@@ -79,7 +79,10 @@ export const Header: FC<HeaderProps> = ({
               <PopoverTrigger asChild>
                 <Button variant="primary">Текущий отчёт</Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80">
+              <PopoverContent
+                className="w-80"
+                style={{ transform: 'scale(0.9)', transformOrigin: 'top left' }}
+              >
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <h4 className="font-medium">Информация об отчёте</h4>

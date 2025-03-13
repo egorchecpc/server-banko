@@ -19,7 +19,7 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({
       <label className="flex-1">
         <div className="flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 p-4 hover:bg-gray-50">
           <Upload className="h-5 w-5" />
-          <span className="flex-1">{label}</span>
+          <span className="text-black-1000 flex-1">{label}</span>
           {files[type].status === 'error' && (
             <AlertTriangle className="h-5 w-5 text-red-500" />
           )}
@@ -39,7 +39,7 @@ export const FileUploadButton: React.FC<FileUploadButtonProps> = ({
       <div className="mt-2">
         <div className="h-2 w-full rounded-full bg-gray-200">
           <div
-            className="h-2 rounded-full bg-blue-600 transition-all"
+            className="h-2 rounded-full bg-blue-1000 transition-all"
             style={{ width: `${files[type].progress}%` }}
           />
         </div>

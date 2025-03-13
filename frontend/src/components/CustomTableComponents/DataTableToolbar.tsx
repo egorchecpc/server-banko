@@ -45,7 +45,7 @@ export function DataTableToolbar<TData, TTitles>({
           onChange={(event) =>
             table.getColumn(searchColumn)?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[9rem] lg:w-[16rem]"
+          className="text-black-1000 h-8 w-[9rem] lg:w-[16rem]"
         />
         {filters.map(
           (filter) =>

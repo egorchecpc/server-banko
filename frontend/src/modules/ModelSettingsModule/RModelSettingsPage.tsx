@@ -121,7 +121,7 @@ export const RModelSettingsPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="mt-[-1vh] space-y-6">
       <h2 className="text-2xl font-bold">Настройка R-моделей</h2>
       <ContainerComponent
         withBg={true}

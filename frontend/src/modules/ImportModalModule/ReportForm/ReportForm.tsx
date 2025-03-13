@@ -64,8 +64,8 @@ export const ReportForm: React.FC<ReportFormProps> = ({
       {/*  </Select>*/}
       {/*</div>*/}
 
-      <div className="mb-4 flex items-center justify-between">
-        <span>Приватный отчёт</span>
+      <div className="text-black-1000 mb-4 flex items-center justify-between">
+        <span className="text-black-1000">Приватный отчёт</span>
         <Switch
           checked={reportDetails.isPublic}
           onCheckedChange={(checked) => {
@@ -78,9 +78,10 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         />
       </div>
 
-      <div className="mb-6">
+      <div className="text-black-1000 mb-6">
         <Textarea
           placeholder="Описание отчёта"
+          className="text-black-1000"
           value={reportDetails.description}
           onChange={(e) =>
             onDetailsChange({ ...reportDetails, description: e.target.value })

@@ -68,7 +68,7 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
 
     return (
       <div className="mt-4 rounded-lg bg-white p-4">
-        <h3 className="mb-4 text-sm font-bold leading-5 text-black-800">
+        <h3 className="text-black-1000 mb-4 text-sm font-bold leading-5">
           {indicatorNames[indicator.type]}
         </h3>
         <div className="grid grid-cols-4 gap-1">
@@ -98,10 +98,10 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
                         : 'bg-gray-50'
                   }`}
                 >
-                  <div className="text-sm font-normal leading-15 text-black-800">
+                  <div className="text-black-1000 text-sm font-normal leading-15">
                     {indicator.values[year][scenario].value}
                   </div>
-                  <div className="text-sm font-normal leading-15 text-black-800">
+                  <div className="text-black-1000 text-sm font-normal leading-15">
                     ({indicator.values[year][scenario].probability}%)
                   </div>
                 </div>
@@ -116,7 +116,7 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between px-1">
-        <div className="text-2xl font-bold leading-38 text-black-900">
+        <div className="text-black-1000 text-2xl font-bold leading-38">
           Шаблоны макропоказателей
         </div>
         <div className="mb-4 flex justify-end">

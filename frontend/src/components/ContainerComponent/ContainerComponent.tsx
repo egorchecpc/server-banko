@@ -19,7 +19,7 @@ const ContainerComponent: FC<ContainerComponentProps> = ({
     >
       {title ? (
         <div className="my-2 ml-4 flex items-center">
-          <div className="text-xl font-bold leading-24 text-black-800">
+          <div className="text-black-1000 text-xl font-bold leading-24">
             {title}
           </div>
         </div>

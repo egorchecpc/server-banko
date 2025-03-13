@@ -210,7 +210,7 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
     <ContainerComponent withBg={true}>
       <ContainerHeader>
         <div className="my-1 flex items-center justify-between gap-2">
-          <div className="text-xl font-bold leading-24 text-black-800">
+          <div className="text-black-1000 text-xl font-bold leading-24">
             Макропоказатели
           </div>
           <div className="flex items-center gap-3">

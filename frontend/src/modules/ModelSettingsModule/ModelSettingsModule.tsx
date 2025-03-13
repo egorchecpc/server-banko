@@ -306,7 +306,7 @@ export const RModelSettingsModule: React.FC = () => {
       <ModelResultsModal isOpen={isResultsModalOpen} onClose={closeModal} />
       <div className="flex w-full">
         <div className="flex flex-col items-start">
-          <div className="text-xl font-bold leading-24 text-black-800">
+          <div className="text-black-1000 text-xl font-bold leading-24">
             Параметры статистической модели
           </div>
         </div>

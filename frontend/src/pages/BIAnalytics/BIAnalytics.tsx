@@ -99,7 +99,7 @@ export const BIAnalyticsPage = () => {
       </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="mb-3 flex items-center gap-3">
-          <div className="text-2xl font-bold leading-38 text-black-900">
+          <div className="text-black-1000 text-2xl font-bold leading-38">
             BI-аналитика
           </div>
           <div className="mt-3">

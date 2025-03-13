@@ -13,21 +13,21 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
   return (
     <nav className="mt-9 space-y-2">
       <Button
-        variant={activeTab === 'about' ? 'secondary' : 'ghost'}
+        variant={activeTab === 'about' ? 'primary' : 'ghost'}
         className="w-full justify-start"
         onClick={() => onTabChange('about')}
       >
         О вас
       </Button>
       <Button
-        variant={activeTab === 'templates' ? 'secondary' : 'ghost'}
+        variant={activeTab === 'templates' ? 'primary' : 'ghost'}
         className="w-full justify-start"
         onClick={() => onTabChange('templates')}
       >
         Шаблоны макроданных
       </Button>
       <Button
-        variant={activeTab === 'r-models' ? 'secondary' : 'ghost'}
+        variant={activeTab === 'r-models' ? 'primary' : 'ghost'}
         className="w-full justify-start"
         onClick={() => onTabChange('r-models')}
       >

@@ -48,14 +48,14 @@ export const GBVChartModule: FC<GBVChartProps> = ({ data }) => {
         <tspan
           x={cx}
           y={cy}
-          className="fill-foreground text-[14px] font-bold leading-18 text-black-800"
+          className="fill-foreground text-black-1000 text-[14px] font-bold leading-18"
         >
           {totalCredit.toLocaleString()}
         </tspan>
         <tspan
           x={cx}
           y={cy + 24}
-          className="fill-foreground text-[14px] font-bold leading-18 text-black-800"
+          className="fill-foreground text-black-1000 text-[14px] font-bold leading-18"
         >
           BYN
         </tspan>

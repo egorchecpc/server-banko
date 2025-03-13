@@ -34,7 +34,7 @@ export function DataTableViewOptions<TData, TTitles>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="ml-auto hidden h-8 lg:flex">
-          <MixerHorizontalIcon className="mr-2 h-4 w-4" />
+          <MixerHorizontalIcon className="text-black-1000 mr-2 h-4 w-4" />
           {t('customTable.toolbar.view')}
         </Button>
       </DropdownMenuTrigger>

@@ -113,7 +113,7 @@ export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
                         key={indicator.id}
                         className="rounded-lg bg-white p-4 shadow-sm"
                       >
-                        <h3 className="mb-8 text-sm font-bold leading-5 text-black-800">
+                        <h3 className="text-black-1000 mb-8 text-sm font-bold leading-5">
                           {indicatorNames[indicator.type]}
                         </h3>
                         <div className="grid grid-cols-4 gap-1">
@@ -147,12 +147,12 @@ export const MacroTemplateModal: FC<MacroTemplateModalProps> = ({
                                           : 'bg-white'
                                     }`}
                                   >
-                                    <div className="text-sm font-normal leading-15 text-black-800">
+                                    <div className="text-black-1000 text-sm font-normal leading-15">
                                       {formatNumber(
                                         indicator.values[year][scenario].value
                                       )}
                                     </div>
-                                    <div className="text-sm font-normal leading-15 text-black-800">
+                                    <div className="text-black-1000 text-sm font-normal leading-15">
                                       (
                                       {
                                         indicator.values[year][scenario]

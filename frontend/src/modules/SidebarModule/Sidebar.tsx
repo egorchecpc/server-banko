@@ -153,7 +153,7 @@ export const AppSidebar: FC = () => {
           {isLoading ? <LoadingSpinner /> : ''}
           <div className="flex h-full flex-col items-center">
             <Link to="/apps">
-              <img src="/img/logo.svg" alt="BANKO" className="w-48 py-2 pt-4" />
+              <img src="/img/logo.svg" alt="BANKO" className="w-40 py-2 pt-4" />
             </Link>
 
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">

@@ -166,7 +166,7 @@ const PDDisplayModule: FC<PDDisplayModuleProps> = ({
     <ContainerComponent withBg={true}>
       <ContainerHeader>
         <div className="flex items-center justify-between">
-          <div className="text-xl font-bold leading-24 text-black-800">
+          <div className="text-black-1000 text-xl font-bold leading-24">
             {customTitle
               ? `PD ${customTitle}`
               : t('dashboard.tables.pdTable.cPDTitle')}

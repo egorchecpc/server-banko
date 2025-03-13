@@ -104,7 +104,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
       </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-2xl font-bold leading-38 text-black-900">
+          <div className="text-black-1000 text-2xl font-bold leading-38">
             {`Стресс-тестирование на ${reportDate}`}
           </div>
         </div>
@@ -139,13 +139,16 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
                   <XAxis type="number" domain={[-35, 45]} tickCount={10} />
                   <YAxis type="category" dataKey="parameter" width={150} />
                   <CartesianGrid strokeDasharray="3 3" />
-                  <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+                    formatter={(value) => [`${value}`, 'Значение']}
+                  />
                   <Bar dataKey="value">
                     {tornadoData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={
-                          entry.effect === 'positive' ? '#0000FF' : '#FF0000'
+                          entry.effect === 'positive' ? '#0F53C9' : '#73A8FA'
                         }
                       />
                     ))}
@@ -164,7 +167,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
                   <YAxis />
                   <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
                   <Legend />
-                  <Bar dataKey="ecl" fill="#8884d8" barSize={30} />
+                  <Bar dataKey="ecl" fill="#0F53C9" barSize={30} />
                 </BarChart>
               </ResponsiveContainer>
             </ContainerBody>

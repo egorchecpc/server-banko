@@ -108,7 +108,7 @@ const TotalAmountOverdueChartModule: FC<TotalAmountOverdueChartModuleProps> = ({
     <ContainerComponent withBg={true}>
       <ContainerHeader>
         <div className="flex items-center gap-2">
-          <div className="text-xl font-bold leading-24 text-black-800">
+          <div className="text-black-1000 text-xl font-bold leading-24">
             Динамика задолженности по продуктам {showPercentage ? ' (%)' : ''}
           </div>
           <DropdownMenu>

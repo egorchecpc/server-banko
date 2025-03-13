@@ -70,7 +70,7 @@ export const CreditListModule: FC = () => {
   return (
     <div className="hidden h-full w-full flex-1 flex-col md:flex">
       <div className="flex items-center justify-between">
-        <div className="mb-5 text-2xl font-bold leading-38 text-black-900">
+        <div className="text-black-1000 mb-5 text-2xl font-bold leading-38">
           Список всех кредитов
         </div>
         <ExportCreditList />

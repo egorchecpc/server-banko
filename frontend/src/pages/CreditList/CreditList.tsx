@@ -19,6 +19,8 @@ export const CreditListPage = () => {
     return <div>Error occurred while fetching data</div>
   }
   return (
-    <div className="p-4 px-10">{CreditListData && <CreditListModule />}</div>
+    <div className="h-full min-h-[125vh] p-4 px-10">
+      {CreditListData && <CreditListModule />}
+    </div>
   )
 }

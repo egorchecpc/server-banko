@@ -110,7 +110,7 @@ export const DistributionCategoryChartModule: React.FC<
     <ContainerComponent withBg={true}>
       <ContainerHeader>
         <div className="flex items-center">
-          <div className="text-xl font-bold leading-24 text-black-800">
+          <div className="text-black-1000 text-xl font-bold leading-24">
             Распределение {isAmountMode ? 'ВБС' : 'количества'} по{' '}
             {groupByProduct ? 'продуктам' : 'типам кредитов'}
           </div>

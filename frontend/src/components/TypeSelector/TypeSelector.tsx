@@ -42,7 +42,7 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
   }
 
   return (
-    <div className="flex h-[110vh] min-h-screen w-full items-center justify-center">
+    <div className="text-black-1000 flex h-[110vh] min-h-screen w-full items-center justify-center">
       <div className="w-full max-w-xl rounded-2xl bg-white px-5 py-5">
         <div className="mb-5 text-center text-2xl font-semibold">
           Выберите тип должника
@@ -65,7 +65,7 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                   }`}
                 >
                   {selectedType === type.id && (
-                    <div className="bg-blue-1000 absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none">
+                    <div className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none bg-blue-1000">
                       <Check className="h-4 w-4 text-white" />
                     </div>
                   )}
@@ -80,7 +80,7 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                     onClick={() => handleTypeClick(type.id)}
                     className={`flex h-[11rem] items-center justify-center rounded-2xl rounded-b-none p-4 transition-all ${
                       selectedType === type.id
-                        ? 'border-blue-500 bg-blue-50'
+                        ? 'bg-blue-1000/30 border-blue-500'
                         : isAvailable
                           ? 'cursor-pointer border-gray-200 bg-grey-100 hover:border-gray-300'
                           : 'cursor-not-allowed border-gray-200 bg-gray-100'
@@ -90,7 +90,7 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                       <type.icon />
                     </div>
                   </div>
-                  <div className="border-black-900 py-3 text-center text-md font-bold text-gray-700">
+                  <div className="text-black-1000 border-black-900 py-3 text-center text-md font-bold">
                     {type.title}
                     {!isAvailable && (
                       <div className="text-xs font-normal text-gray-500">

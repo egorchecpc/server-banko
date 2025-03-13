@@ -185,7 +185,7 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                 disabled={!!editingIndicator}
               >
                 <SelectTrigger
-                  className={`rounded-md border-2 p-2 ${errors?.type ? 'border-red-500 text-red-500' : 'border-grey-600 text-black-800'}`}
+                  className={`rounded-md border-2 p-2 ${errors?.type ? 'border-red-500 text-red-500' : 'text-black-1000 border-grey-600'}`}
                 >
                   <SelectValue
                     placeholder={t(
@@ -208,17 +208,17 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
 
           {years.map((year) => (
             <div key={year} className="space-y-2">
-              <div className="mb-4 text-md font-bold leading-18 text-black-800">
+              <div className="text-black-1000 mb-4 text-md font-bold leading-18">
                 {year}
               </div>
               <div className="mb-3 grid grid-cols-3 gap-1">
                 <div className="text-md font-normal leading-18 text-grey-900">
                   {t('sidebar.macroSettings.modal.subtitles.scenario')}
                 </div>
-                <div className="text-md font-semibold leading-18 text-black-800">
+                <div className="text-black-1000 text-md font-semibold leading-18">
                   {t('sidebar.macroSettings.modal.subtitles.value')}
                 </div>
-                <div className="text-md font-semibold leading-18 text-black-800">
+                <div className="text-black-1000 text-md font-semibold leading-18">
                   {t('sidebar.macroSettings.modal.subtitles.probability')}
                 </div>
               </div>
@@ -249,7 +249,7 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                           className={`mt-2 w-full appearance-none ${
                             errors.values?.[year]?.[scenarioShort]?.value
                               ? 'border-red-500 text-red-500'
-                              : 'border border-grey-600 text-black-800'
+                              : 'text-black-1000 border border-grey-600'
                           }`}
                           value={inputValues[valueKey] || ''}
                           onChange={(e) =>
@@ -274,7 +274,7 @@ export const MacroSettingsModal: FC<MacroSettingsModalProps> = ({
                           className={`mt-2 w-full appearance-none ${
                             errors?.values?.[year]?.root?.message
                               ? 'border-red-500 text-red-500'
-                              : 'border border-grey-600 text-black-800'
+                              : 'text-black-1000 border border-grey-600'
                           }`}
                           value={inputValues[probKey] || ''}
                           onChange={(e) =>

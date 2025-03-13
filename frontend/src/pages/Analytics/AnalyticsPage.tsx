@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { format } from 'date-fns'
 import {
   Popover,
@@ -42,7 +42,7 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 import { ru } from 'date-fns/locale'
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon, CircleAlert } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useForm } from 'react-hook-form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -54,6 +54,28 @@ import {
 } from '@/components/ui/tooltip'
 // Type definitions
 type RiskVariant = 'high-risk' | 'medium-risk' | 'low-risk'
+
+interface RiskSummaryCardProps {
+  value: number
+  label: string
+  percentage: number
+  variant?: RiskVariant
+}
+
+interface CreditDataChild {
+  name: string
+  value: number
+}
+
+interface CreditDataParent {
+  name: string
+  value: number
+  children: CreditDataChild[]
+}
+
+interface CreditDataOuter extends CreditDataChild {
+  parentName: string
+}
 
 interface RiskSummaryCardProps {
   value: number
@@ -112,28 +134,32 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
   return (
     <TooltipProvider>
       <Card className="relative w-full">
-        <div className="absolute right-2 top-2 flex items-center gap-1">
+        <div className="absolute right-2 top-2">
           <Badge
-            className={`${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
+            className={`text-black-1000 ${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
           >
             {variant ? getStageText(variant) : 'СТАДИЯ'}
           </Badge>
-          <ShadcnTooltip>
-            <TooltipTrigger asChild>
-              <div className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-xs font-medium">
-                i
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>Процент резерва на прошлую отчетную дату</p>
-            </TooltipContent>
-          </ShadcnTooltip>
         </div>
         <CardContent className="pt-6">
-          <div className="py-1.5 text-2xl font-bold">
+          <div className="text-black-1000 py-1.5 text-2xl font-bold">
             {value.toLocaleString()} BYN
           </div>
-          <div className="text-muted-foreground py-1.5 text-sm">{label}</div>
+          <div className="flex items-center gap-1">
+            <div className="text-muted-foreground text-black-1000 py-1.5 text-sm">
+              {label}
+            </div>
+            <ShadcnTooltip>
+              <TooltipTrigger asChild>
+                <div className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-gray-200">
+                  <CircleAlert className="h-3.5 w-3.5 text-gray-600" />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Процент резерва на прошлую отчетную дату</p>
+              </TooltipContent>
+            </ShadcnTooltip>
+          </div>
           <div className="py-1.5 text-xs text-green-600">
             {percentage * 100}% в резерве
           </div>
@@ -254,7 +280,7 @@ const VbsChart = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="text-xl font-bold leading-38 text-black-900">
+              <div className="text-black-1000 text-xl font-bold leading-38">
                 ВБС розничного кредитного портфеля
               </div>
             </div>
@@ -278,7 +304,7 @@ const VbsChart = () => {
                               <Button
                                 variant="outline"
                                 className={cn(
-                                  'h-10 pl-3 text-left font-normal'
+                                  'text-black-1000 h-10 pl-3 text-left font-normal'
                                 )}
                               >
                                 {field.value ? (
@@ -306,7 +332,7 @@ const VbsChart = () => {
                               defaultMonth={field.value}
                               onSelect={(date) => handleDateSelect(date, field)}
                               fromYear={2020}
-                              toYear={2025}
+                              toYear={2032}
                               disabled={(date) =>
                                 date > new Date() ||
                                 date < new Date('2020-01-01')
@@ -320,6 +346,7 @@ const VbsChart = () => {
                   />
                   <Select
                     value={timeframe}
+                    className="text-black-1000"
                     onValueChange={(value) => {
                       setTimeframe(value)
                       setSelectedTimeframe(
@@ -335,9 +362,15 @@ const VbsChart = () => {
                       <SelectValue>{selectedTimeframe}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Month">Месяц</SelectItem>
-                      <SelectItem value="Quarter">Квартал</SelectItem>
-                      <SelectItem value="Year">Год</SelectItem>
+                      <SelectItem value="Month" className="text-black-1000">
+                        Месяц
+                      </SelectItem>
+                      <SelectItem value="Quarter" className="text-black-1000">
+                        Квартал
+                      </SelectItem>
+                      <SelectItem value="Year" className="text-black-1000">
+                        Год
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -376,7 +409,7 @@ const VbsChart = () => {
               />
               <Bar
                 dataKey="vbs"
-                fill="#5CD9C9"
+                fill="#166FF6"
                 yAxisId="left"
                 className="hover:fill-opacity-70 transition-all"
               />
@@ -386,7 +419,7 @@ const VbsChart = () => {
                 stroke="#1E88F5"
                 yAxisId="right"
                 strokeWidth={2}
-                dot={{ fill: '#1E88F5', r: 4 }}
+                dot={{ fill: '#73A8FA', r: 4 }}
                 activeDot={{ r: 6 }}
               />
             </ComposedChart>
@@ -628,15 +661,19 @@ const RiskyAssets: FC = () => {
   return (
     <Card className="h-full w-full">
       <CardHeader>
-        <div className="text-xl font-bold leading-38 text-black-900">
+        <div className="text-black-1000 text-xl font-bold leading-38">
           Самые рисковые активы
         </div>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="byClient" onValueChange={setActiveTab}>
           <TabsList className="mb-4 flex w-full justify-around">
-            <TabsTrigger value="byClient">По клиентам</TabsTrigger>
-            <TabsTrigger value="byProduct">По продуктам</TabsTrigger>
+            <TabsTrigger value="byClient" className="text-black-1000">
+              По клиентам
+            </TabsTrigger>
+            <TabsTrigger value="byProduct" className="text-black-1000">
+              По продуктам
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="byClient" className="mt-0">
@@ -952,7 +989,7 @@ const TopRiskyLoansChart = () => {
   return (
     <Card className="h-[550px] w-full">
       <CardHeader>
-        <div className="text-xl font-bold text-black-900">
+        <div className="text-black-1000 text-xl font-bold">
           Топ-10 кредитов с наибольшим ВБС
         </div>
       </CardHeader>
@@ -1113,7 +1150,7 @@ const CreditTypesSunburstChart: React.FC = () => {
   return (
     <Card className="h-[550px] w-full space-y-4">
       <CardHeader>
-        <div className="text-xl font-bold leading-38 text-black-900">
+        <div className="text-black-1000 text-xl font-bold leading-38">
           Диаграмма кредитных рисков
         </div>
       </CardHeader>
@@ -1195,11 +1232,9 @@ const FinancialDashboard: React.FC = () => {
   return (
     <div className="h-full w-full space-y-6 p-6">
       <div className="flex items-center justify-between px-1.5">
-        <Link to="/apps" className="flex items-center">
-          <div className="text-2xl font-bold leading-38 text-black-900">
-            Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов
-          </div>
-        </Link>
+        <div className="text-black-1000 text-2xl font-bold leading-38">
+          Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов
+        </div>
         <Button variant={'primary'} onClick={handleContinue}>
           Перейти к отчётам
         </Button>

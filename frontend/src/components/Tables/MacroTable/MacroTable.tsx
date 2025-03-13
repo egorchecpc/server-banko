@@ -38,7 +38,7 @@ export const MacroTable = ({
           className="mb-3 rounded-lg bg-white p-4 shadow-sm"
         >
           <div className="mb-2 flex items-center justify-between">
-            <h3 className="text-sm font-bold leading-5 text-black-800">
+            <h3 className="text-black-1000 text-sm font-bold leading-5">
               {t(
                 `sidebar.macroSettings.modal.macroTypes.items.${indicator.type}`
               )}
@@ -88,10 +88,10 @@ export const MacroTable = ({
                           : 'bg-white'
                     }`}
                   >
-                    <div className="text-sm font-normal leading-15 text-black-800">
+                    <div className="text-black-1000 text-sm font-normal leading-15">
                       {formatNumber(indicator.values[year][scenario].value)}
                     </div>
-                    <div className="text-sm font-normal leading-15 text-black-800">
+                    <div className="text-black-1000 text-sm font-normal leading-15">
                       ({indicator.values[year][scenario].probability}%)
                     </div>
                   </div>
