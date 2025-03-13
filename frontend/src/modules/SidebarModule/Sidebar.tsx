@@ -54,25 +54,25 @@ export const AppSidebar: FC = () => {
     }
 
     try {
-      await new Promise<void>((resolve, reject) => {
-        postSummary(undefined, {
-          onSuccess: () => {
-            console.log('Summary successfully posted')
-            resolve()
-          },
-          onError: (error) => reject(error),
-        })
-      })
-
-      await new Promise<void>((resolve, reject) => {
-        postPortfolio(undefined, {
-          onSuccess: () => {
-            console.log('Portfolio successfully posted')
-            resolve()
-          },
-          onError: (error) => reject(error),
-        })
-      })
+      // await new Promise<void>((resolve, reject) => {
+      //   postSummary(undefined, {
+      //     onSuccess: () => {
+      //       console.log('Summary successfully posted')
+      //       resolve()
+      //     },
+      //     onError: (error) => reject(error),
+      //   })
+      // })
+      //
+      // await new Promise<void>((resolve, reject) => {
+      //   postPortfolio(undefined, {
+      //     onSuccess: () => {
+      //       console.log('Portfolio successfully posted')
+      //       resolve()
+      //     },
+      //     onError: (error) => reject(error),
+      //   })
+      // })
       await Promise.all([
         new Promise<void>((resolve, reject) => {
           if (!debtorData) {
