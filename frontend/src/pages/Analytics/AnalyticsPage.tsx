@@ -134,24 +134,31 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
   return (
     <TooltipProvider>
       <Card className="relative w-full">
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-3 top-3">
+          {' '}
+          {/* Изменено с right-2 top-2 на right-3 top-3 */}
           <Badge
-            className={`text-black-1000 ${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
+            className={`flex items-center justify-center px-2 py-1 ${variant ? variantStyles[variant] : 'bg-blue-100 text-blue-800'}`}
+            /* Добавлены классы px-2 py-1 для увеличения внутренних отступов
+             * и flex items-center justify-center для центрирования текста */
           >
             {variant ? getStageText(variant) : 'СТАДИЯ'}
           </Badge>
         </div>
         <CardContent className="pt-6">
-          <div className="text-black-1000 py-1.5 text-2xl font-bold">
+          <div className="py-1.5 text-2xl font-bold text-black-1000">
             {value.toLocaleString()} BYN
           </div>
+          <div className="text-muted-foreground py-1.5 text-sm text-black-1000">
+            {label}
+          </div>
           <div className="flex items-center gap-1">
-            <div className="text-muted-foreground text-black-1000 py-1.5 text-sm">
-              {label}
+            <div className="py-1.5 text-xs text-green-600">
+              {percentage * 100}% в резерве
             </div>
             <ShadcnTooltip>
               <TooltipTrigger asChild>
-                <div className="flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-gray-200">
+                <div className="flex h-5 w-5 cursor-pointer items-center justify-center">
                   <CircleAlert className="h-3.5 w-3.5 text-gray-600" />
                 </div>
               </TooltipTrigger>
@@ -159,9 +166,6 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
                 <p>Процент резерва на прошлую отчетную дату</p>
               </TooltipContent>
             </ShadcnTooltip>
-          </div>
-          <div className="py-1.5 text-xs text-green-600">
-            {percentage * 100}% в резерве
           </div>
         </CardContent>
       </Card>
@@ -172,7 +176,7 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
 const monthData2023 = [
   { period: 'Январь', vbs: 9.1, oky: 7.3 },
   { period: 'Февраль', vbs: 9.3, oky: 7.4 },
-  { period: 'Март', vbs: 9.5, oky: 7.5 },
+  { period: 'Ярт', vbs: 9.5, oky: 7.5 },
   { period: 'Апрель', vbs: 10.0, oky: 7.6 },
   { period: 'Май', vbs: 10.3, oky: 7.7 },
   { period: 'Июнь', vbs: 10.8, oky: 7.9 },
@@ -280,7 +284,7 @@ const VbsChart = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="text-black-1000 text-xl font-bold leading-38">
+              <div className="text-xl font-bold leading-38 text-black-1000">
                 ВБС розничного кредитного портфеля
               </div>
             </div>
@@ -304,7 +308,7 @@ const VbsChart = () => {
                               <Button
                                 variant="outline"
                                 className={cn(
-                                  'text-black-1000 h-10 pl-3 text-left font-normal'
+                                  'h-10 pl-3 text-left font-normal text-black-1000'
                                 )}
                               >
                                 {field.value ? (
@@ -661,7 +665,7 @@ const RiskyAssets: FC = () => {
   return (
     <Card className="h-full w-full">
       <CardHeader>
-        <div className="text-black-1000 text-xl font-bold leading-38">
+        <div className="text-xl font-bold leading-38 text-black-1000">
           Самые рисковые активы
         </div>
       </CardHeader>
@@ -989,7 +993,7 @@ const TopRiskyLoansChart = () => {
   return (
     <Card className="h-[550px] w-full">
       <CardHeader>
-        <div className="text-black-1000 text-xl font-bold">
+        <div className="text-xl font-bold text-black-1000">
           Топ-10 кредитов с наибольшим ВБС
         </div>
       </CardHeader>
@@ -1030,7 +1034,7 @@ const TopRiskyLoansChart = () => {
                 {
                   value: 'Стадия 2 (Средний риск)',
                   type: 'circle',
-                  color: '#f59e0b',
+                  color: '#fef9c3', //#f59e0b
                 },
                 {
                   value: 'Стадия 3 (Высокий риск)',
@@ -1150,7 +1154,7 @@ const CreditTypesSunburstChart: React.FC = () => {
   return (
     <Card className="h-[550px] w-full space-y-4">
       <CardHeader>
-        <div className="text-black-1000 text-xl font-bold leading-38">
+        <div className="text-xl font-bold leading-38 text-black-1000">
           Диаграмма кредитных рисков
         </div>
       </CardHeader>
@@ -1232,7 +1236,7 @@ const FinancialDashboard: React.FC = () => {
   return (
     <div className="h-full w-full space-y-6 p-6">
       <div className="flex items-center justify-between px-1.5">
-        <div className="text-black-1000 text-2xl font-bold leading-38">
+        <div className="text-2xl font-bold leading-38 text-black-1000">
           Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов
         </div>
         <Button variant={'primary'} onClick={handleContinue}>

@@ -161,43 +161,30 @@ export const transformECLDataFromServer = (
       }
     )
 
-    // Добавляем итоговую строку
+    // Добавляем итоговую строку - ИСПРАВЛЕНО
+    // Берем итоговые данные по каждой отдельной стадии
+    const stage1Total = data.stage1.find((item) => item.creditType === null)
+    const stage2Total = data.stage2.find((item) => item.creditType === null)
+    const stage3Total = data.stage3.find((item) => item.creditType === null)
     const totalItem = data.stageSummary.find((item) => item.creditType === null)
+
     if (totalItem) {
       transformedData.push({
         creditType: 'Итого',
         stage1: {
-          balance: formatCurrency(totalItem.grossCarryingAmount),
-          reserve: formatCurrency(totalItem.estimatedReservation),
-          percent: formatPercent(totalItem.reservationPercentage),
+          balance: formatCurrency(stage1Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage1Total?.estimatedReservation || 0),
+          percent: formatPercent(stage1Total?.reservationPercentage || 0),
         },
         stage2: {
-          balance: formatCurrency(
-            data.stage2.find((item) => item.creditType === null)
-              ?.grossCarryingAmount || 0
-          ),
-          reserve: formatCurrency(
-            data.stage2.find((item) => item.creditType === null)
-              ?.estimatedReservation || 0
-          ),
-          percent: formatPercent(
-            data.stage2.find((item) => item.creditType === null)
-              ?.reservationPercentage || 0
-          ),
+          balance: formatCurrency(stage2Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage2Total?.estimatedReservation || 0),
+          percent: formatPercent(stage2Total?.reservationPercentage || 0),
         },
         stage3: {
-          balance: formatCurrency(
-            data.stage3.find((item) => item.creditType === null)
-              ?.grossCarryingAmount || 0
-          ),
-          reserve: formatCurrency(
-            data.stage3.find((item) => item.delay === null)
-              ?.estimatedReservation || 0
-          ),
-          percent: formatPercent(
-            data.stage3.find((item) => item.creditType === null)
-              ?.reservationPercentage || 0
-          ),
+          balance: formatCurrency(stage3Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage3Total?.estimatedReservation || 0),
+          percent: formatPercent(stage3Total?.reservationPercentage || 0),
         },
         total: {
           balance: formatCurrency(totalItem.grossCarryingAmount),
@@ -208,7 +195,7 @@ export const transformECLDataFromServer = (
 
     return transformedData
   } else {
-    // Логика для задержек
+    // Логика для задержек - аналогичное исправление для типа delay
     const creditTypes = [
       'без просрочки',
       '1-30 дней',
@@ -255,43 +242,29 @@ export const transformECLDataFromServer = (
       return result
     })
 
-    // Добавляем итоговую строку
+    // Добавляем итоговую строку - ИСПРАВЛЕНО
+    const stage1Total = data.stage1.find((item) => item.delay === null)
+    const stage2Total = data.stage2.find((item) => item.delay === null)
+    const stage3Total = data.stage3.find((item) => item.delay === null)
     const totalItem = data.stageSummary.find((item) => item.delay === null)
+
     if (totalItem) {
       transformedData.push({
         creditType: 'Итого',
         stage1: {
-          balance: formatCurrency(totalItem.grossCarryingAmount),
-          reserve: formatCurrency(totalItem.estimatedReservation),
-          percent: formatPercent(totalItem.reservationPercentage),
+          balance: formatCurrency(stage1Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage1Total?.estimatedReservation || 0),
+          percent: formatPercent(stage1Total?.reservationPercentage || 0),
         },
         stage2: {
-          balance: formatCurrency(
-            data.stage2.find((item) => item.delay === null)
-              ?.grossCarryingAmount || 0
-          ),
-          reserve: formatCurrency(
-            data.stage2.find((item) => item.delay === null)
-              ?.estimatedReservation || 0
-          ),
-          percent: formatPercent(
-            data.stage2.find((item) => item.delay === null)
-              ?.reservationPercentage || 0
-          ),
+          balance: formatCurrency(stage2Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage2Total?.estimatedReservation || 0),
+          percent: formatPercent(stage2Total?.reservationPercentage || 0),
         },
         stage3: {
-          balance: formatCurrency(
-            data.stage3.find((item) => item.delay === null)
-              ?.grossCarryingAmount || 0
-          ),
-          reserve: formatCurrency(
-            data.stage3.find((item) => item.delay === null)
-              ?.estimatedReservation || 0
-          ),
-          percent: formatPercent(
-            data.stage3.find((item) => item.delay === null)
-              ?.reservationPercentage || 0
-          ),
+          balance: formatCurrency(stage3Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage3Total?.estimatedReservation || 0),
+          percent: formatPercent(stage3Total?.reservationPercentage || 0),
         },
         total: {
           balance: formatCurrency(totalItem.grossCarryingAmount),
