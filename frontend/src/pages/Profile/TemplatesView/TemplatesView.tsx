@@ -68,7 +68,7 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
 
     return (
       <div className="mt-4 rounded-lg bg-white p-4">
-        <h3 className="text-black-1000 mb-4 text-sm font-bold leading-5">
+        <h3 className="mb-4 text-sm font-bold leading-5 text-black-1000">
           {indicatorNames[indicator.type]}
         </h3>
         <div className="grid grid-cols-4 gap-1">
@@ -98,10 +98,10 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
                         : 'bg-gray-50'
                   }`}
                 >
-                  <div className="text-black-1000 text-sm font-normal leading-15">
+                  <div className="text-sm font-normal leading-15 text-black-1000">
                     {indicator.values[year][scenario].value}
                   </div>
-                  <div className="text-black-1000 text-sm font-normal leading-15">
+                  <div className="text-sm font-normal leading-15 text-black-1000">
                     ({indicator.values[year][scenario].probability}%)
                   </div>
                 </div>
@@ -116,7 +116,7 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between px-1">
-        <div className="text-black-1000 text-2xl font-bold leading-38">
+        <div className="text-2xl font-bold leading-38 text-black-1000">
           Шаблоны макропоказателей
         </div>
         <div className="mb-4 flex justify-end">
@@ -142,7 +142,7 @@ export const TemplatesView: React.FC<TemplatesViewProps> = ({
               key={template.id}
               className="flex w-full flex-col md:w-[calc(50%-8px)]"
             >
-              <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+              <div className="shadown-lg rounded-lg border border-grey-900/30 bg-white shadow-sm">
                 <div className="p-6">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-semibold">{template.name}</h3>

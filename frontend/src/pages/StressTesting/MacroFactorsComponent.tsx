@@ -210,7 +210,7 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
     <ContainerComponent withBg={true}>
       <ContainerHeader>
         <div className="my-1 flex items-center justify-between gap-2">
-          <div className="text-black-1000 text-xl font-bold leading-24">
+          <div className="text-xl font-bold leading-24 text-black-1000">
             Макропоказатели
           </div>
           <div className="flex items-center gap-3">
@@ -292,12 +292,7 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
                             {factor.percentChange > 0 ? '+' : ''}
                             {factor.percentChange}%
                           </span>
-                          <Badge
-                            variant={
-                              factor.percentChange === 0 ? 'outline' : 'default'
-                            }
-                            className="ml-2"
-                          >
+                          <Badge variant={'outline'} className="ml-2">
                             {formatNumber(factor.newValue)}
                           </Badge>
                         </div>

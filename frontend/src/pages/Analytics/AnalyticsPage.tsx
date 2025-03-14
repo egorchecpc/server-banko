@@ -112,9 +112,9 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
 }) => {
   // Сохраняем оригинальные ключи с измененными значениями отображения
   const variantStyles: Record<RiskVariant, string> = {
-    'high-risk': 'bg-uncommon-red text-red-800',
-    'medium-risk': 'bg-uncommon-yellow text-yellow-800',
-    'low-risk': 'bg-uncommon-green text-green-800',
+    'high-risk': 'bg-red-200 text-red-800',
+    'medium-risk': 'bg-yellow-200 text-yellow-800',
+    'low-risk': 'bg-green-200 text-green-800',
   }
 
   // Функция для получения отображаемого текста стадии
@@ -702,13 +702,13 @@ const RiskyAssets: FC = () => {
                       key={`${item.clientId}-${index}`}
                       className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
                     >
-                      <td className="p-2 text-sm text-gray-700">
+                      <td className="p-2 text-sm font-medium text-black-1000">
                         {item.clientId}
                       </td>
-                      <td className="p-2 text-sm text-gray-700">
+                      <td className="p-2 text-sm font-medium text-black-1000">
                         {item.product}
                       </td>
-                      <td className="p-2 text-right text-sm text-gray-700">
+                      <td className="p-2 text-right text-sm font-medium text-black-1000">
                         {item.expectedCreditLossesAmount.toFixed(2)}
                       </td>
                     </tr>
@@ -757,7 +757,7 @@ const RiskyAssets: FC = () => {
 
 // Risk Scatter Plot Component
 const TopRiskyLoansChart = () => {
-  // Исходные данные из предоставленного JSON
+  // Исходные данные из предоставленного JSON с добавленными записями
   const rawData = [
     {
       id: '111111',
@@ -777,7 +777,7 @@ const TopRiskyLoansChart = () => {
       mpd: 0.0038,
     },
     {
-      id: '111111',
+      id: '111112',
       clientId: '486174',
       currency: 'BYN',
       ownerType: 'Розничный',
@@ -811,7 +811,7 @@ const TopRiskyLoansChart = () => {
       mpd: 1.0,
     },
     {
-      id: '2881654',
+      id: '2881655',
       clientId: '759471',
       currency: 'BYN',
       ownerType: 'Розничный',
@@ -862,7 +862,7 @@ const TopRiskyLoansChart = () => {
       mpd: 0.0038,
     },
     {
-      id: '2479613',
+      id: '2479614',
       clientId: '923858',
       currency: 'BYN',
       ownerType: 'Розничный',
@@ -879,7 +879,7 @@ const TopRiskyLoansChart = () => {
       mpd: 1.0,
     },
     {
-      id: '148128727',
+      id: '148128728',
       clientId: '684378',
       currency: 'BYN',
       ownerType: 'Розничный',
@@ -929,34 +929,207 @@ const TopRiskyLoansChart = () => {
       reservationPercentage: 0.3361,
       mpd: 0.0156,
     },
+    // Добавленные записи
+    {
+      id: '8754321',
+      clientId: '345678',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Автокредит 7 лет',
+      creditType: 'Автокредиты',
+      stage: '2',
+      date: '2022-11-20',
+      loanRepaymentDate: '2029-11-19',
+      grossCarryingAmount: 65432.56,
+      lgd: 72.5,
+      prepaymentRate: 0.03,
+      expectedCreditLossesAmount: 19824.56,
+      reservationPercentage: 0.303,
+      mpd: 0.0427,
+    },
+    {
+      id: '9876543',
+      clientId: '456789',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Бизнес-старт',
+      creditType: 'Бизнес-кредиты',
+      stage: '3',
+      date: '2021-06-15',
+      loanRepaymentDate: '2026-06-14',
+      grossCarryingAmount: 54321.78,
+      lgd: 88.4,
+      prepaymentRate: 0.01,
+      expectedCreditLossesAmount: 48000.45,
+      reservationPercentage: 0.884,
+      mpd: 1.0,
+    },
+    {
+      id: '7531594',
+      clientId: '567890',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Ремонт квартиры',
+      creditType: 'Потребительские кредиты',
+      stage: '1',
+      date: '2023-01-10',
+      loanRepaymentDate: '2027-01-09',
+      grossCarryingAmount: 22345.67,
+      lgd: 58.7,
+      prepaymentRate: 0.02,
+      expectedCreditLossesAmount: 542.86,
+      reservationPercentage: 0.0243,
+      mpd: 0.0038,
+    },
+    {
+      id: '9513578',
+      clientId: '678901',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Образование',
+      creditType: 'Потребительские кредиты',
+      stage: '2',
+      date: '2022-08-22',
+      loanRepaymentDate: '2025-08-21',
+      grossCarryingAmount: 17654.32,
+      lgd: 69.3,
+      prepaymentRate: 0.02,
+      expectedCreditLossesAmount: 7283.45,
+      reservationPercentage: 0.4125,
+      mpd: 0.0634,
+    },
+    {
+      id: '1597532',
+      clientId: '789012',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Свадебный',
+      creditType: 'Потребительские кредиты',
+      stage: '3',
+      date: '2021-09-05',
+      loanRepaymentDate: '2024-09-04',
+      grossCarryingAmount: 12567.89,
+      lgd: 94.8,
+      prepaymentRate: 0.01,
+      expectedCreditLossesAmount: 11914.36,
+      reservationPercentage: 0.948,
+      mpd: 1.0,
+    },
+    {
+      id: '7539514',
+      clientId: '890123',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Коммерческая недвижимость',
+      creditType: 'Бизнес-кредиты',
+      stage: '1',
+      date: '2022-12-15',
+      loanRepaymentDate: '2032-12-14',
+      grossCarryingAmount: 110456.78,
+      lgd: 61.4,
+      prepaymentRate: 0.05,
+      expectedCreditLossesAmount: 2780.45,
+      reservationPercentage: 0.0252,
+      mpd: 0.0041,
+    },
+    {
+      id: '3579510',
+      clientId: '901234',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Развитие бизнеса',
+      creditType: 'Бизнес-кредиты',
+      stage: '2',
+      date: '2022-07-18',
+      loanRepaymentDate: '2027-07-17',
+      grossCarryingAmount: 45678.9,
+      lgd: 76.2,
+      prepaymentRate: 0.02,
+      expectedCreditLossesAmount: 20876.54,
+      reservationPercentage: 0.4571,
+      mpd: 0.0624,
+    },
+    {
+      id: '5791532',
+      clientId: '012345',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Экспресс-кредит',
+      creditType: 'Потребительские кредиты',
+      stage: '3',
+      date: '2022-03-10',
+      loanRepaymentDate: '2024-03-09',
+      grossCarryingAmount: 7345.67,
+      lgd: 89.6,
+      prepaymentRate: 0.01,
+      expectedCreditLossesAmount: 6581.72,
+      reservationPercentage: 0.896,
+      mpd: 1.0,
+    },
+    {
+      id: '1537952',
+      clientId: '123456',
+      currency: 'BYN',
+      ownerType: 'Розничный',
+      product: 'Овердрафт 60 дней',
+      creditType: 'Овердрафт',
+      stage: '1',
+      date: '2023-02-01',
+      loanRepaymentDate: '2024-01-31',
+      grossCarryingAmount: 5432.1,
+      lgd: 62.8,
+      prepaymentRate: 0.03,
+      expectedCreditLossesAmount: 139.32,
+      reservationPercentage: 0.0257,
+      mpd: 0.0041,
+    },
   ]
 
-  // Обработка данных
-  const processedData = rawData.map((item) => ({
-    id: item.id,
-    clientId: item.clientId,
-    product: item.product,
-    creditType: item.creditType,
-    stage: item.stage,
-    x: item.grossCarryingAmount, // ВБС для оси X
-    y: item.grossCarryingAmount * (item.lgd / 100), // ВБС * LGD для оси Y
-    lgd: item.lgd,
-    expectedCreditLossesAmount: item.expectedCreditLossesAmount,
-    reservationPercentage: item.reservationPercentage,
-    size: item.stage === '3' ? 100 : item.stage === '2' ? 70 : 40, // Размер точки зависит от стадии кредита
-    color:
-      item.stage === '3'
-        ? '#ef4444'
-        : item.stage === '2'
-          ? '#f59e0b'
-          : '#10b981', // Цвет зависит от стадии
-  }))
+  // Обработка данных с разнесением точек для избежания перекрытия
+  const processedData = rawData.map((item, index) => {
+    // Добавляем небольшое смещение к LGD для разнесения точек
+    const lgdOffset = index % 3 === 0 ? -2 : index % 3 === 1 ? 2 : 0
+
+    // Небольшое случайное смещение для grossCarryingAmount
+    const amountOffset =
+      index % 4 === 0
+        ? 0
+        : index % 4 === 1
+          ? 2000
+          : index % 4 === 2
+            ? -1500
+            : 1000
+
+    return {
+      id: item.id,
+      clientId: item.clientId,
+      product: item.product,
+      creditType: item.creditType,
+      stage: item.stage,
+      x: item.grossCarryingAmount + amountOffset, // ВБС для оси X с небольшим смещением
+      y:
+        (item.grossCarryingAmount + amountOffset) *
+        ((item.lgd + lgdOffset) / 100), // ВБС * LGD для оси Y с учетом смещения
+      lgd: item.lgd + lgdOffset,
+      expectedCreditLossesAmount: item.expectedCreditLossesAmount,
+      reservationPercentage: item.reservationPercentage,
+      // Увеличили размеры точек
+      size: item.stage === '3' ? 150 : item.stage === '2' ? 120 : 90, // Увеличенный размер точек
+      strokeWidth: 2, // Добавляем обводку для более заметного отображения
+      color:
+        item.stage === '3'
+          ? '#ef4444'
+          : item.stage === '2'
+            ? '#f59e0b'
+            : '#10b981', // Цвет зависит от стадии
+    }
+  })
 
   // Сортировка по ВБС (grossCarryingAmount) в порядке убывания
   const sortedData = [...processedData].sort((a, b) => b.x - a.x)
 
-  // Берем только топ-10
-  const top10Data = sortedData.slice(0, 10)
+  // Берем только топ-15 (увеличили количество отображаемых точек)
+  const topData = sortedData.slice(0, 15)
 
   interface CustomTooltipProps {
     active?: boolean
@@ -994,7 +1167,7 @@ const TopRiskyLoansChart = () => {
     <Card className="h-[550px] w-full">
       <CardHeader>
         <div className="text-xl font-bold text-black-1000">
-          Топ-10 кредитов с наибольшим ВБС
+          Топ-15 кредитов с наибольшим ВБС
         </div>
       </CardHeader>
       <CardContent className="h-full">
@@ -1005,7 +1178,7 @@ const TopRiskyLoansChart = () => {
               type="number"
               dataKey="x"
               name="ВБС"
-              domain={['dataMin - 5000', 'dataMax + 5000']}
+              domain={['dataMin - 10000', 'dataMax + 10000']}
               tickFormatter={(value) => `${(value / 1000).toFixed(0)} тыс.`}
               label={{ value: 'ВБС (BYN)', position: 'bottom', offset: 20 }}
             />
@@ -1013,7 +1186,7 @@ const TopRiskyLoansChart = () => {
               type="number"
               dataKey="y"
               name="ВБС × LGD"
-              domain={['dataMin - 5000', 'dataMax + 5000']}
+              domain={['dataMin - 10000', 'dataMax + 10000']}
               tickFormatter={(value) => `${(value / 1000).toFixed(0)} тыс.`}
               label={{
                 value: 'ВБС × LGD (BYN)',
@@ -1022,7 +1195,7 @@ const TopRiskyLoansChart = () => {
                 offset: 15,
               }}
             />
-            <ZAxis type="number" dataKey="size" range={[40, 100]} />
+            <ZAxis type="number" dataKey="size" range={[90, 150]} />
             <Tooltip content={<CustomTooltip />} />
             <Legend
               payload={[
@@ -1034,7 +1207,7 @@ const TopRiskyLoansChart = () => {
                 {
                   value: 'Стадия 2 (Средний риск)',
                   type: 'circle',
-                  color: '#fef9c3', //#f59e0b
+                  color: '#f59e0b',
                 },
                 {
                   value: 'Стадия 3 (Высокий риск)',
@@ -1043,13 +1216,15 @@ const TopRiskyLoansChart = () => {
                 },
               ]}
             />
-            {top10Data.map((entry, index) => (
+            {topData.map((entry, index) => (
               <Scatter
                 key={index}
                 name={`Кредит ${index + 1}`}
                 data={[entry]}
                 fill={entry.color}
-                fillOpacity={0.7}
+                fillOpacity={0.8}
+                strokeWidth={entry.strokeWidth}
+                stroke="#000"
               />
             ))}
           </ScatterChart>

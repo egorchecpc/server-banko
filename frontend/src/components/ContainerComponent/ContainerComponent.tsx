@@ -14,12 +14,14 @@ const ContainerComponent: FC<ContainerComponentProps> = ({
   return (
     <div
       className={
-        withBg ? 'h-full w-full rounded-lg border border-grey-900/40 shadow-lg p-1.5' : ''
+        withBg
+          ? 'h-full w-full rounded-lg border border-grey-900/30 bg-grey-300/40 p-1.5 shadow-lg'
+          : ''
       }
     >
       {title ? (
         <div className="my-2 ml-4 flex items-center">
-          <div className="text-black-1000 text-xl font-bold leading-24">
+          <div className="text-xl font-bold leading-24 text-black-1000">
             {title}
           </div>
         </div>
@@ -52,7 +54,7 @@ const ContainerBody: FC<ContainerBodyProps> = ({
 }) => {
   return isScrolling ? (
     <div
-      className={`whitespace-nowrap rounded-lg border border-grey-900/40 bg-white overflow-${orientation || 'auto'}`}
+      className={`whitespace-nowrap rounded-lg border border-grey-900/30 bg-white overflow-${orientation || 'auto'}`}
       style={{ overflowX: orientation === 'horizontal' ? 'auto' : undefined }}
     >
       {children}

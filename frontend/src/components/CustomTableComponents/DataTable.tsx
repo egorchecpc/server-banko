@@ -108,7 +108,7 @@ export function DataTable<TData extends { id: string }, TValue>({
 
   const TableContent = (
     <div
-      className={`shadow-2xl border border-grey-900/60 w-full max-w-full overflow-auto rounded-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}
+      className={`w-full max-w-full overflow-auto rounded-lg border-grey-900/30 shadow-lg ${withCustomStyle ? 'flex overflow-hidden rounded-xl border border-[#d0dbe7] bg-slate-50' : ''}`}
       style={{ userSelect: 'none' }}
     >
       <Table>

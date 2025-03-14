@@ -213,7 +213,7 @@ export const AppSidebar: FC = () => {
             </Link>
 
             <div className="w-full overflow-y-auto overflow-x-hidden p-5">
-              <div className="rounded-lg bg-white p-4">
+              <div className="rounded-lg border border-grey-900/30 bg-white p-4 shadow-lg">
                 <DebtorForm setDebtorData={setDebtorData} />
               </div>
               <MacroSettingsComponent

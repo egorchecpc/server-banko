@@ -116,7 +116,7 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
             {t('sidebar.macroSettings.title')}
           </h2>
           <Button
-            className="text-blue-1000 hover:text-blue-1000/40 p-0"
+            className="p-0 text-blue-1000 hover:text-blue-1000/40"
             onClick={() => {
               setIsTemplateModalOpen(true)
             }}
@@ -124,7 +124,7 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
             <DownloadIcon className="h-4 w-4" />
           </Button>
           <Button
-            className="text-blue-1000 hover:text-blue-1000/40 p-0"
+            className="p-0 text-blue-1000 hover:text-blue-1000/40"
             onClick={() => {
               setIsModelModalOpen(true)
             }}
@@ -133,7 +133,7 @@ export const MacroSettingsComponent: FC<MacroSettingsProps> = ({
           </Button>
         </div>
         <Button
-          className="text-blue-1000 hover:text-blue-1000/40 p-0"
+          className="p-0 text-blue-1000 hover:text-blue-1000/40"
           onClick={() => {
             setEditingIndicator(null)
             setIsDialogOpen(true)

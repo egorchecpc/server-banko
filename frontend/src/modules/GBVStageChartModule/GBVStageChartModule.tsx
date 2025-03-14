@@ -27,6 +27,54 @@ interface GBVStageChartProps {
   data: GBVStageData[]
 }
 
+// Компонент кастомного тултипа
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (!active || !payload || !payload.length) {
+    return null
+  }
+
+  // Фильтруем только те элементы, которые не содержат "offset"
+  const filteredItems = payload.filter(
+    (item: any) => !String(item.name).includes('offset')
+  )
+
+  return (
+    <div
+      className="custom-tooltip"
+      style={{
+        backgroundColor: 'white',
+        padding: '10px',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+      }}
+    >
+      <p className="label" style={{ margin: '0 0 5px 0' }}>
+        {label}
+      </p>
+      {filteredItems.map((item: any, index: number) => {
+        const stageLabel =
+          stageNames[item.name as keyof typeof stageNames] || item.name
+        return (
+          <div key={index} style={{ margin: '2px 0' }}>
+            <span
+              style={{
+                display: 'inline-block',
+                width: '10px',
+                height: '10px',
+                backgroundColor: item.color,
+                marginRight: '5px',
+              }}
+            ></span>
+            <span>
+              {stageLabel}: {item.value}
+            </span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export const GBVStageChartModule: FC<GBVStageChartProps> = ({ data }) => {
   const { t } = useTranslation()
 
@@ -62,10 +110,7 @@ export const GBVStageChartModule: FC<GBVStageChartProps> = ({ data }) => {
               axisLine={false}
             />
             <Tooltip
-              formatter={(value, name) => {
-                const stageLabel = stageNames[name as keyof typeof stageNames]
-                return [value, stageLabel || name]
-              }}
+              content={<CustomTooltip />}
               cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
             />
 

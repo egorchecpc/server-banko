@@ -35,10 +35,10 @@ export const MacroTable = ({
       {indicators.map((indicator) => (
         <div
           key={indicator.id}
-          className="mb-3 rounded-lg bg-white p-4 shadow-sm"
+          className="mb-3 rounded-lg border border-grey-900/30 bg-white p-4 shadow-lg"
         >
           <div className="mb-2 flex items-center justify-between">
-            <h3 className="text-black-1000 text-sm font-bold leading-5">
+            <h3 className="text-sm font-bold leading-5 text-black-1000">
               {t(
                 `sidebar.macroSettings.modal.macroTypes.items.${indicator.type}`
               )}
@@ -88,10 +88,10 @@ export const MacroTable = ({
                           : 'bg-white'
                     }`}
                   >
-                    <div className="text-black-1000 text-sm font-normal leading-15">
+                    <div className="text-sm font-normal leading-15 text-black-1000">
                       {formatNumber(indicator.values[year][scenario].value)}
                     </div>
-                    <div className="text-black-1000 text-sm font-normal leading-15">
+                    <div className="text-sm font-normal leading-15 text-black-1000">
                       ({indicator.values[year][scenario].probability}%)
                     </div>
                   </div>

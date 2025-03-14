@@ -58,7 +58,7 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
       <ContainerHeader>
         <div className="flex w-full justify-between">
           <div className="flex items-center">
-            <div className="text-black-1000 text-xl font-bold leading-24">
+            <div className="text-xl font-bold leading-24 text-black-1000">
               Ожидаемые кредитные убытки (ОКУ, ECL)
             </div>
             <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
@@ -80,8 +80,11 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
             </DropdownMenu>
           </div>
           <div>
-            <Link to={`/reports/${reportId}/credit-list`}>
-              <p className="hover:text-blue-1000/40 mr-4 bg-transparent text-[14px] text-blue-1000">
+            <Link
+              to={`/reports/${reportId}/credit-list`}
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              <p className="mr-4 bg-transparent text-[14px] text-blue-1000 hover:text-blue-1000/40">
                 См. все кредиты
               </p>
             </Link>

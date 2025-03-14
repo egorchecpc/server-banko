@@ -29,11 +29,11 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
   }
 
   return (
-    <div className="text-black-1000 mt-4 rounded-lg border bg-white p-6 shadow-sm">
+    <div className="mt-4 rounded-lg border border-grey-900/30 bg-white p-6 text-black-1000 shadow-lg">
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-black-1000 text-2xl font-bold">
+            <h2 className="text-2xl font-bold text-black-1000">
               {report.title}
             </h2>
           </div>
@@ -47,7 +47,7 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
           </Button>
         </div>
 
-        <div className="text-black-1000 mt-2 flex items-center gap-2 text-sm">
+        <div className="mt-2 flex items-center gap-2 text-sm text-black-1000">
           <span>{report.date}</span>
           <Badge variant={report.label === 'Черновик' ? 'outline' : 'accepted'}>
             {report.label}
@@ -62,7 +62,7 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
 
       {/* Debtor Data Section */}
       <Card className="mb-6">
-        <CardHeader className="text-black-1000 pb-3 text-xl font-bold leading-38">
+        <CardHeader className="pb-3 text-xl font-bold leading-38 text-black-1000">
           Данные должника
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
@@ -70,13 +70,13 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
             <p className="text-muted-foreground text-black-1000">
               Тип должника
             </p>
-            <p className="text-black-1000 font-medium">
+            <p className="font-medium text-black-1000">
               {report.debtorData.debtorType}
             </p>
           </div>
           <div>
             <p className="text-muted-foreground text-black-1000">Вид кредита</p>
-            <p className="text-black-1000 font-medium">
+            <p className="font-medium text-black-1000">
               {report.debtorData.creditType?.join(', ')}
             </p>
           </div>
@@ -84,7 +84,7 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
             <p className="text-muted-foreground text-black-1000">
               Вид продукта
             </p>
-            <p className="text-black-1000 font-medium">
+            <p className="font-medium text-black-1000">
               {report.debtorData.productType?.join(', ')}
             </p>
           </div>
@@ -92,7 +92,7 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
             <p className="text-muted-foreground text-black-1000">
               Отчётная дата
             </p>
-            <p className="text-black-1000 font-medium">
+            <p className="font-medium text-black-1000">
               {
                 new Date(report.debtorData.date || '')
                   .toISOString()
@@ -105,14 +105,14 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
 
       {/* Macro Data Section */}
       <Card>
-        <CardHeader className="text-black-1000 pb-3 text-xl font-bold leading-38">
+        <CardHeader className="pb-3 text-xl font-bold leading-38 text-black-1000">
           Макропоказатели
         </CardHeader>
         <CardContent className="space-y-4">
           {Object.entries(report.macroData).map(([year, data]) => (
             <Collapsible key={year} className="rounded-lg border bg-gray-50">
               <CollapsibleTrigger className="flex w-full items-center justify-between px-4 py-3">
-                <span className="text-black-1000 font-medium">
+                <span className="font-medium text-black-1000">
                   {year.replace('year', '')}
                 </span>
                 <ChevronDownIcon className="h-4 w-4 transition-transform duration-200" />
@@ -120,7 +120,7 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
               <CollapsibleContent className="px-4 pb-4">
                 {Object.entries(data).map(([indicatorKey, scenarios]) => (
                   <div key={indicatorKey} className="mb-4 last:mb-0">
-                    <h4 className="text-black-1000 mb-2 text-sm font-medium">
+                    <h4 className="mb-2 text-sm font-medium text-black-1000">
                       {formatIndicatorName(indicatorKey)}
                     </h4>
                     <div className="overflow-hidden rounded border bg-white">
@@ -143,17 +143,17 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
                             scenarios as Record<string, ScenarioValues>
                           ).map(([scenarioKey, values]) => (
                             <tr key={scenarioKey} className="border-t">
-                              <td className="text-black-1000 px-3 py-2 text-sm">
+                              <td className="px-3 py-2 text-sm text-black-1000">
                                 {
                                   scenarioNames[
                                     scenarioKey as keyof typeof scenarioNames
                                   ]
                                 }
                               </td>
-                              <td className="text-black-1000 px-3 py-2 text-sm">
+                              <td className="px-3 py-2 text-sm text-black-1000">
                                 {values.value}
                               </td>
-                              <td className="text-black-1000 px-3 py-2 text-sm">
+                              <td className="px-3 py-2 text-sm text-black-1000">
                                 {values.probability * 100}%
                               </td>
                             </tr>

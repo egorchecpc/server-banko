@@ -42,8 +42,8 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
   }
 
   return (
-    <div className="text-black-1000 flex h-[110vh] min-h-screen w-full items-center justify-center">
-      <div className="w-full max-w-xl rounded-2xl bg-white px-5 py-5">
+    <div className="flex h-[110vh] min-h-screen w-full items-center justify-center text-black-1000">
+      <div className="w-full max-w-xl rounded-2xl border border-grey-900/30 bg-white px-5 py-5 shadow-lg">
         <div className="mb-5 text-center text-2xl font-semibold">
           Выберите тип должника
         </div>
@@ -60,8 +60,8 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                     selectedType === type.id
                       ? 'border-blue-1000'
                       : isAvailable
-                        ? 'border-gray-200 hover:border-gray-300'
-                        : 'border-gray-200 opacity-60'
+                        ? 'border-grey-900/30 hover:border-grey-900/60'
+                        : 'border-grey-900/30'
                   }`}
                 >
                   {selectedType === type.id && (
@@ -78,19 +78,19 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
 
                   <div
                     onClick={() => handleTypeClick(type.id)}
-                    className={`flex h-[11rem] items-center justify-center rounded-2xl rounded-b-none p-4 transition-all ${
+                    className={`flex h-[11rem] items-center justify-center rounded-xl rounded-b-none p-4 transition-all ${
                       selectedType === type.id
-                        ? 'bg-blue-1000/30 border-blue-500'
+                        ? 'border-blue-500 bg-blue-1000/30'
                         : isAvailable
-                          ? 'cursor-pointer border-gray-200 bg-grey-100 hover:border-gray-300'
-                          : 'cursor-not-allowed border-gray-200 bg-gray-100'
+                          ? 'cursor-pointer border-gray-200 bg-grey-900/15 hover:border-gray-300'
+                          : 'cursor-not-allowed border-gray-200 bg-grey-900/15'
                     } `}
                   >
                     <div className="space-y-3">
                       <type.icon />
                     </div>
                   </div>
-                  <div className="text-black-1000 border-black-900 py-3 text-center text-md font-bold">
+                  <div className="border-black-900 py-3 text-center text-md font-bold text-black-1000">
                     {type.title}
                     {!isAvailable && (
                       <div className="text-xs font-normal text-gray-500">

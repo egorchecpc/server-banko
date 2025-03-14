@@ -80,8 +80,11 @@ export const Header: FC<HeaderProps> = ({
                 <Button variant="primary">Текущий отчёт</Button>
               </PopoverTrigger>
               <PopoverContent
+                sideOffset={5}
+                collisionPadding={10}
+                avoidCollisions={true}
                 className="w-80"
-                style={{ transform: 'scale(0.9)', transformOrigin: 'top left' }}
+                style={{ transform: 'scale(0.8)' }}
               >
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -109,5 +112,3 @@ export const Header: FC<HeaderProps> = ({
     </header>
   )
 }
-
-export default Header
