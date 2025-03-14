@@ -112,9 +112,9 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
 }) => {
   // Сохраняем оригинальные ключи с измененными значениями отображения
   const variantStyles: Record<RiskVariant, string> = {
-    'high-risk': 'bg-red-100 text-red-800',
-    'medium-risk': 'bg-yellow-100 text-yellow-800',
-    'low-risk': 'bg-green-100 text-green-800',
+    'high-risk': 'bg-uncommon-red text-red-800',
+    'medium-risk': 'bg-uncommon-yellow text-yellow-800',
+    'low-risk': 'bg-uncommon-green text-green-800',
   }
 
   // Функция для получения отображаемого текста стадии

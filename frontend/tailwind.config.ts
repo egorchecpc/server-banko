@@ -51,6 +51,11 @@ export default {
           '800': '#8A919A',
           '900': '#69717C',
         },
+        uncommon: {
+          red: '#B22222',
+          yellow: '#AB4A10',
+          green: '#1C7540'
+        },
         blue: {
           '1000': '#4A9699',
           '700': '#E8F1FE',
