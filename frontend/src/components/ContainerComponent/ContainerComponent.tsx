@@ -52,7 +52,7 @@ const ContainerBody: FC<ContainerBodyProps> = ({
 }) => {
   return isScrolling ? (
     <div
-      className={`whitespace-nowrap rounded-lg border bg-white overflow-${orientation || 'auto'}`}
+      className={`whitespace-nowrap rounded-lg border border-grey-900/60 bg-white overflow-${orientation || 'auto'}`}
       style={{ overflowX: orientation === 'horizontal' ? 'auto' : undefined }}
     >
       {children}
