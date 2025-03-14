@@ -14,7 +14,7 @@ const ContainerComponent: FC<ContainerComponentProps> = ({
   return (
     <div
       className={
-        withBg ? 'h-full w-full rounded-lg border bg-grey-300/40 p-1.5' : ''
+        withBg ? 'h-full w-full rounded-lg border border-grey-900/60 shadow-2xl p-1.5' : ''
       }
     >
       {title ? (
