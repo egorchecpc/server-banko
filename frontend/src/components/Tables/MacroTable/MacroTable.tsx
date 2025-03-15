@@ -82,10 +82,10 @@ export const MacroTable = ({
                     key={scenario}
                     className={`rounded-lg py-3 text-center ${
                       scenario === 'worst'
-                        ? 'bg-lite-orange/5'
-                        : scenario === 'best'
-                          ? 'bg-lite-green'
-                          : 'bg-white'
+                          ? 'bg-red-200'
+                          : scenario === 'best'
+                              ? 'bg-green-200'
+                              : 'bg-yellow-200'
                     }`}
                   >
                     <div className="text-sm font-normal leading-15 text-black-1000">
