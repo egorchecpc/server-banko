@@ -1420,7 +1420,7 @@ const FinancialDashboard: React.FC = () => {
       </div>
       <div className="grid grid-cols-3 gap-6">
         <RiskSummaryCard
-          value={363197.62}
+          value={122421.21}
           label="Общая сумма розничных кредитов в стадии I"
           percentage={(0.272).toFixed(2)}
           variant="low-risk"
