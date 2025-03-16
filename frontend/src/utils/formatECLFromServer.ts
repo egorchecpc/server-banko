@@ -247,40 +247,69 @@ export const transformECLDataFromServer = (
     const stage2Total = data.stage2.find((item) => item.delay === null)
     const stage3Total = data.stage3.find((item) => item.delay === null)
 
-    // Вычисляем общую сумму для всех стадий, так как в stageSummary может отсутствовать элемент с delay: null
-    const totalGrossAmount =
-        stage1Total?.grossCarryingAmount ||
-        0 + stage2Total?.grossCarryingAmount ||
-        0 + stage3Total?.grossCarryingAmount ||
-        0
-    const totalReservation =
-        stage1Total?.estimatedReservation ||
-        0 + stage2Total?.estimatedReservation ||
-        0 + stage3Total?.estimatedReservation ||
-        0
+    // ИСПРАВЛЕНО: Корректное вычисление сумм с правильной расстановкой скобок
+    // Используем данные из stageSummary, если они есть
+    const totalSummary = data.stageSummary.find((item) => item.delay === null)
 
-    transformedData.push({
-      creditType: 'Итого',
-      stage1: {
-        balance: formatCurrency(stage1Total?.grossCarryingAmount || 0),
-        reserve: formatCurrency(stage1Total?.estimatedReservation || 0),
-        percent: formatPercent(stage1Total?.reservationPercentage || 0),
-      },
-      stage2: {
-        balance: formatCurrency(stage2Total?.grossCarryingAmount || 0),
-        reserve: formatCurrency(stage2Total?.estimatedReservation || 0),
-        percent: formatPercent(stage2Total?.reservationPercentage || 0),
-      },
-      stage3: {
-        balance: formatCurrency(stage3Total?.grossCarryingAmount || 0),
-        reserve: formatCurrency(stage3Total?.estimatedReservation || 0),
-        percent: formatPercent(stage3Total?.reservationPercentage || 0),
-      },
-      total: {
-        balance: formatCurrency(totalGrossAmount),
-        reserve: formatCurrency(totalReservation),
-      },
-    })
+    // Если итоговая строка есть в stageSummary, используем ее
+    if (totalSummary) {
+      transformedData.push({
+        creditType: 'Итого',
+        stage1: {
+          balance: formatCurrency(stage1Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage1Total?.estimatedReservation || 0),
+          percent: formatPercent(stage1Total?.reservationPercentage || 0),
+        },
+        stage2: {
+          balance: formatCurrency(stage2Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage2Total?.estimatedReservation || 0),
+          percent: formatPercent(stage2Total?.reservationPercentage || 0),
+        },
+        stage3: {
+          balance: formatCurrency(stage3Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage3Total?.estimatedReservation || 0),
+          percent: formatPercent(stage3Total?.reservationPercentage || 0),
+        },
+        total: {
+          balance: formatCurrency(totalSummary.grossCarryingAmount),
+          reserve: formatCurrency(totalSummary.estimatedReservation),
+        },
+      })
+    } else {
+      // Если итоговой строки нет, вычисляем суммы самостоятельно
+      const totalGrossAmount =
+          (stage1Total?.grossCarryingAmount || 0) +
+          (stage2Total?.grossCarryingAmount || 0) +
+          (stage3Total?.grossCarryingAmount || 0)
+
+      const totalReservation =
+          (stage1Total?.estimatedReservation || 0) +
+          (stage2Total?.estimatedReservation || 0) +
+          (stage3Total?.estimatedReservation || 0)
+
+      transformedData.push({
+        creditType: 'Итого',
+        stage1: {
+          balance: formatCurrency(stage1Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage1Total?.estimatedReservation || 0),
+          percent: formatPercent(stage1Total?.reservationPercentage || 0),
+        },
+        stage2: {
+          balance: formatCurrency(stage2Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage2Total?.estimatedReservation || 0),
+          percent: formatPercent(stage2Total?.reservationPercentage || 0),
+        },
+        stage3: {
+          balance: formatCurrency(stage3Total?.grossCarryingAmount || 0),
+          reserve: formatCurrency(stage3Total?.estimatedReservation || 0),
+          percent: formatPercent(stage3Total?.reservationPercentage || 0),
+        },
+        total: {
+          balance: formatCurrency(totalGrossAmount),
+          reserve: formatCurrency(totalReservation),
+        },
+      })
+    }
 
     return transformedData
   }
