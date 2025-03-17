@@ -7,8 +7,9 @@ import { MessageCircle, Send, X, Loader2, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useChat } from '@/context/ai-context'
 
-// API URL for backend
-const API_URL = 'http://192.168.0.107:3000'
+// API URL для бэкендов - используем относительные URL вместо жестких IP адресов
+const CHAT_API_URL = '/api/process' // URL для основного чат-бэкенда
+const DEFAULT_API_URL = '/api/process' // URL для Python бэкенда с вероятностью дефолта
 
 interface Message {
   role: 'user' | 'assistant' | 'function'
@@ -22,6 +23,18 @@ interface ChatWidgetProps {
   onClose: () => void
 }
 
+interface DefaultData {
+  год: string
+  квартал?: number
+  'вероятность дефолта по срокам просрочки': {
+    'без просрочки': string
+    'просрочка 1-30 дней': string
+    'просрочка 31-60 дней': string
+    'просрочка 61-90 дней': string
+    'просрочка более 90 дней': string
+  }
+}
+
 export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -29,6 +42,13 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
+
+  // Конфигурируем URL на основе окружения
+  const getBackendUrl = (endpoint: string) => {
+    // Используем window.location для получения текущего хоста
+    const baseUrl = 'http://127.0.0.1:5000'
+    return `${baseUrl}${endpoint}`
+  }
 
   // Scroll to bottom whenever messages change
   useEffect(() => {
@@ -44,12 +64,81 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen])
 
+  // Проверка и обработка запроса о вероятности дефолта
+  const processDefaultProbabilityRequest = async (message: string) => {
+    try {
+      console.log('Отправляем запрос о вероятности дефолта:', message)
+
+      // Отправляем запрос на Python бэкенд для обработки вероятности дефолта
+      const response = await fetch(getBackendUrl(DEFAULT_API_URL), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      })
+
+      console.log('Получен ответ со статусом:', response.status)
+
+      if (!response.ok) {
+        throw new Error(`Ошибка при запросе: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      console.log('Получены данные:', data)
+
+      // Проверяем наличие ошибки в ответе
+      if (data.error) {
+        return {
+          isDefaultRequest: true,
+          success: false,
+          error: data.error,
+        }
+      }
+
+      return {
+        isDefaultRequest: true,
+        success: true,
+        data,
+      }
+    } catch (error) {
+      console.error(
+        'Ошибка при обработке запроса о вероятности дефолта:',
+        error
+      )
+      return {
+        isDefaultRequest: true,
+        success: false,
+        error: error instanceof Error ? error.message : 'Неизвестная ошибка',
+      }
+    }
+  }
+
+  // Форматирование данных о вероятности дефолта для отображения
+  const formatDefaultData = (data: DefaultData) => {
+    let result = `📊 **Вероятность дефолта за ${data.год} год`
+    if (data.квартал) {
+      result += `, ${data.квартал} квартал**\n\n`
+    } else {
+      result += `**\n\n`
+    }
+
+    const probabilities = data['вероятность дефолта по срокам просрочки']
+    result += `• Без просрочки: ${probabilities['без просрочки']}\n`
+    result += `• Просрочка 1-30 дней: ${probabilities['просрочка 1-30 дней']}\n`
+    result += `• Просрочка 31-60 дней: ${probabilities['просрочка 31-60 дней']}\n`
+    result += `• Просрочка 61-90 дней: ${probabilities['просрочка 61-90 дней']}\n`
+    result += `• Просрочка более 90 дней: ${probabilities['просрочка более 90 дней']}`
+
+    return result
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!input.trim()) return
 
-    // Add user message
+    // Добавляем сообщение пользователя
     const userMessage: Message = {
       role: 'user',
       content: input,
@@ -61,8 +150,43 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
     setIsLoading(true)
 
     try {
-      // Make API call to Express backend
-      const response = await fetch(`${API_URL}/api/chat`, {
+      // Первым делом проверяем, содержит ли сообщение запрос о вероятности дефолта
+      if (input.toLowerCase().includes('вероятность дефолта')) {
+        console.log('Обнаружен запрос о вероятности дефолта')
+        const result = await processDefaultProbabilityRequest(input)
+
+        if (result.isDefaultRequest) {
+          if (result.success) {
+            // Если получены данные о вероятности дефолта, форматируем и отображаем их
+            const formattedResult = formatDefaultData(result.data)
+
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: 'assistant',
+                content: formattedResult,
+                timestamp: new Date(),
+              },
+            ])
+          } else {
+            // Если произошла ошибка при обработке запроса о вероятности дефолта
+            setMessages((prev) => [
+              ...prev,
+              {
+                role: 'assistant',
+                content: `Не удалось получить данные о вероятности дефолта: ${result.error}`,
+                timestamp: new Date(),
+              },
+            ])
+          }
+          setIsLoading(false)
+          return
+        }
+      }
+
+      // Если это не запрос о вероятности дефолта или обработка не удалась,
+      // обрабатываем обычным способом через основной чат-бэкенд
+      const response = await fetch(getBackendUrl(CHAT_API_URL), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,38 +200,38 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
         }),
       })
 
+      if (!response.ok) {
+        throw new Error(`Ошибка при запросе: ${response.statusText}`)
+      }
+
       const data = await response.json()
 
-      if (response.ok) {
-        // Handle both regular responses and function call responses
-        if (data.message) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: 'assistant',
-              content: data.message,
-              timestamp: new Date(),
-            },
-          ])
-        }
+      // Добавляем ответ ассистента
+      if (data.message) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.message,
+            timestamp: new Date(),
+          },
+        ])
+      }
 
-        // If there was a function call and result
-        if (data.functionResult) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: 'function',
-              name: 'get_data', // Используйте правильное имя функции
-              content: JSON.stringify(data.functionResult),
-              timestamp: new Date(),
-            },
-          ])
-        }
-      } else {
-        throw new Error(data.error || 'Ошибка при обработке запроса')
+      // Если был вызов функции и есть результат
+      if (data.functionResult) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'function',
+            name: data.functionMessage?.name || 'get_data',
+            content: JSON.stringify(data.functionResult),
+            timestamp: new Date(),
+          },
+        ])
       }
     } catch (error) {
-      console.error('Error sending message:', error)
+      console.error('Ошибка при отправке сообщения:', error)
       setMessages((prev) => [
         ...prev,
         {
@@ -124,9 +248,10 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
   const clearChat = () => {
     setMessages([])
   }
+
   const { openChat } = useChat()
 
-  // Функция для форматирования JSON в сообщениях
+  // Функция для форматирования сообщений
   const formatContent = (message: Message) => {
     if (message.role === 'function') {
       try {
@@ -143,6 +268,16 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
         return message.content
       }
     }
+
+    // Форматируем текст ассистента с Markdown-подобным синтаксисом
+    if (message.role === 'assistant') {
+      const formattedContent = message.content
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+        .replace(/\n/g, '<br/>') // Newlines
+
+      return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
+    }
+
     return message.content
   }
 
