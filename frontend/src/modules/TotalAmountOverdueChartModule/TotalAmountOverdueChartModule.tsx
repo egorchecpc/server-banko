@@ -32,6 +32,8 @@ import {
   YearlyProductPercentage,
 } from '@/models/Amount'
 import { GearIcon } from '@radix-ui/react-icons'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
+import { downloadExcelFile } from '@/utils/downloadUtils'
 
 interface TotalAmountOverdueChartModuleProps {
   absoluteData: YearlyProductData[]
@@ -104,57 +106,69 @@ const TotalAmountOverdueChartModule: FC<TotalAmountOverdueChartModuleProps> = ({
     )
   }
 
+  const onDownload = () => {
+    downloadExcelFile('/data/chart5.xlsx', 'chart5.xlsx')
+  }
+
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="flex items-center gap-2">
-          <div className="text-black-1000 text-xl font-bold leading-24">
-            Динамика задолженности по продуктам {showPercentage ? ' (%)' : ''}
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
-                <GearIcon />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Настройки отображения</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between p-3"
-              >
-                <Label htmlFor="percentage-mode">Показывать в процентах</Label>
-                <Switch
-                  id="percentage-mode"
-                  checked={showPercentage}
-                  onCheckedChange={setShowPercentage}
-                />
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>Отображаемые продукты</DropdownMenuLabel>
-              {productSettings.map((setting) => (
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center">
+            <div className="text-xl font-bold leading-24 text-black-1000">
+              Динамика задолженности по продуктам {showPercentage ? ' (%)' : ''}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="!ring-none rounded-full p-2 hover:bg-gray-200">
+                  <GearIcon />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Настройки отображения</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  key={setting.productName}
                   onSelect={(e) => e.preventDefault()}
-                  className="flex items-center gap-2"
+                  className="flex items-center justify-between p-3"
                 >
-                  <Checkbox
-                    id={setting.productName}
-                    checked={setting.isVisible}
-                    onCheckedChange={() => toggleProduct(setting.productName)}
+                  <Label htmlFor="percentage-mode">
+                    Показывать в процентах
+                  </Label>
+                  <Switch
+                    id="percentage-mode"
+                    checked={showPercentage}
+                    onCheckedChange={setShowPercentage}
                   />
-                  <label
-                    htmlFor={setting.productName}
-                    className="flex-1 cursor-pointer"
-                    style={{ color: setting.color }}
-                  >
-                    {setting.productName}
-                  </label>
                 </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Отображаемые продукты</DropdownMenuLabel>
+                {productSettings.map((setting) => (
+                  <DropdownMenuItem
+                    key={setting.productName}
+                    onSelect={(e) => e.preventDefault()}
+                    className="flex items-center gap-2"
+                  >
+                    <Checkbox
+                      id={setting.productName}
+                      checked={setting.isVisible}
+                      onCheckedChange={() => toggleProduct(setting.productName)}
+                    />
+                    <label
+                      htmlFor={setting.productName}
+                      className="flex-1 cursor-pointer"
+                      style={{ color: setting.color }}
+                    >
+                      {setting.productName}
+                    </label>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <ChartControls
+            chartDescription="Динамика задолженности по продуктам"
+            onDownload={onDownload}
+          />
         </div>
       </ContainerHeader>
       <ContainerBody isScrolling={true} orientation={'horizontal'}>

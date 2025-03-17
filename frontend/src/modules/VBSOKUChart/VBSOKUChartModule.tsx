@@ -17,9 +17,12 @@ import {
 import {
   ContainerBody,
   ContainerComponent,
+  ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
 import { VBSOKUDataItem } from '@/models/VBSOKU'
 import { VBSOKUChartConfig } from '@/modules/VBSOKUChart/VBSOKUChartConfig'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
+import { downloadExcelFile } from '@/utils/downloadUtils'
 
 interface VBSOKUChartProps {
   data: VBSOKUDataItem[]
@@ -38,8 +41,20 @@ const VBSOKUChartModule: FC<VBSOKUChartProps> = ({ data }) => {
     return formatter ? formatter(value) : value.toString()
   }
 
+  const onDownload = () => {
+    downloadExcelFile('/data/chart3.xlsx', 'chart3.xlsx')
+  }
+
   return (
-    <ContainerComponent withBg={true} title="ВБC/ОКУ">
+    <ContainerComponent withBg={true}>
+      <ContainerHeader>
+        <div className="flex w-full items-center justify-between">
+          <div className="text-xl font-bold leading-24 text-black-1000">
+            ВБC/ОКУ
+          </div>
+          <ChartControls chartDescription="ВБC/ОКУ" onDownload={onDownload} />
+        </div>
+      </ContainerHeader>
       <ContainerBody isScrolling={true} orientation="horizontal">
         <ChartContainer
           config={{

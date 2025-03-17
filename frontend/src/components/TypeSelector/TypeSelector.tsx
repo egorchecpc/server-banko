@@ -63,6 +63,10 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                         ? 'border-grey-900/30 hover:border-grey-900/60'
                         : 'border-grey-900/30'
                   }`}
+                  style={{
+                    userSelect: 'none',
+                    pointerEvents: isAvailable ? 'auto' : 'none',
+                  }}
                 >
                   {selectedType === type.id && (
                     <div className="absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-l-none rounded-r-xl rounded-bl-lg rounded-br-none bg-blue-1000">

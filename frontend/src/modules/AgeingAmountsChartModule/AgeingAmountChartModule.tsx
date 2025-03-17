@@ -25,6 +25,8 @@ import {
   ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
 import { GearIcon } from '@radix-ui/react-icons'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
+import { downloadExcelFile } from '@/utils/downloadUtils'
 
 // Обновленная структура данных
 export type ProductData = {
@@ -255,82 +257,98 @@ const AgeingAmountChartModule: React.FC<AgeingAmountChartProps> = ({
     return null
   }
 
+  const onDownload = () => {
+    downloadExcelFile('/data/chart6.xlsx', 'chart6.xlsx')
+  }
+
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="flex w-full items-center">
-          <div className="text-black-1000 text-xl font-bold leading-24">
-            Распределение {isAmountMode ? 'ВБС' : 'количества'} по срокам
-            просрочки {showPercentage ? ' (%)' : ''}
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="!ring-none rounded-full px-2 pt-1 hover:bg-gray-200">
-                <GearIcon />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Настройки отображения</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between p-3"
-              >
-                <Label htmlFor="percentage-mode">Показывать в процентах</Label>
-                <Switch
-                  id="percentage-mode"
-                  checked={showPercentage}
-                  onCheckedChange={setShowPercentage}
-                />
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between p-3"
-              >
-                <Label htmlFor="data-mode">Показывать суммы</Label>
-                <Switch
-                  id="data-mode"
-                  checked={isAmountMode}
-                  onCheckedChange={setIsAmountMode}
-                />
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between p-3"
-              >
-                <Label htmlFor="group-mode">Группировать по продуктам</Label>
-                <Switch
-                  id="group-mode"
-                  checked={groupByProduct}
-                  onCheckedChange={setGroupByProduct}
-                />
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>
-                Отображаемые {groupByProduct ? 'продукты' : 'типы кредитов'}
-              </DropdownMenuLabel>
-              {productSettings.map((setting) => (
+        <div className="flex w-full items-center justify-between">
+          <div className="flex w-full">
+            <div className="text-xl font-bold leading-24 text-black-1000">
+              Распределение {isAmountMode ? 'ВБС' : 'количества'} по срокам
+              просрочки {showPercentage ? ' (%)' : ''}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="!ring-none rounded-full px-2 pt-1 hover:bg-gray-200">
+                  <GearIcon />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Настройки отображения</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  key={setting.productName}
                   onSelect={(e) => e.preventDefault()}
-                  className="flex items-center gap-2"
+                  className="flex items-center justify-between p-3"
                 >
-                  <Checkbox
-                    id={setting.productName}
-                    checked={setting.isVisible}
-                    onCheckedChange={() => toggleProduct(setting.productName)}
+                  <Label htmlFor="percentage-mode">
+                    Показывать в процентах
+                  </Label>
+                  <Switch
+                    id="percentage-mode"
+                    checked={showPercentage}
+                    onCheckedChange={setShowPercentage}
                   />
-                  <label
-                    htmlFor={setting.productName}
-                    className="flex-1 cursor-pointer"
-                    style={{ color: setting.color }}
-                  >
-                    {setting.productName}
-                  </label>
                 </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="flex items-center justify-between p-3"
+                >
+                  <Label htmlFor="data-mode">Показывать суммы</Label>
+                  <Switch
+                    id="data-mode"
+                    checked={isAmountMode}
+                    onCheckedChange={setIsAmountMode}
+                  />
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="flex items-center justify-between p-3"
+                >
+                  <Label htmlFor="group-mode">Группировать по продуктам</Label>
+                  <Switch
+                    id="group-mode"
+                    checked={groupByProduct}
+                    onCheckedChange={setGroupByProduct}
+                  />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>
+                  Отображаемые {groupByProduct ? 'продукты' : 'типы кредитов'}
+                </DropdownMenuLabel>
+                {productSettings.map((setting) => (
+                  <DropdownMenuItem
+                    key={setting.productName}
+                    onSelect={(e) => e.preventDefault()}
+                    className="flex items-center gap-2"
+                  >
+                    <Checkbox
+                      id={setting.productName}
+                      checked={setting.isVisible}
+                      onCheckedChange={() => toggleProduct(setting.productName)}
+                    />
+                    <label
+                      htmlFor={setting.productName}
+                      className="flex-1 cursor-pointer"
+                      style={{ color: setting.color }}
+                    >
+                      {setting.productName}
+                    </label>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <div>
+            <ChartControls
+              chartDescription={
+                'Распределение количества/ВБС по срокам просрочки'
+              }
+              onDownload={onDownload}
+            />
+          </div>
         </div>
       </ContainerHeader>
       <ContainerBody isScrolling={true} orientation={'horizontal'}>

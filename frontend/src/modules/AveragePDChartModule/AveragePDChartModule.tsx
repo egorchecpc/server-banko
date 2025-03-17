@@ -20,7 +20,10 @@ import {
 import {
   ContainerBody,
   ContainerComponent,
+  ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
+import { downloadExcelFile } from '@/utils/downloadUtils'
 
 interface AveragePDChartModuleProps {
   data: AveragePD
@@ -44,8 +47,23 @@ const AveragePDChartModule: FC<AveragePDChartModuleProps> = ({ data }) => {
     return Math.min(Math.max(calculatedHeight, 250), 800)
   }, [data.length])
 
+  const onDownload = () => {
+    downloadExcelFile('/data/chart4.xlsx', 'chart4.xlsx')
+  }
+
   return (
-    <ContainerComponent withBg={true} title="Средневзвешенный PD">
+    <ContainerComponent withBg={true}>
+      <ContainerHeader>
+        <div className="flex w-full items-center justify-between">
+          <div className="text-xl font-bold leading-24 text-black-1000">
+            Средневзвешенный PD
+          </div>
+          <ChartControls
+            chartDescription="Средневзвешенный PD"
+            onDownload={onDownload}
+          />
+        </div>
+      </ContainerHeader>
       <ContainerBody isScrolling={true} orientation="horizontal">
         <div style={{ height: `${chartHeight}px` }} className="w-full">
           <ResponsiveContainer width="100%" height="100%">

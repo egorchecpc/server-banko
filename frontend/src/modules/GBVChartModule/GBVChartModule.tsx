@@ -11,6 +11,7 @@ import {
 import {
   ContainerBody,
   ContainerComponent,
+  ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
 import { FC } from 'react'
 import {
@@ -19,6 +20,8 @@ import {
   ExtendedViewBox,
 } from '@/modules/GBVChartModule/GBVChartConfig'
 import { GBVData } from '@/models/GBV'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
+import { downloadExcelFile } from '@/utils/downloadUtils'
 
 interface GBVChartProps {
   data: GBVData[]
@@ -48,14 +51,14 @@ export const GBVChartModule: FC<GBVChartProps> = ({ data }) => {
         <tspan
           x={cx}
           y={cy}
-          className="fill-foreground text-black-1000 text-[14px] font-bold leading-18"
+          className="fill-foreground text-[14px] font-bold leading-18 text-black-1000"
         >
           {totalCredit.toLocaleString()}
         </tspan>
         <tspan
           x={cx}
           y={cy + 24}
-          className="fill-foreground text-black-1000 text-[14px] font-bold leading-18"
+          className="fill-foreground text-[14px] font-bold leading-18 text-black-1000"
         >
           BYN
         </tspan>
@@ -88,8 +91,22 @@ export const GBVChartModule: FC<GBVChartProps> = ({ data }) => {
     </div>
   )
 
+  const onDownoload = () => {
+    downloadExcelFile('/data/chart1.xlsx', 'vbs.xlsx')
+  }
   return (
-    <ContainerComponent withBg={true} title={t('biAnalytics.gbvChart.title')}>
+    <ContainerComponent withBg={true}>
+      <ContainerHeader>
+        <div className="flex w-full items-center justify-between">
+          <div className="text-xl font-bold leading-24 text-black-1000">
+            {t('biAnalytics.gbvChart.title')}
+          </div>
+          <ChartControls
+            chartDescription={t('biAnalytics.gbvChart.title')}
+            onDownload={onDownoload}
+          />
+        </div>
+      </ContainerHeader>
       <ContainerBody isScrolling={false}>
         <Card className="flex max-h-[19rem] flex-col border-none">
           <CardContent className="flex justify-center pb-0">

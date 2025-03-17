@@ -11,6 +11,7 @@ import { ChartContainer } from '@/components/ui/chart'
 import {
   ContainerBody,
   ContainerComponent,
+  ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
 import { calculateOffsets } from '@/utils/updaterStageData'
 import { FC } from 'react'
@@ -22,6 +23,8 @@ import {
   stageNames,
 } from './GBVStageChartConfig'
 import { GBVStageData } from '@/models/GBVStage'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
+import { downloadExcelFile } from '@/utils/downloadUtils'
 
 interface GBVStageChartProps {
   data: GBVStageData[]
@@ -82,11 +85,23 @@ export const GBVStageChartModule: FC<GBVStageChartProps> = ({ data }) => {
   const chartData = calculateOffsets(data)
   const customLegend = getCustomLegend(t)
 
+  const onDownload = () => {
+    downloadExcelFile('/data/chart2.xlsx', 'chart2.xlsx')
+  }
+
   return (
-    <ContainerComponent
-      withBg={true}
-      title={t('biAnalytics.gbvStageChart.title')}
-    >
+    <ContainerComponent withBg={true}>
+      <ContainerHeader>
+        <div className="flex w-full items-center justify-between">
+          <div className="text-xl font-bold leading-24 text-black-1000">
+            {t('biAnalytics.gbvStageChart.title')}
+          </div>
+          <ChartControls
+            chartDescription={t('biAnalytics.gbvStageChart.title')}
+            onDownload={onDownload}
+          />
+        </div>
+      </ContainerHeader>
       <ContainerBody isScrolling={true} orientation="horizontal">
         <ChartContainer className="max-h-[19rem] w-full" config={chartConfig}>
           <BarChart

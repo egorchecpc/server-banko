@@ -26,6 +26,8 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { GearIcon } from '@radix-ui/react-icons'
 import { CategoryChartItem } from '@/models/CategoryChartItem'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
+import { downloadExcelFile } from '@/utils/downloadUtils'
 
 interface DistributionCategoryChartModuleProps {
   amountData: CategoryChartItem[]
@@ -106,47 +108,59 @@ export const DistributionCategoryChartModule: React.FC<
     return null
   }
 
+  const onDownload = () => {
+    downloadExcelFile('/data/chart7.xlsx', 'chart7.xlsx')
+  }
+
   return (
     <ContainerComponent withBg={true}>
       <ContainerHeader>
-        <div className="flex items-center">
-          <div className="text-black-1000 text-xl font-bold leading-24">
-            Распределение {isAmountMode ? 'ВБС' : 'количества'} по{' '}
-            {groupByProduct ? 'продуктам' : 'типам кредитов'}
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center">
+            <div className="text-xl font-bold leading-24 text-black-1000">
+              Распределение {isAmountMode ? 'ВБС' : 'количества'} по{' '}
+              {groupByProduct ? 'продуктам' : 'типам кредитов'}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="!ring-none rounded-full px-2 pt-1 hover:bg-gray-200">
+                  <GearIcon />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Настройки отображения</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="flex items-center justify-between p-3"
+                >
+                  <Label htmlFor="data-mode">Показывать суммы</Label>
+                  <Switch
+                    id="data-mode"
+                    checked={isAmountMode}
+                    onCheckedChange={setIsAmountMode}
+                  />
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="flex items-center justify-between p-3"
+                >
+                  <Label htmlFor="group-mode">Группировать по продуктам</Label>
+                  <Switch
+                    id="group-mode"
+                    checked={groupByProduct}
+                    onCheckedChange={setGroupByProduct}
+                  />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="!ring-none rounded-full px-2 pt-1 hover:bg-gray-200">
-                <GearIcon />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuLabel>Настройки отображения</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between p-3"
-              >
-                <Label htmlFor="data-mode">Показывать суммы</Label>
-                <Switch
-                  id="data-mode"
-                  checked={isAmountMode}
-                  onCheckedChange={setIsAmountMode}
-                />
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={(e) => e.preventDefault()}
-                className="flex items-center justify-between p-3"
-              >
-                <Label htmlFor="group-mode">Группировать по продуктам</Label>
-                <Switch
-                  id="group-mode"
-                  checked={groupByProduct}
-                  onCheckedChange={setGroupByProduct}
-                />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div>
+            <ChartControls
+              chartDescription="Распределение ВБС по типам кредитов"
+              onDownload={onDownload}
+            />
+          </div>
         </div>
       </ContainerHeader>
       <ContainerBody isScrolling={true} orientation="horizontal">

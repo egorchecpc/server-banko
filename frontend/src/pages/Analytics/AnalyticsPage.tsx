@@ -1409,7 +1409,7 @@ const FinancialDashboard: React.FC = () => {
     navigate({ to: '/reports', search: { type: search.type } })
   }
   return (
-    <div className="h-full w-full space-y-6 p-6">
+    <div className="h-full min-h-[115vh] w-full space-y-6 p-6">
       <div className="flex items-center justify-between px-1.5">
         <div className="text-2xl font-bold leading-38 text-black-1000">
           Аналитика по портфелю {debtorTypeHelper[search.type]} кредитов

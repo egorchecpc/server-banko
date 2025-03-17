@@ -17,7 +17,7 @@ export const AppsPage = () => {
   }
 
   return (
-    <div className="h-full">
+    <div className="h-[125vh]">
       <DebtorTypeSelector
         selectedType={selectedType}
         onTypeSelect={setSelectedType}

@@ -15,7 +15,7 @@ import { Slider } from '@/components/ui/slider'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Save, RotateCcw, Send, Plus, Upload } from 'lucide-react'
+import { Save, RotateCcw, Send, Plus, Upload, Loader2 } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
@@ -111,6 +111,9 @@ export const RModelSettingsModule: React.FC = () => {
   const [newVariableDescription, setNewVariableDescription] =
     useState<string>('')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
+  // Добавляем состояние для индикатора загрузки
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // Переменные для выбора
   const [variables, setVariables] = useState<Variable[]>([
@@ -264,6 +267,9 @@ export const RModelSettingsModule: React.FC = () => {
 
   // Отправка данных на бэкенд
   const handleSubmit = (): void => {
+    // Показываем индикатор загрузки
+    setIsLoading(true)
+
     const payload: ModelPayload = {
       modelType,
       formula: formulaExpression,
@@ -282,8 +288,12 @@ export const RModelSettingsModule: React.FC = () => {
     }
 
     console.log('Отправка на бэкенд:', payload)
-    // Открываем модальное окно с результатами вместо alert
-    setIsResultsModalOpen(true)
+
+    // Имитируем задержку 2 секунды перед открытием модального окна
+    setTimeout(() => {
+      setIsLoading(false) // Скрываем индикатор загрузки
+      setIsResultsModalOpen(true) // Открываем модальное окно с результатами
+    }, 2000)
   }
 
   // Сброс настроек
@@ -306,7 +316,7 @@ export const RModelSettingsModule: React.FC = () => {
       <ModelResultsModal isOpen={isResultsModalOpen} onClose={closeModal} />
       <div className="flex w-full">
         <div className="flex flex-col items-start">
-          <div className="text-black-1000 text-xl font-bold leading-24">
+          <div className="text-xl font-bold leading-24 text-black-1000">
             Параметры статистической модели
           </div>
         </div>
@@ -824,8 +834,17 @@ export const RModelSettingsModule: React.FC = () => {
             variant="primary"
             onClick={handleSubmit}
             className="flex items-center gap-2"
+            disabled={isLoading}
           >
-            <Send className="h-4 w-4" /> Запустить модель
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Выполняется...
+              </>
+            ) : (
+              <>
+                <Send className="h-4 w-4" /> Запустить модель
+              </>
+            )}
           </Button>
         </div>
       </CardFooter>

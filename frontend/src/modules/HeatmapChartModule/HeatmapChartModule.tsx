@@ -9,7 +9,9 @@ import {
 import {
   ContainerBody,
   ContainerComponent,
+  ContainerHeader,
 } from '@/components/ContainerComponent/ContainerComponent'
+import ChartControls from '@/modules/ChartControlModule/ChartControl'
 
 interface PDHeatmapProps {
   data: HeatmapData
@@ -68,7 +70,15 @@ const HeatmapChartModule: FC<PDHeatmapProps> = ({
   )
 
   return (
-    <ContainerComponent withBg={true} title={title}>
+    <ContainerComponent withBg={true}>
+      <ContainerHeader>
+        <div className="flex w-full items-center justify-between">
+          <div className="text-xl font-bold leading-24 text-black-1000">
+            {title}
+          </div>
+          <ChartControls chartDescription="Тепловая карта процента резервирования" />
+        </div>
+      </ContainerHeader>
       <ContainerBody isScrolling={true} orientation="horizontal">
         <div ref={wrapperRef} className="w-full">
           <div className="px-10 py-5">
