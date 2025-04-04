@@ -9,7 +9,6 @@ import { useGetRiskGroupData } from '@/hooks/apiHooks/dashboardHooks/useGetRiskG
 
 export const useGetDashboardData = (date: string) => {
   const lgdData = useGetLGDData()
-
   const {
     eclAmount,
     percentIFRS,

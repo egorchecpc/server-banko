@@ -1,24 +1,28 @@
 import { useQuery } from '@tanstack/react-query'
-import axiosConfig from '@/services/axiosConfig'
 import { ProductData } from '@/models/AgeingAmount'
-import axios from 'axios'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
+import { API_ENDPOINTS } from '@/services/endpoints'
 
 export const useGetAgeingData = (date: string) => {
   const amountQuery = useQuery<ProductData[]>({
-    queryKey: ['ageingAmountData'],
+    queryKey: ['ageingAmountData', date],
     queryFn: async () => {
-      const { data } = await axios.get(
-        `https://banko-r-backend.stacklevel.group/api/ecl/grossCarryingAmount/sumByDelay?date=${date}`
+      const { data } = await axiosConfigFinal.get(
+        API_ENDPOINTS.BI.ECL_CHARTS.GET_GROSS_CARRYING_AMOUNT,
+        { params: { date } }
       )
       return data
     },
   })
 
   const countQuery = useQuery<ProductData[]>({
-    queryKey: ['ageingCountData'],
+    queryKey: ['ageingCountData', date],
     queryFn: async () => {
-      const { data } = await axios.get(
-        `https://banko-r-backend.stacklevel.group/api/ecl/loans/sumByDelay?date=${date}`
+      const { data } = await axiosConfigFinal.get(
+        API_ENDPOINTS.BI.ECL_CHARTS.GET_LOANS,
+        {
+          params: { date },
+        }
       )
       return data
     },

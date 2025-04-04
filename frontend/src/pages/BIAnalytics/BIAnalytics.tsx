@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Link, useParams } from '@tanstack/react-router'
 import { DistributionCategoryChartModule } from '@/modules/DistributionCategoryChartModule/DistributionCategoryChartModule'
-import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import { useReportDataWithValidation } from '@/hooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
 import { useLoading } from '@/context/LoadingContext'
 
@@ -99,7 +99,7 @@ export const BIAnalyticsPage = () => {
       </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="mb-3 flex items-center gap-3">
-          <div className="text-black-1000 text-2xl font-bold leading-38">
+          <div className="text-2xl font-bold leading-38 text-black-1000">
             BI-аналитика
           </div>
           <div className="mt-3">
@@ -148,28 +148,26 @@ export const BIAnalyticsPage = () => {
           />
         )}
       <div className="mb-3"></div>
-      <div className="mb-3 flex gap-3">
-        {chartVisibility.ageingAmount &&
-          data.AgeingAmountData &&
-          data.AgeingCountData && (
+
+      {chartVisibility.ageingAmount &&
+        data.AgeingAmountData &&
+        data.AgeingCountData && (
+          <div className="mb-3 flex gap-3">
             <div className="flex-1">
               <AgeingAmountChartModule
                 amountData={data.AgeingAmountData}
                 countData={data.AgeingCountData}
               />
             </div>
-          )}
-        {chartVisibility.distributionCategory &&
-          data.CategoryAmountData &&
-          data.CategoryCountData && (
+
             <div className="flex-1">
               <DistributionCategoryChartModule
-                amountData={data.CategoryAmountData}
-                countData={data.CategoryCountData}
+                amountData={data.AgeingAmountData}
+                countData={data.AgeingCountData}
               />
             </div>
-          )}
-      </div>
+          </div>
+        )}
       <div className="mb-3"></div>
     </div>
   )

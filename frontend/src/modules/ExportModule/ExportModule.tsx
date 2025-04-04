@@ -20,7 +20,7 @@ import { Download as DownloadIcon } from 'lucide-react'
 import { useExportFile } from '@/hooks/apiHooks/dashboardHooks/useGetReportFile'
 import { toast } from 'sonner'
 import { useReportId } from '@/context/ReportIdContext'
-import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import { useReportDataWithValidation } from '@/hooks/useReportData'
 
 interface ExportSettings {
   forecastYears: number

@@ -19,6 +19,7 @@ import { Route as ClearLayoutImport } from './routes/_clear-layout'
 import { Route as BasicLayoutImport } from './routes/_basic-layout'
 import { Route as R404Import } from './routes/404'
 import { Route as IndexImport } from './routes/index'
+import { Route as MainLayoutDatasetImport } from './routes/_main-layout/dataset'
 import { Route as MainLayoutAppsImport } from './routes/_main-layout/apps'
 import { Route as MainLayoutAnalyzerImport } from './routes/_main-layout/analyzer'
 import { Route as ClearLayoutProfileImport } from './routes/_clear-layout/profile'
@@ -71,6 +72,11 @@ const R404Route = R404Import.update({
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const MainLayoutDatasetRoute = MainLayoutDatasetImport.update({
+  path: '/dataset',
+  getParentRoute: () => MainLayoutRoute,
 } as any)
 
 const MainLayoutAppsRoute = MainLayoutAppsImport.update({
@@ -216,6 +222,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutAppsImport
       parentRoute: typeof MainLayoutImport
     }
+    '/_main-layout/dataset': {
+      id: '/_main-layout/dataset'
+      path: '/dataset'
+      fullPath: '/dataset'
+      preLoaderRoute: typeof MainLayoutDatasetImport
+      parentRoute: typeof MainLayoutImport
+    }
     '/_main-layout/reports/': {
       id: '/_main-layout/reports/'
       path: '/reports'
@@ -338,6 +351,7 @@ const LayoutWithoutSidebarRouteWithChildren =
 interface MainLayoutRouteChildren {
   MainLayoutAnalyzerRoute: typeof MainLayoutAnalyzerRoute
   MainLayoutAppsRoute: typeof MainLayoutAppsRoute
+  MainLayoutDatasetRoute: typeof MainLayoutDatasetRoute
   MainLayoutReportsIndexRoute: typeof MainLayoutReportsIndexRoute
   MainLayoutReportsReportIdCreditTypeRoute: typeof MainLayoutReportsReportIdCreditTypeRoute
 }
@@ -345,6 +359,7 @@ interface MainLayoutRouteChildren {
 const MainLayoutRouteChildren: MainLayoutRouteChildren = {
   MainLayoutAnalyzerRoute: MainLayoutAnalyzerRoute,
   MainLayoutAppsRoute: MainLayoutAppsRoute,
+  MainLayoutDatasetRoute: MainLayoutDatasetRoute,
   MainLayoutReportsIndexRoute: MainLayoutReportsIndexRoute,
   MainLayoutReportsReportIdCreditTypeRoute:
     MainLayoutReportsReportIdCreditTypeRoute,
@@ -362,6 +377,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ClearLayoutProfileRoute
   '/analyzer': typeof MainLayoutAnalyzerRoute
   '/apps': typeof MainLayoutAppsRoute
+  '/dataset': typeof MainLayoutDatasetRoute
   '/reports': typeof MainLayoutReportsIndexRoute
   '/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
   '/reports/$reportId/credit-list': typeof ClearLayoutReportsReportIdCreditListRoute
@@ -380,6 +396,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ClearLayoutProfileRoute
   '/analyzer': typeof MainLayoutAnalyzerRoute
   '/apps': typeof MainLayoutAppsRoute
+  '/dataset': typeof MainLayoutDatasetRoute
   '/reports': typeof MainLayoutReportsIndexRoute
   '/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
   '/reports/$reportId/credit-list': typeof ClearLayoutReportsReportIdCreditListRoute
@@ -403,6 +420,7 @@ export interface FileRoutesById {
   '/_clear-layout/profile': typeof ClearLayoutProfileRoute
   '/_main-layout/analyzer': typeof MainLayoutAnalyzerRoute
   '/_main-layout/apps': typeof MainLayoutAppsRoute
+  '/_main-layout/dataset': typeof MainLayoutDatasetRoute
   '/_main-layout/reports/': typeof MainLayoutReportsIndexRoute
   '/_basic-layout/reports/$reportId/dashboard': typeof BasicLayoutReportsReportIdDashboardRoute
   '/_clear-layout/reports/$reportId/credit-list': typeof ClearLayoutReportsReportIdCreditListRoute
@@ -423,6 +441,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/analyzer'
     | '/apps'
+    | '/dataset'
     | '/reports'
     | '/reports/$reportId/dashboard'
     | '/reports/$reportId/credit-list'
@@ -440,6 +459,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/analyzer'
     | '/apps'
+    | '/dataset'
     | '/reports'
     | '/reports/$reportId/dashboard'
     | '/reports/$reportId/credit-list'
@@ -461,6 +481,7 @@ export interface FileRouteTypes {
     | '/_clear-layout/profile'
     | '/_main-layout/analyzer'
     | '/_main-layout/apps'
+    | '/_main-layout/dataset'
     | '/_main-layout/reports/'
     | '/_basic-layout/reports/$reportId/dashboard'
     | '/_clear-layout/reports/$reportId/credit-list'
@@ -554,6 +575,7 @@ export const routeTree = rootRoute
       "children": [
         "/_main-layout/analyzer",
         "/_main-layout/apps",
+        "/_main-layout/dataset",
         "/_main-layout/reports/",
         "/_main-layout/reports/$reportId/credit-type"
       ]
@@ -571,6 +593,10 @@ export const routeTree = rootRoute
     },
     "/_main-layout/apps": {
       "filePath": "_main-layout/apps.tsx",
+      "parent": "/_main-layout"
+    },
+    "/_main-layout/dataset": {
+      "filePath": "_main-layout/dataset.tsx",
       "parent": "/_main-layout"
     },
     "/_main-layout/reports/": {

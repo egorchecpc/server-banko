@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { MacroTemplate } from '@/models/MacroTemplate'
-import axiosConfig from '@/services/axiosConfig'
-import axios from 'axios'
+import axiosConfigMock from '@/services/axiosConfigMock'
+import { API_ENDPOINTS } from '@/services/endpoints'
 
 export const useTemplates = () => {
   const queryClient = useQueryClient()
@@ -9,8 +9,8 @@ export const useTemplates = () => {
   const { data: templates, isLoading: isTemplatesLoading } = useQuery({
     queryKey: ['templates'],
     queryFn: async () => {
-      const { data } = await axios.get<MacroTemplate[]>(
-        'https://banko-backend.stacklevel.group/templates'
+      const { data } = await axiosConfigMock.get<MacroTemplate[]>(
+        API_ENDPOINTS.COMMON.TEMPLATES.GET_ALL
       )
       return data
     },
@@ -18,8 +18,8 @@ export const useTemplates = () => {
 
   const { mutate: updateTemplate } = useMutation({
     mutationFn: async (template: MacroTemplate) => {
-      const { data } = await axios.put(
-        `https://banko-backend.stacklevel.group/templates/${template.id}`,
+      const { data } = await axiosConfigMock.put(
+        API_ENDPOINTS.COMMON.TEMPLATES.UPDATE(template.id),
         template
       )
       return data
@@ -31,8 +31,8 @@ export const useTemplates = () => {
 
   const { mutate: deleteTemplate } = useMutation({
     mutationFn: async (templateId: string) => {
-      const { data } = await axios.delete(
-        `https://banko-backend.stacklevel.group/templates/${templateId}`
+      const { data } = await axiosConfigMock.delete(
+        API_ENDPOINTS.COMMON.TEMPLATES.DELETE(templateId)
       )
       return data
     },

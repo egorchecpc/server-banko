@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
 
 interface ExportResponse {
   success: boolean
@@ -8,7 +8,7 @@ interface ExportResponse {
 export const useExportFile = () => {
   return useMutation<ExportResponse, Error>({
     mutationFn: async () => {
-      const response = await axios.get(
+      const response = await axiosConfigFinal.get(
         'https://banko-r-backend.stacklevel.group/api/excel/stats',
         {
           responseType: 'blob',

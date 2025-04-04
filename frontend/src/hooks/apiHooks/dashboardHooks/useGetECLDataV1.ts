@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { ECLData } from '@/models/ECL'
-import axios from 'axios'
 import { transformECLDataFromServer } from '@/utils/formatECLFromServer'
 import { ECLType } from '@/models/FormatedECL'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
 
 const filterUnwantedProducts = (data: ECLData) => {
   const filteredData = { ...data }
@@ -21,9 +21,7 @@ export const useGetECLDataV1 = (date: string) => {
   return useQuery<ECLData, Error>({
     queryKey: ['ECLDataV1', date],
     queryFn: async () => {
-      const { data } = await axios.get(
-        `https://banko-r-backend.stacklevel.group/api/ecl/summary?date=${date}`
-      )
+      const { data } = await axiosConfigFinal.get(`/ecl/summary?date=${date}`)
       const filteredData = filterUnwantedProducts(data)
       return transformECLDataFromServer(filteredData, ECLType.PRODUCT)
     },

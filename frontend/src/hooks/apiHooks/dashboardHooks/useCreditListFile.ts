@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
 
 interface ExportResponse {
   success: boolean
@@ -8,16 +8,13 @@ interface ExportResponse {
 export const useCreditListFile = () => {
   return useMutation<ExportResponse, Error>({
     mutationFn: async () => {
-      const response = await axios.get(
-        'https://banko-r-backend.stacklevel.group/api/excel/contracts',
-        {
-          responseType: 'blob',
-          headers: {
-            Accept:
-              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          },
-        }
-      )
+      const response = await axiosConfigFinal.get('/excel/contracts', {
+        responseType: 'blob',
+        headers: {
+          Accept:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        },
+      })
 
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement('a')

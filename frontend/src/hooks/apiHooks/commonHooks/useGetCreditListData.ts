@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { CreditListData, PaginatedResponse } from '@/models/CreditListTest'
-import axios from 'axios'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
+import { API_ENDPOINTS } from '@/services/endpoints'
 
 export const useGetCreditListData = (
   page: number,
@@ -50,8 +51,11 @@ export const useGetCreditListData = (
         params.append('filterValue', searchText)
       }
 
-      const { data } = await axios.get(
-        `${'https://banko-r-backend.stacklevel.group/api/contracts'}?${params.toString()}`
+      const { data } = await axiosConfigFinal.get(
+        API_ENDPOINTS.COMMON.CREDIT_LIST.GET_CONTRACTS,
+        {
+          params: Object.fromEntries(params),
+        }
       )
 
       return data

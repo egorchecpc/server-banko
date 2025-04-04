@@ -1,4 +1,4 @@
-import { useGetReportsData } from './useGetReportsData'
+import { useGetReportsData } from './apiHooks/commonHooks/useGetReportsData'
 
 export const useReportData = (reportId: string) => {
   const { data: reports, isLoading, error } = useGetReportsData()

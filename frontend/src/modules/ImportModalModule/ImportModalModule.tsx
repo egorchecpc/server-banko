@@ -7,19 +7,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { useCreateReport } from '@/hooks/apiHooks/commonHooks/usePostReportData'
 import { createReportPayload } from '@/utils/createReportPayload'
 import {
-  FILE_UPLOAD_CONFIG,
-  FilesState,
   ReportDetails,
   ReportModalProps,
 } from '@/modules/ImportModalModule/ImportModalModuleConfig'
-import { useFileUpload } from '@/hooks/useFileUpload'
 import { ReportForm } from '@/modules/ImportModalModule/ReportForm/ReportForm'
-import { FileUploadButton } from '@/modules/ImportModalModule/FileUploadBtn/FileUploadBtn'
 
 export const debtorTypeNames = {
   retail: 'Розничный',
@@ -27,6 +22,30 @@ export const debtorTypeNames = {
   interbank: 'Межбанковский',
   sovereign: 'Суверены',
 }
+
+// Примеры датасетов
+export const availableDatasets = [
+  {
+    id: 'ds-2025-04-03-981465',
+    name: 'Кредитный портфель Q1 2025',
+    date: '03.04.2025',
+  },
+  {
+    id: 'ds-2025-03-15-754321',
+    name: 'Корпоративный портфель март 2025',
+    date: '15.03.2025',
+  },
+  {
+    id: 'ds-2025-02-20-632541',
+    name: 'Финансовый отчет Q4 2024',
+    date: '20.02.2025',
+  },
+  {
+    id: 'ds-2025-01-10-123456',
+    name: 'Розничный портфель январь 2025',
+    date: '10.01.2025',
+  },
+]
 
 const ImportModalModule: React.FC<ReportModalProps> = ({
   open,
@@ -38,13 +57,14 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     strict: false,
   })
   const createReportMutation = useCreateReport()
-  const { files, handleFileChange, isAllFilesUploaded } = useFileUpload()
-  const [step, setStep] = useState<1 | 2>(1)
-  const [reportDetails, setReportDetails] = useState<ReportDetails>({
+  const [reportDetails, setReportDetails] = useState<
+    ReportDetails & { datasetId: string }
+  >({
     name: '',
     isPublic: false,
     description: '',
     type: debtorTypeNames[search.type],
+    datasetId: '',
   })
 
   const handleSubmit = async () => {
@@ -79,44 +99,16 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>
-            {step === 1 ? 'Детали отчёта' : 'Загрузка файлов'}
-          </DialogTitle>
+          <DialogTitle>Детали отчёта</DialogTitle>
         </DialogHeader>
 
-        {step === 1 ? (
-          <ReportForm
-            reportDetails={reportDetails}
-            onDetailsChange={setReportDetails}
-            onNext={() => setStep(2)}
-            onCancel={() => onOpenChange(false)}
-          />
-        ) : (
-          <div className="py-4">
-            {Object.entries(FILE_UPLOAD_CONFIG).map(([type, config]) => (
-              <FileUploadButton
-                key={type}
-                type={type as keyof FilesState}
-                label={config.label}
-                files={files}
-                onFileChange={handleFileChange}
-              />
-            ))}
-
-            <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setStep(1)}>
-                Назад
-              </Button>
-              <Button
-                disabled={!isAllFilesUploaded}
-                variant="primary"
-                onClick={handleSubmit}
-              >
-                Создать отчёт
-              </Button>
-            </div>
-          </div>
-        )}
+        <ReportForm
+          reportDetails={reportDetails}
+          onDetailsChange={setReportDetails}
+          onSubmit={handleSubmit}
+          onCancel={() => onOpenChange(false)}
+          availableDatasets={availableDatasets}
+        />
       </DialogContent>
     </Dialog>
   )

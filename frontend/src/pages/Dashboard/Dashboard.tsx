@@ -19,7 +19,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { ExportComponent } from '@/modules/ExportModule/ExportModule'
-import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import { useReportDataWithValidation } from '@/hooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
 import {
   ForecastDataResponse,
@@ -159,7 +159,7 @@ export const DashboardPage = () => {
       </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="mb-3 flex items-center gap-3">
-          <div className="text-black-1000 text-2xl font-bold leading-38">
+          <div className="text-2xl font-bold leading-38 text-black-1000">
             {t('dashboard.title')}
           </div>
           <div className="mt-3">

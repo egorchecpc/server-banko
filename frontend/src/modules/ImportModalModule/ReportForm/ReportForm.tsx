@@ -1,3 +1,4 @@
+import React from 'react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
@@ -10,27 +11,27 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import {
-  REPORT_TYPES,
-  ReportDetails,
-  ReportType,
-} from '@/modules/ImportModalModule/ImportModalModuleConfig'
-import { debtorTypeNames } from '@/modules/ImportModalModule/ImportModalModule'
+import { Label } from '@/components/ui/label'
+import { ReportDetails } from '@/modules/ImportModalModule/ImportModalModuleConfig'
+import { availableDatasets } from '@/modules/ImportModalModule/ImportModalModule'
 
 interface ReportFormProps {
-  reportDetails: ReportDetails
-  onDetailsChange: (details: ReportDetails) => void
-  onNext: () => void
+  reportDetails: ReportDetails & { datasetId: string }
+  onDetailsChange: (details: ReportDetails & { datasetId: string }) => void
+  onSubmit: () => void
   onCancel: () => void
+  availableDatasets: typeof availableDatasets
 }
 
 export const ReportForm: React.FC<ReportFormProps> = ({
   reportDetails,
   onDetailsChange,
-  onNext,
+  onSubmit,
   onCancel,
+  availableDatasets,
 }) => {
-  const isDetailsValid = reportDetails.name.length > 0
+  const isDetailsValid =
+    reportDetails.name.length > 0 && reportDetails.datasetId.length > 0
 
   return (
     <div className="py-4">
@@ -44,27 +45,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         />
       </div>
 
-      {/*<div className="mb-4">*/}
-      {/*  <Select*/}
-      {/*    value={reportDetails.type}*/}
-      {/*    onValueChange={(value) =>*/}
-      {/*      onDetailsChange({ ...reportDetails, type: value as ReportType })*/}
-      {/*    }*/}
-      {/*  >*/}
-      {/*    <SelectTrigger>*/}
-      {/*      <SelectValue placeholder="Выберите тип отчёта" />*/}
-      {/*    </SelectTrigger>*/}
-      {/*    <SelectContent>*/}
-      {/*      {REPORT_TYPES.map((type) => (*/}
-      {/*        <SelectItem key={type.value} value={type.value}>*/}
-      {/*          {type.label}*/}
-      {/*        </SelectItem>*/}
-      {/*      ))}*/}
-      {/*    </SelectContent>*/}
-      {/*  </Select>*/}
-      {/*</div>*/}
-
-      <div className="text-black-1000 mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between text-black-1000">
         <span className="text-black-1000">Приватный отчёт</span>
         <Switch
           checked={reportDetails.isPublic}
@@ -78,7 +59,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         />
       </div>
 
-      <div className="text-black-1000 mb-6">
+      <div className="mb-4 text-black-1000">
         <Textarea
           placeholder="Описание отчёта"
           className="text-black-1000"
@@ -89,12 +70,33 @@ export const ReportForm: React.FC<ReportFormProps> = ({
         />
       </div>
 
+      <div className="mb-6 space-y-2">
+        <Label htmlFor="dataset">Выберите датасет</Label>
+        <Select
+          value={reportDetails.datasetId}
+          onValueChange={(value) =>
+            onDetailsChange({ ...reportDetails, datasetId: value })
+          }
+        >
+          <SelectTrigger id="dataset">
+            <SelectValue placeholder="Выберите датасет" />
+          </SelectTrigger>
+          <SelectContent>
+            {availableDatasets.map((dataset) => (
+              <SelectItem key={dataset.id} value={dataset.id}>
+                {dataset.name} ({dataset.date})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="flex justify-end gap-2">
         <Button variant="outline" onClick={onCancel}>
           Отмена
         </Button>
-        <Button disabled={!isDetailsValid} variant="primary" onClick={onNext}>
-          Далее
+        <Button disabled={!isDetailsValid} variant="primary" onClick={onSubmit}>
+          Создать отчёт
         </Button>
       </div>
     </div>

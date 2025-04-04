@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import axiosConfig from '@/services/axiosConfig'
+import axiosConfigMock from '@/services/axiosConfigMock'
 import { API_ENDPOINTS } from '@/services/endpoints'
 import type { ProfileReportData } from '@/models/ProfileReport'
 import { useMemo } from 'react'
@@ -10,8 +10,8 @@ export const useGetReportsData = () => {
   return useQuery<ProfileReportData[], Error>({
     queryKey: ['ProfileReportsData'],
     queryFn: async () => {
-      const { data } = await axiosConfig.get(
-        API_ENDPOINTS.GET_PROFILE_REPORTS_DATA
+      const { data } = await axiosConfigMock.get(
+        API_ENDPOINTS.COMMON.REPORTS.GET_REPORTS
       )
       return data
     },

@@ -1,8 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { DebtorData } from '@/models/DebtorData'
 import { FormatedMacroSettings } from '@/models/FormatedMacroSettings'
-import axiosConfig from '@/services/axiosConfig'
+import axiosConfigMock from '@/services/axiosConfigMock'
+import { AxiosError } from 'axios'
 import { CreateReportPayload } from '@/utils/createReportPayload'
+import { API_ENDPOINTS } from '@/services/endpoints'
 
 interface UpdateReportParams {
   id: string
@@ -13,11 +15,14 @@ interface UpdateReportParams {
 const updateReport = async (params: UpdateReportParams) => {
   const { id, debtorData, macroData } = params
 
-  const response = await axiosConfig.post('/update-report', {
-    id,
-    debtorData,
-    macroData,
-  })
+  const response = await axiosConfigMock.post(
+    API_ENDPOINTS.COMMON.REPORTS.UPDATE_REPORTS,
+    {
+      id,
+      debtorData,
+      macroData,
+    }
+  )
 
   return response.data
 }
@@ -26,9 +31,9 @@ export const useUpdateReport = () => {
   return useMutation({
     mutationFn: updateReport,
     onSuccess: (data) => {
-      console.log('1', data)
+      console.log(data)
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError) => {
       console.error('Ошибка при обновлении отчёта', error)
     },
   })
@@ -42,8 +47,8 @@ interface CreateReportResponse {
 export const useCreateReport = () => {
   return useMutation({
     mutationFn: async (payload: CreateReportPayload) => {
-      const { data } = await axiosConfig.post<CreateReportResponse>(
-        '/create-report',
+      const { data } = await axiosConfigMock.post<CreateReportResponse>(
+        API_ENDPOINTS.COMMON.REPORTS.CREATE_REPORTS,
         payload,
         {
           headers: {

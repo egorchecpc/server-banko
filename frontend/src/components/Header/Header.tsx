@@ -5,7 +5,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import { useReportId } from '@/context/ReportIdContext'
-import { useReportDataWithValidation } from '@/hooks/apiHooks/commonHooks/useReportData'
+import { useReportDataWithValidation } from '@/hooks/useReportData'
 import {
   Popover,
   PopoverContent,

@@ -6,7 +6,6 @@ import { useGetHeatmapData } from '@/hooks/apiHooks/biHooks/useGetHeatmapData'
 import { useGetYearlyAmountData } from '@/hooks/apiHooks/biHooks/useGetAmountData'
 import { useGetAmountPercentData } from '@/hooks/apiHooks/biHooks/useGetAmountPercentData'
 import { useGetAgeingData } from '@/hooks/apiHooks/biHooks/useGetAgeingAmountData'
-import { useGetCategoryChartData } from '@/hooks/apiHooks/biHooks/useGetDistributionCategoryChartData'
 
 export const useGetBIAnalyticsData = (date: string) => {
   const gbv = useGetGBVData(date)
@@ -18,8 +17,6 @@ export const useGetBIAnalyticsData = (date: string) => {
   const amountPercentData = useGetAmountPercentData()
   const { amountData: ageingAmountData, countData: ageingCountData } =
     useGetAgeingData(date)
-  const { amountData: categoryAmountData, countData: categoryCountData } =
-    useGetCategoryChartData(date)
 
   const data = {
     GBVData: gbv.data,
@@ -31,8 +28,6 @@ export const useGetBIAnalyticsData = (date: string) => {
     AmountPercentData: amountPercentData.data,
     AgeingAmountData: ageingAmountData,
     AgeingCountData: ageingCountData,
-    CategoryAmountData: categoryAmountData,
-    CategoryCountData: categoryCountData,
   }
 
   const isLoading =

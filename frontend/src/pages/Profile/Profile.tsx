@@ -50,7 +50,7 @@ export const ProfilePage = () => {
   }
 
   if (!profile) {
-    return <div>Error loading profile</div>
+    return <div></div>
   }
 
   const renderAboutTab = () => (

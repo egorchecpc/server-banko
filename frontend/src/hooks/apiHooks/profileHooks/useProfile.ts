@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import axiosConfig from '@/services/axiosConfig'
+import axiosConfigMock from '@/services/axiosConfigMock'
 import { ProfileData } from '@/models/Profile'
 
 export const useProfile = () => {
@@ -8,14 +8,14 @@ export const useProfile = () => {
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      const { data } = await axiosConfig.get<ProfileData>('/profile')
+      const { data } = await axiosConfigMock.get<ProfileData>('/profile')
       return data
     },
   })
 
   const { mutate: updateProfile } = useMutation({
     mutationFn: async (newProfile: Partial<ProfileData>) => {
-      const { data } = await axiosConfig.put('/profile', newProfile)
+      const { data } = await axiosConfigMock.put('/profile', newProfile)
       return data
     },
     onSuccess: () => {

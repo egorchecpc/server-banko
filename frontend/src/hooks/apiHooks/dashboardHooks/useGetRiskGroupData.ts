@@ -1,19 +1,19 @@
 import { useQueries } from '@tanstack/react-query'
-import axios from 'axios'
 import { RiskGroupItem, RiskGroupItemFormatted } from '@/models/RiskGoupItem'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
 
 export const useGetRiskGroupData = (date: string) => {
   const endpoints = [
-    `https://banko-r-backend.stacklevel.group/api/ecl/sum?date=${date}`,
-    `https://banko-r-backend.stacklevel.group/api/ecl/reservation/sum?date=${date}`,
-    `https://banko-r-backend.stacklevel.group/api/ecl/WBS/sum?date=${date}`,
+    `/ecl/sum?date=${date}`,
+    `/ecl/reservation/sum?date=${date}`,
+    `/ecl/WBS/sum?date=${date}`,
   ]
 
   const queries = useQueries({
     queries: endpoints.map((endpoint) => ({
       queryKey: ['RiskGroupData', endpoint, date],
       queryFn: async () => {
-        const { data } = await axios.get<RiskGroupItem[]>(endpoint)
+        const { data } = await axiosConfigFinal.get<RiskGroupItem[]>(endpoint)
         return data
       },
       staleTime: 0,

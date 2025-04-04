@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import axiosConfig from '@/services/axiosConfig'
-import { calculateECLDiff } from '@/utils/calculateECLDif'
 import { ECLData } from '@/models/ECL'
+import { calculateECLDiff } from '@/utils/calculateECLDif'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
 
 interface SummaryResponse {
   success: boolean
 }
 
-export const usePostSummary = (date: string) => {
+export const usePostPortfolio = (date: string) => {
   const queryClient = useQueryClient()
   const previousECLData = queryClient.getQueryData([
-    'ECLDataV1',
+    'ECLDataV2',
     date,
   ]) as ECLData
   const { mutate, isPending, isSuccess, isError, error } = useMutation<
@@ -18,21 +18,22 @@ export const usePostSummary = (date: string) => {
     Error
   >({
     mutationFn: async () => {
-      const { data } = await axiosConfig.post(
-        `https://banko-r-backend.stacklevel.group/api/ecl/summary?date=${date}`
+      const { data } = await axiosConfigFinal.post(
+        `/ecl/portfolio/summary?date=${date}`
       )
       return data
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['ECLDataV1', date] })
+      await queryClient.invalidateQueries({ queryKey: ['ECLDataV2', date] })
       const newECLData = queryClient.getQueryData([
-        'ECLDataV1',
+        'ECLDataV2',
         date,
       ]) as ECLData
       if (previousECLData && newECLData) {
-        const diff = calculateECLDiff(previousECLData, newECLData, true)
-        queryClient.setQueryData(['eclDiff1'], diff)
+        const diff = calculateECLDiff(previousECLData, newECLData)
+        queryClient.setQueryData(['eclDiff2'], diff)
       }
+      console.log(4)
     },
   })
 

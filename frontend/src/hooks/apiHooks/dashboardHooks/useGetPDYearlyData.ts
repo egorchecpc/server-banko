@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { YearlyDataResponse } from '@/models/PD'
-import axios from 'axios'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
 
 export const useGetPDYearlyData = () => {
   return useQuery<YearlyDataResponse, Error>({
     queryKey: ['PDYearlyData'],
     queryFn: async () => {
-      const response = await axios.get<YearlyDataResponse>(
-        'https://banko-r-backend.stacklevel.group/api/probabilityDefault/yearly'
+      const response = await axiosConfigFinal.get<YearlyDataResponse>(
+        '/probabilityDefault/yearly'
       )
 
       return Object.entries(response.data) //.filter(([year]) => !['year2021', 'year2022', 'year2023'].includes(year))

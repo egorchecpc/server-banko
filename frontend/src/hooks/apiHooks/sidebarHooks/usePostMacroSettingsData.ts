@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FormatedMacroSettings } from '@/models/FormatedMacroSettings'
-import axios from 'axios'
-import axiosConfig from '@/services/axiosConfig'
+import axiosConfigFinal from '@/services/axiosConfigFinal'
 
 export const usePostMacroSettingsData = () => {
   const queryClient = useQueryClient()
@@ -12,16 +11,12 @@ export const usePostMacroSettingsData = () => {
     Partial<FormatedMacroSettings>
   >({
     mutationFn: async (newMacroSettings) => {
-      const { data } = await axios.post(
-        'https://banko-r-backend.stacklevel.group/api/macro',
-        newMacroSettings,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        }
-      )
+      const { data } = await axiosConfigFinal.post('/macro', newMacroSettings, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      })
       queryClient.setQueryData(
         ['currentMacroVersion'],
         data.version || Date.now().toString()
@@ -32,7 +27,6 @@ export const usePostMacroSettingsData = () => {
       queryClient.invalidateQueries({ queryKey: ['PDForecastData'] })
       queryClient.invalidateQueries({ queryKey: ['PDQuarterlyData'] })
       queryClient.invalidateQueries({ queryKey: ['PDYearlyData'] })
-      console.log('2')
     },
   })
 }

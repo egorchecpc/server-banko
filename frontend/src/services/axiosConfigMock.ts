@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-const axiosConfig = axios.create({
+const axiosConfigMock = axios.create({
   baseURL: 'https://banko-backend.stacklevel.group',
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-axiosConfig.interceptors.request.use(
+axiosConfigMock.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -18,11 +18,11 @@ axiosConfig.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
-axiosConfig.interceptors.response.use(
+axiosConfigMock.interceptors.response.use(
   (response) => response,
   (error) => {
     return Promise.reject(error)
   }
 )
 
-export default axiosConfig
+export default axiosConfigMock
