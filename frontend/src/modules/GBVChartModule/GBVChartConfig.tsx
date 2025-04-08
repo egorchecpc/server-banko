@@ -1,8 +1,9 @@
 import { GBVData } from '@/models/GBV'
 
+//lightblue
 const colors = [
   'var(--chart80)',
-  'lightblue',
+  'var(--chart60)',
   'var(--chart40)',
   'var(--chart20)',
 ]

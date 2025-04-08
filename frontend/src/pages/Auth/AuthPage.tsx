@@ -45,7 +45,7 @@ const AuthPage = () => {
   }
   if (isLoading) return <LoadingSpinner />
   return (
-    <div className="text-black-1000 flex h-[125vh] w-full items-center justify-center bg-grey-300/40 p-4">
+    <div className="flex h-[125vh] w-full items-center justify-center bg-grey-300/40 p-4 text-black-1000">
       <img
         src="/img/logo.svg"
         alt="BANKO"
@@ -85,7 +85,7 @@ const AuthPage = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="text-black-1000 h-10"
+                  className="h-10 text-black-1000"
                 />
               </div>
 
@@ -103,7 +103,7 @@ const AuthPage = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="text-black-1000 h-10 pr-10"
+                    className="h-10 pr-10 text-black-1000"
                   />
                   <button
                     type="button"
@@ -127,14 +127,14 @@ const AuthPage = () => {
 
                   <label
                     htmlFor="remember"
-                    className="text-black-1000 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-sm font-medium leading-none text-black-1000 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     Запомнить меня
                   </label>
                 </div>
                 <Link
                   to="/auth"
-                  className="hover:text-blue-1000/40 text-sm text-blue-1000"
+                  className="text-sm text-blue-1000 hover:text-blue-1000/40"
                 >
                   Забыли пароль?
                 </Link>

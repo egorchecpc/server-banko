@@ -181,35 +181,35 @@ export const DistributionCategoryChartModule: React.FC<
               <Bar
                 dataKey="without"
                 name="без просрочки"
-                fill="lightblue"
+                fill="var(--chart20)"
                 stackId="a"
                 barSize={30}
               />
               <Bar
                 dataKey="between1To30"
                 name="0-30 дней"
-                fill="var(--chart20)"
+                fill="var(--chart40)"
                 stackId="a"
                 barSize={30}
               />
               <Bar
                 dataKey="between31To60"
                 name="30-60 дней"
-                fill="var(--chart40)"
+                fill="var(--chart60)"
                 stackId="a"
                 barSize={30}
               />
               <Bar
                 dataKey="between61To90"
                 name="60-90 дней"
-                fill="var(--chart60)"
+                fill="var(--chart80)"
                 stackId="a"
                 barSize={30}
               />
               <Bar
                 dataKey="moreThen90"
                 name="90+ дней"
-                fill="var(--chart80)"
+                fill="#241454"
                 stackId="a"
                 barSize={30}
               />

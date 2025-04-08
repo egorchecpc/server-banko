@@ -104,7 +104,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
       </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-black-1000 text-2xl font-bold leading-38">
+          <div className="text-2xl font-bold leading-38 text-black-1000">
             {`Стресс-тестирование на ${reportDate}`}
           </div>
         </div>
@@ -148,7 +148,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
                       <Cell
                         key={`cell-${index}`}
                         fill={
-                          entry.effect === 'positive' ? '#0F53C9' : '#73A8FA'
+                          entry.effect === 'positive' ? '#45169a' : '#bdaff9'
                         }
                       />
                     ))}
@@ -167,7 +167,7 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
                   <YAxis />
                   <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} />
                   <Legend />
-                  <Bar dataKey="ecl" fill="#0F53C9" barSize={30} />
+                  <Bar dataKey="ecl" fill="#45169a" barSize={30} />
                 </BarChart>
               </ResponsiveContainer>
             </ContainerBody>

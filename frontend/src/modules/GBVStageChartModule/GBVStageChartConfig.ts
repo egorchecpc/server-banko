@@ -1,8 +1,13 @@
 import { GBVStageData } from '@/models/GBVStage'
 import { TFunction } from 'i18next'
 
-export const colors = ['var(--chart80)', 'var(--chart60)', '#98B8E6', '#B2C1DC']
-
+export const colors = [
+  'var(--chart80)',
+  'var(--chart60)',
+  'var(--chart40)',
+  'var(--chart20)',
+]
+//'#98B8E6', '#B2C1DC'
 /**
  * Функция для генерации конфигурации графика.
  * @param data Массив данных для графика.

@@ -1,4 +1,4 @@
-import loaderGif from './loader2.gif'
+import loaderGif from './loader3.gif'
 import { useEffect } from 'react'
 
 const LoadingSpinner = () => {

@@ -13,10 +13,12 @@ export const CONFIG = {
     '90plus': '90+ дней',
   },
   chartColors: [
-    'lightblue',
     'var(--chart20)',
     'var(--chart40)',
     'var(--chart60)',
     'var(--chart80)',
+    '#241454',
   ],
 }
+
+//lightblue
