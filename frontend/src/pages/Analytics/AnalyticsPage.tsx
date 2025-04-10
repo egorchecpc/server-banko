@@ -1355,31 +1355,67 @@ const CreditTypesSunburstChart: React.FC = () => {
     '#bdaff9', // Reuse to fill 8 items
   ]
 
-  // Отображать текст только при наведении вместо постоянного отображения
-  const renderInnerLabel = ({ name, percent, index }: PieItemProps) => {
-    const isActive = index === activeIndex
+  // Рендер меток для внутреннего кольца с постоянным отображением значений
+  const renderInnerLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }: any) => {
+    const RADIAN = Math.PI / 180
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5
+    const x = cx + radius * Math.cos(-midAngle * RADIAN)
+    const y = cy + radius * Math.sin(-midAngle * RADIAN)
 
-    if (!isActive) {
-      return null
-    }
-
+    // Отображаем постоянно значение в млн BYN
     return (
       <text
-        x={0}
-        y={0}
+        x={x}
+        y={y}
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="14"
+        fontSize="12"
         fontWeight="bold"
       >
-        {`${name}\n${(percent * 100).toFixed(0)}%`}
+        {`${creditData[index].value}M`}
       </text>
     )
   }
 
-  // Внешние метки отображаются в тултипе, но не на графике
-  const renderOuterLabel = () => null
+  // Рендер меток для внешнего кольца с постоянным отображением значений
+  const renderOuterLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }: any) => {
+    const RADIAN = Math.PI / 180
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5
+    const x = cx + radius * Math.cos(-midAngle * RADIAN)
+    const y = cy + radius * Math.sin(-midAngle * RADIAN)
+
+    // Отображаем постоянно значение в млн BYN
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor="middle"
+        dominantBaseline="middle"
+        fontSize="11"
+        fontWeight="bold"
+      >
+        {`${outerData[index].value}M`}
+      </text>
+    )
+  }
 
   // Обработчики для увеличения секторов при наведении
   const onInnerPieEnter = (_: any, index: number) => {
@@ -1443,7 +1479,7 @@ const CreditTypesSunburstChart: React.FC = () => {
               startAngle={90}
               endAngle={-270}
               innerRadius={0}
-              outerRadius={100}
+              outerRadius={125}
               paddingAngle={2}
               label={renderInnerLabel}
               labelLine={false}
@@ -1473,8 +1509,8 @@ const CreditTypesSunburstChart: React.FC = () => {
               nameKey="name"
               startAngle={90}
               endAngle={-270}
-              innerRadius={110}
-              outerRadius={170}
+              innerRadius={130}
+              outerRadius={200}
               paddingAngle={2}
               label={renderOuterLabel}
               labelLine={false}
@@ -1499,7 +1535,7 @@ const CreditTypesSunburstChart: React.FC = () => {
 
             <Tooltip
               formatter={(value, name, props) => [
-                `${value} (${((value / props.payload.payload.total) * 100).toFixed(0)}%)`,
+                `${value}M BYN`,
                 `${props.payload.parentName ? props.payload.parentName + ' - ' : ''}${name}`,
               ]}
               contentStyle={{
@@ -1529,7 +1565,7 @@ const CreditTypesSunburstChart: React.FC = () => {
                 }}
               />
               <span className="text-sm">
-                {entry.name} ({entry.value})
+                {entry.name} ({entry.value}M BYN)
               </span>
             </div>
           ))}

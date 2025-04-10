@@ -62,12 +62,6 @@ export const ReportsPage = () => {
             <div className="mb-4 flex flex-wrap justify-between gap-3 p-0">
               <div className="flex min-w-72 items-center gap-3 text-2xl font-bold leading-tight tracking-[-0.033em] text-black-1000">
                 Доступные {debtorTypeHelper[search.type]} отчёты
-                <Button
-                  variant={'primary'}
-                  onClick={() => setIsDatasetModalOpen(true)}
-                >
-                  Просмотреть данные
-                </Button>
               </div>
               <div className="flex items-center justify-center">
                 <Button
@@ -86,15 +80,6 @@ export const ReportsPage = () => {
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         type={(search.type as ReportType) || 'retail'}
-      />
-
-      <DatasetModal
-        isOpen={isDatasetModalOpen}
-        onClose={() => setIsDatasetModalOpen(false)}
-        currentDataset={currentDataset}
-        onContinue={handleContinue}
-        type={search.type || 'retail'}
-        onDatasetUpdate={handleDatasetUpdate}
       />
     </>
   )

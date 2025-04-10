@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Navbar } from '@/components/Navbar/Navbar'
 import UserNav from '@/components/UserNav/UserNav'
 import { SidebarTrigger } from '@/components/ui/sidebar'
@@ -27,6 +27,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { DatasetModal } from '@/modules/DatasetModule/DatasetModule'
 
 export interface HeaderProps {
   navItems?: { [key: string]: string }
@@ -56,6 +57,23 @@ export const Header: FC<HeaderProps> = ({
   const search: { type: string } = useSearch({ strict: false })
   const breadcrumbs = getBreadcrumbsFromPath(location.pathname)
 
+  // Состояние для модального окна загрузки данных
+  const [isDatasetModalOpen, setIsDatasetModalOpen] = useState(false)
+  const [currentDataset, setCurrentDataset] = useState({
+    id: 'ds-2025-04-03-981465',
+    name: 'Загруженные данные',
+    date: '03.04.2025',
+  })
+
+  const handleContinue = () => {
+    setIsDatasetModalOpen(false)
+  }
+
+  const handleDatasetUpdate = (updatedDataset) => {
+    setCurrentDataset(updatedDataset)
+    navigate({ to: '/analyzer', search: { type: search.type } })
+  }
+
   const reportName = report?.title || 'Черновик'
   const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
   const reportDate =
@@ -67,6 +85,9 @@ export const Header: FC<HeaderProps> = ({
       search: { id: reportId },
     })
   }
+
+  // Проверяем, находимся ли мы на странице /reports
+  const isReportsPage = location.pathname === '/reports'
 
   return (
     <header className="mb-5 w-full bg-white shadow">
@@ -120,6 +141,16 @@ export const Header: FC<HeaderProps> = ({
 
         {/* Дополнительные элементы справа */}
         <div className="flex items-center gap-8">
+          {/* Кнопка "Загрузить данные" только на странице /reports */}
+          {isReportsPage && (
+            <Button
+              variant="primary"
+              onClick={() => setIsDatasetModalOpen(true)}
+            >
+              Загрузить данные
+            </Button>
+          )}
+
           {!withoutExportBtn && !isNewReport && (
             <Popover>
               <PopoverTrigger asChild>
@@ -155,6 +186,16 @@ export const Header: FC<HeaderProps> = ({
           <UserNav userData={userData} />
         </div>
       </div>
+
+      {/* Модальное окно для загрузки данных */}
+      <DatasetModal
+        isOpen={isDatasetModalOpen}
+        onClose={() => setIsDatasetModalOpen(false)}
+        currentDataset={currentDataset}
+        onContinue={handleContinue}
+        type={search.type || 'retail'}
+        onDatasetUpdate={handleDatasetUpdate}
+      />
     </header>
   )
 }
