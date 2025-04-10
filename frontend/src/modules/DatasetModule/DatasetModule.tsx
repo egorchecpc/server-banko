@@ -56,11 +56,13 @@ export const FILE_UPLOAD_CONFIG = {
   },
 } as const
 
-interface DatasetSelectorProps {
+interface DatasetModalProps {
+  isOpen: boolean
+  onClose: () => void
   currentDataset: Dataset
   onContinue: () => void
   type: string
-  onDatasetUpdate?: (dataset: Dataset) => void // Добавлен новый проп для обновления датасета
+  onDatasetUpdate?: (dataset: Dataset) => void
 }
 
 const debtorTypeHelper = {
@@ -70,7 +72,9 @@ const debtorTypeHelper = {
   sovereign: 'суверенный',
 }
 
-export const DatasetModule: React.FC<DatasetSelectorProps> = ({
+export const DatasetModal: React.FC<DatasetModalProps> = ({
+  isOpen,
+  onClose,
   currentDataset,
   onContinue,
   type,
@@ -110,49 +114,53 @@ export const DatasetModule: React.FC<DatasetSelectorProps> = ({
   }
 
   return (
-    <div className="flex h-[110vh] min-h-screen w-full items-center justify-center text-black-1000">
-      <div className="w-full max-w-xl rounded-2xl border border-grey-900/30 bg-white px-5 py-5 shadow-lg">
-        <div className="mb-5 text-center text-2xl font-semibold">
-          Текущий {debtorTypeHelper[type]} датасет
-        </div>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle className="text-center text-xl font-semibold">
+            Текущий {debtorTypeHelper[type]} датасет
+          </DialogTitle>
+        </DialogHeader>
 
-        <div className="mb-8">
-          <div className="rounded-lg border border-grey-900/30 p-6">
-            <div className="mb-2 text-lg font-medium">
-              {currentDataset.name}
-            </div>
-            <div className="text-sm text-gray-500">
-              Дата создания: {currentDataset.date}
+        <div className="py-4">
+          <div className="mb-6">
+            <div className="rounded-lg border border-grey-900/30 p-6">
+              <div className="mb-2 text-lg font-medium">
+                {currentDataset.name}
+              </div>
+              <div className="text-sm text-gray-500">
+                Дата создания: {currentDataset.date}
+              </div>
             </div>
           </div>
+
+          <div className="mt-6 flex justify-center gap-4">
+            <Button
+              variant="secondary"
+              onClick={() => setIsUploadDialogOpen(true)}
+              className="px-4 py-2"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Upload className="h-4 w-4" />
+                <div>Загрузить данные</div>
+              </div>
+            </Button>
+
+            <Button
+              variant="primary"
+              onClick={onContinue}
+              className="px-4 py-2"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <div>Продолжить</div>
+                <ArrowIcon />
+              </div>
+            </Button>
+          </div>
         </div>
+      </DialogContent>
 
-        <div className="mt-8 flex justify-center gap-4">
-          <Button
-            variant="secondary"
-            onClick={() => setIsUploadDialogOpen(true)}
-            className="px-6 py-4 text-base"
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Upload className="h-4 w-4" />
-              <div>Загрузить данные</div>
-            </div>
-          </Button>
-
-          <Button
-            variant="primary"
-            onClick={onContinue}
-            className="px-6 py-4 text-base"
-          >
-            <div className="flex items-center justify-center gap-2">
-              <div>Продолжить</div>
-              <ArrowIcon />
-            </div>
-          </Button>
-        </div>
-      </div>
-
-      {/* Диалоговое окно для дозагрузки файлов - идентичное оригинальному компоненту */}
+      {/* Вложенный диалог для дозагрузки файлов */}
       <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
@@ -170,7 +178,7 @@ export const DatasetModule: React.FC<DatasetSelectorProps> = ({
               />
             ))}
 
-            <div className="flex justify-end gap-2">
+            <div className="mt-4 flex justify-end gap-2">
               <Button
                 variant="outline"
                 onClick={() => setIsUploadDialogOpen(false)}
@@ -188,6 +196,6 @@ export const DatasetModule: React.FC<DatasetSelectorProps> = ({
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </Dialog>
   )
 }

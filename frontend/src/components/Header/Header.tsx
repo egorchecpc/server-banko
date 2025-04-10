@@ -11,8 +11,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Link, useNavigate, useSearch } from '@tanstack/react-router'
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearch,
+} from '@tanstack/react-router'
 import { reportType } from '@/modules/HeaderModule/HeaderModuleConfig'
+import { getBreadcrumbsFromPath } from '@/utils/breadcrumbs'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 
 export interface HeaderProps {
   navItems?: { [key: string]: string }
@@ -36,11 +50,14 @@ export const Header: FC<HeaderProps> = ({
   isNewReport,
 }) => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { reportId } = useReportId()
   const { report } = useReportDataWithValidation(reportId || '')
+  const search: { type: string } = useSearch({ strict: false })
+  const breadcrumbs = getBreadcrumbsFromPath(location.pathname)
+
   const reportName = report?.title || 'Черновик'
   const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
-  const search: { type: string } = useSearch({ strict: false })
   const reportDate =
     basicReportDate.toLocaleDateString('ru-RU') || 'Дата не найдена'
 
@@ -54,30 +71,59 @@ export const Header: FC<HeaderProps> = ({
   return (
     <header className="mb-5 w-full bg-white shadow">
       <div className="mx-5 flex items-center justify-between p-5">
-        <div className="flex items-center gap-3">
-          {withBackBtn && (
-            <Button
-              variant="ghost"
-              onClick={() => window.history.back()}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Назад
-            </Button>
-          )}
-          {withLogo && (
-            <Link to="/apps">
-              <img src="/img/logo.svg" alt="BANKO" className="w-32" />
-            </Link>
-          )}
-          {!withoutSidebar && <SidebarTrigger />}
+        <div className="mr-3 flex w-full items-center justify-between gap-6">
+          {/* Левая часть */}
+          <div className="flex items-center gap-3">
+            {withBackBtn && (
+              <Button
+                variant="ghost"
+                onClick={() => window.history.back()}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Назад
+              </Button>
+            )}
+            {withLogo && (
+              <Link to="/apps">
+                <img src="/img/logo.svg" alt="BANKO" className="w-52" />
+              </Link>
+            )}
+            {!withoutSidebar && <SidebarTrigger />}
+
+            {/* Хлебные крошки */}
+            {breadcrumbs.length > 0 && (
+              <Breadcrumb className="hidden md:block">
+                <BreadcrumbList>
+                  {breadcrumbs.map((crumb, i) => (
+                    <React.Fragment key={i}>
+                      <BreadcrumbItem>
+                        {crumb.href ? (
+                          <BreadcrumbLink asChild>
+                            <Link to={crumb.href}>{crumb.label}</Link>
+                          </BreadcrumbLink>
+                        ) : (
+                          <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                        )}
+                      </BreadcrumbItem>
+                      {i < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+                    </React.Fragment>
+                  ))}
+                </BreadcrumbList>
+              </Breadcrumb>
+            )}
+          </div>
+
+          {/* Правая часть */}
           {!withoutNav && navItems && <Navbar navItems={navItems} />}
         </div>
+
+        {/* Дополнительные элементы справа */}
         <div className="flex items-center gap-8">
           {!withoutExportBtn && !isNewReport && (
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="primary">Текущий отчёт</Button>
+                <Button variant="primary">Информация об отчёте</Button>
               </PopoverTrigger>
               <PopoverContent
                 sideOffset={5}

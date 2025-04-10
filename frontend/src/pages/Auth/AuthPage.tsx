@@ -1,17 +1,10 @@
-import React, { useState } from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card'
+import React, { useState, useEffect } from 'react'
+import { CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Eye, EyeOff } from 'lucide-react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import axios from 'axios'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
 
@@ -20,9 +13,27 @@ const AuthPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [capsLockActive, setCapsLockActive] = useState(false)
+
+  // Обработчик для определения состояния Caps Lock
+  const handleCapsLock = (e) => {
+    setCapsLockActive(e.getModifierState('CapsLock'))
+  }
+
+  // Добавляем слушатели событий при монтировании компонента
+  useEffect(() => {
+    window.addEventListener('keydown', handleCapsLock)
+    window.addEventListener('keyup', handleCapsLock)
+
+    // Удаляем слушатели при размонтировании компонента
+    return () => {
+      window.removeEventListener('keydown', handleCapsLock)
+      window.removeEventListener('keyup', handleCapsLock)
+    }
+  }, [])
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -49,7 +60,7 @@ const AuthPage = () => {
       <img
         src="/img/logo.svg"
         alt="BANKO"
-        className="absolute left-12 top-8 w-48"
+        className="absolute left-12 top-8 w-72"
       />
       <div className="w-full max-w-md">
         <div className="flex justify-center">
@@ -102,6 +113,9 @@ const AuthPage = () => {
                     placeholder="Пароль"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleCapsLock}
+                    onKeyUp={handleCapsLock}
+                    onFocus={handleCapsLock}
                     required
                     className="h-10 pr-10 text-black-1000"
                   />
@@ -113,32 +127,38 @@ const AuthPage = () => {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+                {capsLockActive && (
+                  <div className="mt-1 text-sm text-amber-600">
+                    Внимание: включен Caps Lock
+                  </div>
+                )}
               </div>
 
-              <div className="flex items-center justify-between space-x-2 pt-4">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="remember"
-                    checked={rememberMe}
-                    onCheckedChange={(checked) => {
-                      if (typeof checked === 'boolean') setRememberMe(checked)
-                    }}
-                  />
+              {/*<div className="flex items-center justify-between space-x-2 pt-4">*/}
+              {/*  <div className="flex items-center gap-2">*/}
+              {/*    <Checkbox*/}
+              {/*      id="remember"*/}
+              {/*      checked={rememberMe}*/}
+              {/*      onCheckedChange={(checked) => {*/}
+              {/*        if (typeof checked === 'boolean') setRememberMe(checked)*/}
+              {/*      }}*/}
+              {/*    />*/}
 
-                  <label
-                    htmlFor="remember"
-                    className="text-sm font-medium leading-none text-black-1000 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Запомнить меня
-                  </label>
-                </div>
-                <Link
-                  to="/auth"
-                  className="text-sm text-blue-1000 hover:text-blue-1000/40"
-                >
-                  Забыли пароль?
-                </Link>
-              </div>
+              {/*    <label*/}
+              {/*      htmlFor="remember"*/}
+              {/*      className="text-sm font-medium leading-none text-black-1000 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"*/}
+              {/*    >*/}
+              {/*      Запомнить меня*/}
+              {/*    </label>*/}
+              {/*  </div>*/}
+              {/*  <Link*/}
+              {/*    to="/auth"*/}
+              {/*    className="text-sm text-blue-1000 hover:text-blue-1000/40"*/}
+              {/*  >*/}
+              {/*    Забыли пароль?*/}
+              {/*  </Link>*/}
+              {/*</div>*/}
+              <div className="pt-4"></div>
               <Button type="submit" variant="primary" className="h-10 w-full">
                 Войти
               </Button>

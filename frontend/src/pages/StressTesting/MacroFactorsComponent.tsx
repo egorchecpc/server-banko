@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Settings } from 'lucide-react'
@@ -29,22 +29,21 @@ interface MacroFactor {
   currentValue: number
   newValue: number
   visible: boolean
-  sensitivity: number // Чувствительность параметра (определяет масштаб шкалы)
-  percentChange: number // Изменение в процентах
-  min: number // Минимальное значение в процентах
-  max: number // Максимальное значение в процентах
+  sensitivity: number
+  percentChange: number
+  min: number
+  max: number
 }
 
 const MacroFactorsComponent = ({ onRecalculate }) => {
-  // Список всех доступных параметров с настроенной чувствительностью
-  const initialMacroFactors: MacroFactor[] = [
+  const initialMacroFactorsRef = useRef<MacroFactor[]>([
     {
       id: 'profitability',
       name: 'Рентабельность реализованной продукции',
       currentValue: 122500,
       newValue: 122500,
       visible: true,
-      sensitivity: 1, // Стандартная чувствительность
+      sensitivity: 1,
       percentChange: 0,
       min: -50,
       max: 50,
@@ -55,7 +54,7 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
       currentValue: 10480,
       newValue: 10480,
       visible: false,
-      sensitivity: 2, // Средняя чувствительность
+      sensitivity: 2,
       percentChange: 0,
       min: -30,
       max: 30,
@@ -66,7 +65,7 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
       currentValue: 10480,
       newValue: 10480,
       visible: true,
-      sensitivity: 5, // Высокая чувствительность
+      sensitivity: 5,
       percentChange: 0,
       min: -10,
       max: 10,
@@ -99,7 +98,7 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
       currentValue: 5.4,
       newValue: 5.4,
       visible: false,
-      sensitivity: 8, // Очень высокая чувствительность
+      sensitivity: 8,
       percentChange: 0,
       min: -5,
       max: 5,
@@ -110,7 +109,7 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
       currentValue: 7.5,
       newValue: 7.5,
       visible: false,
-      sensitivity: 10, // Крайне высокая чувствительность
+      sensitivity: 10,
       percentChange: 0,
       min: -3,
       max: 3,
@@ -148,45 +147,36 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
       min: -10,
       max: 10,
     },
-  ]
+  ])
 
-  const [macroFactors, setMacroFactors] =
-    useState<MacroFactor[]>(initialMacroFactors)
+  const [macroFactors, setMacroFactors] = useState<MacroFactor[]>(
+    initialMacroFactorsRef.current
+  )
   const [selectedFactorId, setSelectedFactorId] = useState<string>('')
 
-  // Обработчик изменения слайдера (в процентах)
   const handleSliderChange = (index: number, percentValue: number[]) => {
     const updatedFactors = [...macroFactors]
     const factor = updatedFactors[index]
     const percentChange = percentValue[0]
-
-    // Обновляем процентное изменение
     factor.percentChange = percentChange
-
-    // Рассчитываем новое значение на основе процентного изменения
     factor.newValue = Number(
       (factor.currentValue * (1 + percentChange / 100)).toFixed(
         factor.currentValue >= 100 ? 0 : 1
       )
     )
-
     setMacroFactors(updatedFactors)
   }
 
-  // Функция для переключения видимости макрофактора
   const toggleMacroFactorVisibility = (index: number) => {
     const updatedFactors = [...macroFactors]
     updatedFactors[index].visible = !updatedFactors[index].visible
     setMacroFactors(updatedFactors)
   }
 
-  // Функция для добавления фактора
   const handleAddFactor = () => {
     if (!selectedFactorId) return
-
     const updatedFactors = [...macroFactors]
     const index = updatedFactors.findIndex((f) => f.id === selectedFactorId)
-
     if (index !== -1) {
       updatedFactors[index].visible = true
       setMacroFactors(updatedFactors)
@@ -194,14 +184,22 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
     }
   }
 
-  // Цветовая индикация для изменений
+  const handleResetFactors = () => {
+    setMacroFactors(
+      initialMacroFactorsRef.current.map((factor) => ({
+        ...factor,
+        newValue: factor.currentValue,
+        percentChange: 0,
+      }))
+    )
+  }
+
   const getChangeColor = (percentChange: number) => {
     if (percentChange > 0) return 'text-green-600'
     if (percentChange < 0) return 'text-red-600'
     return 'text-gray-500'
   }
 
-  // Форматирование числа с разделителями тысяч
   const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
   }
@@ -244,7 +242,6 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
       <ContainerBody isScrolling={true} orientation={'horizontal'}>
         <div className="p-5">
           <div className="grid grid-cols-1 gap-4">
-            {/* Parameter selector section */}
             <div className="mb-4 flex items-end gap-4">
               <div className="flex-grow">
                 <Label htmlFor="parameter-select" className="mb-2 block">
@@ -273,7 +270,6 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
               </Button>
             </div>
 
-            {/* Parameters slider section */}
             <div className="mb-4 space-y-6">
               {macroFactors
                 .filter((f) => f.visible)
@@ -339,9 +335,12 @@ const MacroFactorsComponent = ({ onRecalculate }) => {
                 })}
             </div>
 
-            <div className="mt-4 flex justify-center">
+            <div className="mt-4 flex justify-center gap-4">
               <Button onClick={onRecalculate} variant="primary">
                 Пересчитать сценарий
+              </Button>
+              <Button onClick={handleResetFactors} variant="secondary">
+                Сбросить
               </Button>
             </div>
           </div>

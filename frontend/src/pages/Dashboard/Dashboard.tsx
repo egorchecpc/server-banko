@@ -1,6 +1,4 @@
-import PDDisplayModule from '@/modules/PDDisplayModule/PDDisplayModule'
-import LGDTable from '@/components/Tables/LGDTable/LGDTable'
-import { Link, useParams } from '@tanstack/react-router'
+import { useParams } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { useGetDashboardData } from '@/hooks/useGetDashboardData'
 import ECLDisplayModule from '@/modules/ECLDisplayModule/ECLDisplayModule'
@@ -10,22 +8,10 @@ import { useReportId } from '@/context/ReportIdContext'
 import { DashboardSettings } from '@/modules/DashboardSettings/DashboardSettings'
 import KPITable from '@/components/Tables/KPITable/KPITable'
 import RiskGroupTable from '@/components/Tables/RiskGoupTable/RiskGroupTable'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
 import { ExportComponent } from '@/modules/ExportModule/ExportModule'
 import { useReportDataWithValidation } from '@/hooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
-import {
-  ForecastDataResponse,
-  QuarterlyDataResponse,
-  YearlyDataResponse,
-} from '@/models/PD'
+import { QuarterlyDataResponse, YearlyDataResponse } from '@/models/PD'
 import { LGDItem } from '@/models/LGD'
 import {
   processQuarterlyData,
@@ -33,6 +19,8 @@ import {
 } from '@/modules/PDDisplayModule/multiplyPd'
 import { processLgdData } from '@/components/Tables/LGDTable/multiplyLGD'
 import { useLoading } from '@/context/LoadingContext'
+import PDDisplayModuleTabs from '@/modules/PDDisplayModule/PDDisplayModuleTabs'
+import LGDDisplayModuleTabs from '@/components/Tables/LGDTable/LGDDisplayModuleTabs'
 
 interface VisibilitySettings {
   pd: boolean
@@ -144,19 +132,6 @@ export const DashboardPage = () => {
 
   return (
     <div className="mb-6 max-w-full px-10">
-      <Breadcrumb className="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/reports">Главная страница</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{t('dashboard.title')}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="mb-3 flex items-center gap-3">
           <div className="text-2xl font-bold leading-38 text-black-1000">
@@ -175,46 +150,25 @@ export const DashboardPage = () => {
         data.quarterlyPDData &&
         data.forecastPDData && (
           <div className="mb-3">
-            <PDDisplayModule
-              yearlyPDData={data.yearlyPDData}
-              quarterlyPDData={data.quarterlyPDData}
-              forecastPDData={data.forecastPDData}
+            <PDDisplayModuleTabs
+              defaultData={{
+                yearlyPDData: data.yearlyPDData,
+                quarterlyPDData: data.quarterlyPDData,
+                forecastPDData: data.forecastPDData,
+              }}
+              creditTypeData={processedData.creditTypeData}
+              creditTypes={creditTypes}
             />
-            <div className="mb-3"></div>
-            {creditTypes.map((type, index) => (
-              <div key={`pd-${type}-${index}`}>
-                <PDDisplayModule
-                  yearlyPDData={
-                    processedData.creditTypeData?.[type]?.yearlyPDData ||
-                    data.yearlyPDData
-                  }
-                  quarterlyPDData={
-                    processedData.creditTypeData?.[type]?.quarterlyPDData ||
-                    data.quarterlyPDData
-                  }
-                  forecastPDData={data.forecastPDData as ForecastDataResponse}
-                  customTitle={type}
-                />
-                {index < creditTypes.length - 1 && <div className="mb-3"></div>}
-              </div>
-            ))}
           </div>
         )}
       {tableVisibility.lgd && data.LGDData && (
-        <div className="flex-1">
-          <LGDTable data={data.LGDData} />
-          <div className="mb-3"></div>
-          {creditTypes.map((type, index) => (
-            <div key={`lgd-${type}-${index}`}>
-              <LGDTable
-                data={randomLGDData.creditTypeLGDData?.[type] || data.LGDData}
-                customTitle={type}
-              />
-              {index < creditTypes.length - 1 && <div className="mb-3"></div>}
-            </div>
-          ))}
-        </div>
+        <LGDDisplayModuleTabs
+          defaultData={data.LGDData}
+          creditTypeData={randomLGDData.creditTypeLGDData || {}}
+          creditTypes={creditTypes}
+        />
       )}
+
       <div className="">{tableVisibility.pcure && <PCureDisplayModule />}</div>
       {tableVisibility.ecl && data.eclDataV1 && data.eclDataV2 && (
         <ECLDisplayModule

@@ -176,7 +176,7 @@ const RiskSummaryCard: FC<RiskSummaryCardProps> = ({
 const monthData2023 = [
   { period: 'Январь', vbs: 9.1, oky: 7.3 },
   { period: 'Февраль', vbs: 9.3, oky: 7.4 },
-  { period: 'Ярт', vbs: 9.5, oky: 7.5 },
+  { period: 'Март', vbs: 9.5, oky: 7.5 },
   { period: 'Апрель', vbs: 10.0, oky: 7.6 },
   { period: 'Май', vbs: 10.3, oky: 7.7 },
   { period: 'Июнь', vbs: 10.8, oky: 7.9 },
@@ -246,15 +246,41 @@ const VbsChart = () => {
     },
   })
 
+  // Исправленный обработчик handleDateSelect
   const handleDateSelect = (date, field) => {
-    field.onChange(date)
+    // Если дата выбрана, создаем новый объект Date, сохраняя исходное значение
+    if (date) {
+      // Сохраняем год, месяц и день из выбранной даты
+      const selectedYear = date.getFullYear()
+      const selectedMonth = date.getMonth()
+      const selectedDay = date.getDate()
+
+      // Создаем новый объект даты с теми же значениями
+      field.onChange(new Date(selectedYear, selectedMonth, selectedDay))
+    } else {
+      field.onChange(date)
+    }
     setIsCalendarOpen(false)
   }
 
+  // Исправленная функция getData
   const getData = () => {
-    const year = form.getValues().date.getFullYear()
+    const formDate = form.getValues().date
 
-    // Выбор набора данных в зависимости от временного периода и года
+    // Проверка наличия даты перед использованием
+    if (!formDate) {
+      console.log('Дата не выбрана')
+      return timeframe === 'Year'
+        ? yearData
+        : timeframe === 'Quarter'
+          ? quarterData2023
+          : monthData2023 // Возвращаем данные по умолчанию вместо пустого массива
+    }
+
+    const year = formDate.getFullYear()
+    console.log('Получаем данные для года:', year, 'timeframe:', timeframe)
+
+    // Остальной код без изменений
     switch (timeframe) {
       case 'Quarter':
         return year === 2023 ? quarterData2023 : quarterData2022
@@ -1234,13 +1260,36 @@ const TopRiskyLoansChart = () => {
   )
 }
 
-interface PieItemProps {
+interface CreditData {
   name: string
+  value: number
+}
+
+interface CreditDataParent extends CreditData {
+  children: CreditData[]
+}
+
+interface CreditDataOuter extends CreditData {
+  parentName: string
+}
+
+interface PieItemProps {
+  cx: number
+  cy: number
+  midAngle: number
+  innerRadius: number
+  outerRadius: number
   percent: number
+  index: number
+  name: string
+  fill: string
   parentName?: string
 }
 
 const CreditTypesSunburstChart: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [activeOuterIndex, setActiveOuterIndex] = useState<number | null>(null)
+
   const creditData: CreditDataParent[] = [
     {
       name: 'Потребительский',
@@ -1306,8 +1355,14 @@ const CreditTypesSunburstChart: React.FC = () => {
     '#bdaff9', // Reuse to fill 8 items
   ]
 
-  // Custom label for inner ring
-  const renderInnerLabel = ({ name, percent }: PieItemProps) => {
+  // Отображать текст только при наведении вместо постоянного отображения
+  const renderInnerLabel = ({ name, percent, index }: PieItemProps) => {
+    const isActive = index === activeIndex
+
+    if (!isActive) {
+      return null
+    }
+
     return (
       <text
         x={0}
@@ -1315,28 +1370,71 @@ const CreditTypesSunburstChart: React.FC = () => {
         fill="white"
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="12"
+        fontSize="14"
+        fontWeight="bold"
       >
         {`${name}\n${(percent * 100).toFixed(0)}%`}
       </text>
     )
   }
 
-  // Custom label for outer ring
-  const renderOuterLabel = ({ name, percent, parentName }: PieItemProps) => {
-    return `${parentName}: ${name} (${(percent * 100).toFixed(0)}%)`
+  // Внешние метки отображаются в тултипе, но не на графике
+  const renderOuterLabel = () => null
+
+  // Обработчики для увеличения секторов при наведении
+  const onInnerPieEnter = (_: any, index: number) => {
+    setActiveIndex(index)
+  }
+
+  const onInnerPieLeave = () => {
+    setActiveIndex(null)
+  }
+
+  const onOuterPieEnter = (_: any, index: number) => {
+    setActiveOuterIndex(index)
+  }
+
+  const onOuterPieLeave = () => {
+    setActiveOuterIndex(null)
+  }
+
+  // Вычисление радиуса в зависимости от активности
+  const getInnerRadius = (index: number) => {
+    return index === activeIndex ? 0 : 0
+  }
+
+  const getOuterRadius = (index: number) => {
+    return index === activeIndex ? 110 : 100
+  }
+
+  const getOuterInnerRadius = (index: number) => {
+    return index === activeOuterIndex ? 108 : 110
+  }
+
+  const getOuterOuterRadius = (index: number) => {
+    return index === activeOuterIndex ? 187 : 170
+  }
+
+  // Создание пользовательских стилей для удаления выделения при клике
+  const pieChartStyle = {
+    outline: 'none',
+    userSelect: 'none',
+  }
+
+  const pieStyle = {
+    outline: 'none',
   }
 
   return (
     <Card className="h-[550px] w-full space-y-4">
       <CardHeader>
-        <div className="text-xl font-bold leading-38 text-black-1000">
+        <div className="text-xl font-bold text-black-1000">
           Диаграмма кредитных рисков
         </div>
       </CardHeader>
       <div className="relative h-[400px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
+          <PieChart style={pieChartStyle}>
             {/* Inner Ring (Credit Types) */}
             <Pie
               data={creditData}
@@ -1346,15 +1444,24 @@ const CreditTypesSunburstChart: React.FC = () => {
               endAngle={-270}
               innerRadius={0}
               outerRadius={100}
-              fill="#8884d8"
               paddingAngle={2}
               label={renderInnerLabel}
               labelLine={false}
+              onMouseEnter={onInnerPieEnter}
+              onMouseLeave={onInnerPieLeave}
+              style={pieStyle}
+              isAnimationActive={false}
+              animationDuration={300}
+              animationEasing="ease-in-out"
             >
               {creditData.map((entry, index) => (
                 <Cell
                   key={`inner-${index}`}
                   fill={COLORS_INNER[index % COLORS_INNER.length]}
+                  stroke={index === activeIndex ? '#000' : 'none'}
+                  strokeWidth={index === activeIndex ? 2 : 0}
+                  innerRadius={getInnerRadius(index)}
+                  outerRadius={getOuterRadius(index)}
                 />
               ))}
             </Pie>
@@ -1368,27 +1475,65 @@ const CreditTypesSunburstChart: React.FC = () => {
               endAngle={-270}
               innerRadius={110}
               outerRadius={170}
-              fill="#82ca9d"
               paddingAngle={2}
               label={renderOuterLabel}
-              labelLine={true}
+              labelLine={false}
+              onMouseEnter={onOuterPieEnter}
+              onMouseLeave={onOuterPieLeave}
+              style={pieStyle}
+              isAnimationActive={false}
+              animationDuration={300}
+              animationEasing="ease-in-out"
             >
               {outerData.map((entry, index) => (
                 <Cell
                   key={`outer-${index}`}
                   fill={COLORS_OUTER[index % COLORS_OUTER.length]}
+                  stroke={index === activeOuterIndex ? '#000' : 'none'}
+                  strokeWidth={index === activeOuterIndex ? 2 : 0}
+                  innerRadius={getOuterInnerRadius(index)}
+                  outerRadius={getOuterOuterRadius(index)}
                 />
               ))}
             </Pie>
 
             <Tooltip
               formatter={(value, name, props) => [
-                value,
+                `${value} (${((value / props.payload.payload.total) * 100).toFixed(0)}%)`,
                 `${props.payload.parentName ? props.payload.parentName + ' - ' : ''}${name}`,
               ]}
+              contentStyle={{
+                backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                borderRadius: '8px',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+                padding: '10px',
+                border: 'none',
+              }}
             />
           </PieChart>
         </ResponsiveContainer>
+
+        {/* Легенда внизу графика */}
+        <div className="mt-4 flex flex-wrap justify-center gap-4">
+          {creditData.map((entry, index) => (
+            <div
+              key={`legend-${index}`}
+              className="flex items-center gap-2"
+              onMouseEnter={() => setActiveIndex(index)}
+              onMouseLeave={() => setActiveIndex(null)}
+            >
+              <div
+                className="h-4 w-4 rounded-sm"
+                style={{
+                  backgroundColor: COLORS_INNER[index % COLORS_INNER.length],
+                }}
+              />
+              <span className="text-sm">
+                {entry.name} ({entry.value})
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </Card>
   )

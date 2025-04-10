@@ -19,12 +19,12 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       <AvatarFallback>{userData.name.slice(0, 2)}</AvatarFallback>
     </Avatar>
     <div className="flex-1 space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
         <div>
           <h2 className="text-2xl font-bold">{userData.name}</h2>
           <p className="text-gray-600">{userData.position}</p>
         </div>
-        <Button variant="ghost" size="icon" onClick={onEdit}>
+        <Button variant="ghost" size="icon" onClick={onEdit} className="pb-5">
           <Edit className="h-4 w-4" />
         </Button>
       </div>

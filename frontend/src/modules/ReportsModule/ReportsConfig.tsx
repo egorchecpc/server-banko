@@ -31,6 +31,17 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'label',
+    header: () => null,
+    cell: () => null,
+    enableSorting: true,
+    enableHiding: true,
+    filterFn: customFilterFn,
+    meta: {
+      hidden: true,
+    },
+  },
+  {
     accessorKey: 'title',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Название" />
@@ -191,4 +202,5 @@ export const titles = {
   status: 'Статус',
   priority: 'Приоритет',
   owner: 'Владелец',
+  label: 'Лейбл',
 }

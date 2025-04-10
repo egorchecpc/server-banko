@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { DatasetModule } from '@/modules/DatasetModule/DatasetModule'
+import { DatasetModal } from '@/modules/DatasetModule/DatasetModule'
 
 export const DatasetPage = () => {
   const navigate = useNavigate()
@@ -26,7 +26,7 @@ export const DatasetPage = () => {
 
   return (
     <div className="h-[125vh]">
-      <DatasetModule
+      <DatasetModal
         currentDataset={currentDataset}
         onContinue={handleContinue}
         type={search.type}

@@ -16,15 +16,6 @@ import {
   ContainerBody,
   ContainerComponent,
 } from '@/components/ContainerComponent/ContainerComponent'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Link } from '@tanstack/react-router'
 import MacroFactorsComponent from '@/pages/StressTesting/MacroFactorsComponent'
 
 interface TornadoChartData {
@@ -89,19 +80,6 @@ export const StressTestingPage: React.FC<StressDashboardProps> = ({
 
   return (
     <div className="space-y-4 px-10">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/reports">Главная страница</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Стресс-тестирование</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="text-2xl font-bold leading-38 text-black-1000">

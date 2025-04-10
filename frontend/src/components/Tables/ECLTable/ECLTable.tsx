@@ -177,12 +177,7 @@ const ECLTable: FC<ECLTableProps> = ({ data, isFirst, eclDiff, showDelta }) => {
                   onClick={() => toggleRow(index)}
                 >
                   {isFirst && row.products && row.products.length > 0 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleRow(index)}
-                      className="mr-2"
-                    >
+                    <Button variant="ghost" size="sm" className="mr-2">
                       <span style={{ fontSize: '8px' }}>
                         {expandedRows[index] ? '▼' : '▶'}
                       </span>

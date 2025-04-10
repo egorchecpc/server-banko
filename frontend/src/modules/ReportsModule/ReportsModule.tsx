@@ -1,4 +1,11 @@
-import { columns, owners, priorities, statuses, titles } from './ReportsConfig'
+import {
+  columns,
+  labels,
+  owners,
+  priorities,
+  statuses,
+  titles,
+} from './ReportsConfig'
 import { ProfileReportData } from '@/models/ProfileReport'
 import { FC, useState } from 'react'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -47,6 +54,7 @@ export const ReportsModule: FC<ProfileReportsProps> = ({ data }) => {
             { title: 'Статус', column: 'status', options: statuses },
             { title: 'Приоритет', column: 'priority', options: priorities },
             { title: 'Владелец', column: 'owner', options: owners },
+            { title: 'Лейбл', column: 'label', options: labels },
           ]}
           searchPlaceholder="Поиск по названию отчёта"
           searchColumn="title"

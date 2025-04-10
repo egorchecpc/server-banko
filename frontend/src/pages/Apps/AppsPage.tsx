@@ -12,7 +12,7 @@ export const AppsPage = () => {
 
   const handleContinue = () => {
     if (selectedType) {
-      navigate({ to: '/dataset', search: { type: selectedType } })
+      navigate({ to: '/analyzer', search: { type: selectedType } })
     }
   }
 

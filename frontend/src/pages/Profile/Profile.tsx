@@ -11,6 +11,7 @@ import { ProfileEditDialog } from '@/pages/Profile/ProfileEditDialog/ProfileEdit
 import { useGetReportsData } from '@/hooks/apiHooks/commonHooks/useGetReportsData'
 import { RModelSettingsPage } from '@/modules/ModelSettingsModule/RModelSettingsPage'
 import { useLoading } from '@/context/LoadingContext'
+import { Card, CardContent } from '@/components/ui/card'
 
 export const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('about')
@@ -57,17 +58,12 @@ export const ProfilePage = () => {
     <div className="space-y-8">
       <ProfileHeader userData={profile} onEdit={handleProfileEdit} />
 
-      {/*<Card>*/}
-      {/*  <CardContent className="p-6">*/}
-      {/*    <div className="mb-2 text-2xl font-bold">{profile.reportsCount}</div>*/}
-      {/*    <div className="text-gray-600">Созданных отчётов</div>*/}
-      {/*  </CardContent>*/}
-      {/*</Card>*/}
-
-      <div className="mt-8">
-        <h3 className="mb-4 text-xl font-semibold">Доступные отчёты</h3>
-        {ProfileReportsData && <ReportsModule data={ProfileReportsData} />}
-      </div>
+      <Card>
+        <CardContent className="p-6">
+          <div className="mb-2 text-2xl font-bold">6</div>
+          <div className="text-gray-600">Созданных отчётов</div>
+        </CardContent>
+      </Card>
     </div>
   )
 

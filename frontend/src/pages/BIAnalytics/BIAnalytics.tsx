@@ -8,15 +8,7 @@ import TotalAmountOverdueChartModule from '@/modules/TotalAmountOverdueChartModu
 import AgeingAmountChartModule from '@/modules/AgeingAmountsChartModule/AgeingAmountChartModule'
 import { useCallback, useEffect, useState } from 'react'
 import { BIAnalyticsSettings } from '@/modules/BISettings/BISettings'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Link, useParams } from '@tanstack/react-router'
+import { useParams } from '@tanstack/react-router'
 import { DistributionCategoryChartModule } from '@/modules/DistributionCategoryChartModule/DistributionCategoryChartModule'
 import { useReportDataWithValidation } from '@/hooks/useReportData'
 import { fixDate } from '@/utils/dateConverter'
@@ -84,19 +76,6 @@ export const BIAnalyticsPage = () => {
   }
   return (
     <div className="max-w-full px-10">
-      <Breadcrumb className="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link to="/reports">Главная страница</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>BI-аналитика</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
       <div className="flex items-center justify-between">
         <div className="mb-3 flex items-center gap-3">
           <div className="text-2xl font-bold leading-38 text-black-1000">

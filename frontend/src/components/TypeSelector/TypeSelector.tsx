@@ -86,8 +86,8 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                       selectedType === type.id
                         ? 'border-blue-500 bg-blue-1000/30'
                         : isAvailable
-                          ? 'cursor-pointer border-gray-200 bg-grey-900/15 hover:border-gray-300'
-                          : 'cursor-not-allowed border-gray-200 bg-grey-900/15'
+                          ? 'cursor-pointer border-gray-200 bg-grey-900/25 hover:border-gray-300'
+                          : 'cursor-not-allowed border-gray-200 bg-grey-900/10'
                     } `}
                   >
                     <div className="space-y-3">
@@ -98,7 +98,7 @@ export const DebtorTypeSelector: React.FC<DebtorTypeSelectorProps> = ({
                     {type.title}
                     {!isAvailable && (
                       <div className="text-xs font-normal text-gray-500">
-                        Недоступно
+                        В разработке
                       </div>
                     )}
                   </div>
