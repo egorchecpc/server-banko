@@ -140,11 +140,11 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
               Отчётная дата
             </p>
             <p className="font-medium text-black-1000">
-              {
-                new Date(report.debtorData.date || '')
-                  .toISOString()
-                  .split('T')[0]
-              }
+              {report.debtorData.date
+                  ? new Date(report.debtorData.date || '')
+                      .toISOString()
+                      .split('T')[0]
+                  : ''}
             </p>
           </div>
         </CardContent>
