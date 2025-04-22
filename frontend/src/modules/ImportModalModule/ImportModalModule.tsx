@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import {
@@ -15,6 +15,7 @@ import {
   ReportModalProps,
 } from '@/modules/ImportModalModule/ImportModalModuleConfig'
 import { ReportForm } from '@/modules/ImportModalModule/ReportForm/ReportForm'
+import { useDatasetReport } from '@/context/DatasetContext'
 
 export const debtorTypeNames = {
   retail: 'Розничный',
@@ -23,7 +24,6 @@ export const debtorTypeNames = {
   sovereign: 'Суверены',
 }
 
-// Примеры датасетов
 export const availableDatasets = [
   {
     id: 'ds-2025-04-03-981465',
@@ -57,6 +57,23 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     strict: false,
   })
   const createReportMutation = useCreateReport()
+  const { datasetReport } = useDatasetReport() // Получаем данные из контекста
+  // Объединяем имеющиеся датасеты с датасетом из контекста, если он есть
+  const [combinedDatasets, setCombinedDatasets] = useState(availableDatasets)
+
+  // При изменении datasetReport обновляем combinedDatasets
+  useEffect(() => {
+    if (datasetReport) {
+      // Проверяем, есть ли уже такой датасет в списке
+      const exists = combinedDatasets.some((ds) => ds.id === datasetReport.id)
+
+      if (!exists) {
+        // Если датасета еще нет в списке, добавляем его в начало
+        setCombinedDatasets([datasetReport, ...availableDatasets])
+      }
+    }
+  }, [datasetReport])
+
   const [reportDetails, setReportDetails] = useState<
     ReportDetails & { datasetId: string }
   >({
@@ -64,8 +81,18 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
     isPublic: false,
     description: '',
     type: debtorTypeNames[search.type],
-    datasetId: '',
+    datasetId: datasetReport?.id || '', // Используем ID из контекста, если есть
   })
+
+  // Обновляем datasetId при изменении datasetReport
+  useEffect(() => {
+    if (datasetReport) {
+      setReportDetails((prev) => ({
+        ...prev,
+        datasetId: datasetReport.id,
+      }))
+    }
+  }, [datasetReport])
 
   const handleSubmit = async () => {
     const payload = createReportPayload({
@@ -107,7 +134,7 @@ const ImportModalModule: React.FC<ReportModalProps> = ({
           onDetailsChange={setReportDetails}
           onSubmit={handleSubmit}
           onCancel={() => onOpenChange(false)}
-          availableDatasets={availableDatasets}
+          availableDatasets={combinedDatasets} // Используем объединенный список датасетов
         />
       </DialogContent>
     </Dialog>

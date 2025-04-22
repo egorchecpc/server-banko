@@ -21,7 +21,7 @@ interface ScenarioValues {
 
 export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
   const [openYears, setOpenYears] = useState<Record<string, boolean>>({})
-
+  console.log(report)
   const formatIndicatorName = (indicatorKey: string) => {
     return (
       indicatorNames[indicatorKey as keyof typeof indicatorNames] ||
@@ -141,10 +141,10 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
             </p>
             <p className="font-medium text-black-1000">
               {report.debtorData.date
-                  ? new Date(report.debtorData.date || '')
-                      .toISOString()
-                      .split('T')[0]
-                  : ''}
+                ? new Date(report.debtorData.date || '')
+                    .toISOString()
+                    .split('T')[0]
+                : ''}
             </p>
           </div>
         </CardContent>
@@ -175,7 +175,7 @@ export const ReportDetails = ({ report, onBtnClick }: ReportDetailsProps) => {
               {/* Custom animation for collapsible content */}
               <div
                 className={cn(
-                  'overflow-hidden transition-all duration-300 ease-in-out',
+                  'overflow-auto transition-all duration-300 ease-in-out',
                   openYears[year] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                 )}
               >

@@ -31,6 +31,19 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'create_date',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Отчётная дата" />
+    ),
+    cell: ({ row }) => (
+      <div className="mx-auto flex h-10 w-[6rem] items-center text-center">
+        {row.getValue('date')}
+      </div>
+    ),
+    enableSorting: true,
+    enableHiding: false,
+  },
+  {
     accessorKey: 'label',
     header: () => null,
     cell: () => null,

@@ -9,9 +9,9 @@ export interface HeatmapConfig {
 }
 
 export const HEATMAP_COLORS = {
-  min: '#dbd5f9',
-  mid: '#bdaff9',
-  max: '#241454',
+  min: '#FFFFE0',
+  mid: '#4AB8C1',
+  max: '#000080',
 }
 
 export const DEFAULT_CONFIG: HeatmapConfig = {

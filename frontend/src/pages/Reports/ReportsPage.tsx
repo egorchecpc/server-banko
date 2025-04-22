@@ -4,9 +4,8 @@ import { ReportsModule } from '@/modules/ReportsModule/ReportsModule'
 import { useState } from 'react'
 import ImportModalModule from '@/modules/ImportModalModule/ImportModalModule'
 import LoadingSpinner from '@/components/LoadingSpinnerComponent/LoadingSpinner'
-import { useNavigate, useSearch } from '@tanstack/react-router'
+import { useSearch } from '@tanstack/react-router'
 import { ReportType } from '@/modules/ImportModalModule/ImportModalModuleConfig'
-import { DatasetModal } from '@/modules/DatasetModule/DatasetModule'
 
 const debtorTypeHelper = {
   retail: 'розничные',
@@ -17,23 +16,7 @@ const debtorTypeHelper = {
 
 export const ReportsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isDatasetModalOpen, setIsDatasetModalOpen] = useState(false)
-  const navigate = useNavigate()
 
-  const [currentDataset, setCurrentDataset] = useState({
-    id: 'ds-2025-04-03-981465',
-    name: 'Загруженные данные',
-    date: '03.04.2025',
-  })
-
-  const handleContinue = () => {
-    setIsDatasetModalOpen(false)
-  }
-
-  const handleDatasetUpdate = (updatedDataset) => {
-    setCurrentDataset(updatedDataset)
-    navigate({ to: '/analyzer', search: { type: search.type } })
-  }
   const {
     data: ProfileReportsData,
     isLoading: profileReportsLoading,

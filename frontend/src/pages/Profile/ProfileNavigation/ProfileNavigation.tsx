@@ -17,7 +17,7 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
         className="w-full justify-start"
         onClick={() => onTabChange('about')}
       >
-        О вас
+        Профиль
       </Button>
       <Button
         variant={activeTab === 'templates' ? 'primary' : 'ghost'}
@@ -26,13 +26,13 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
       >
         Шаблоны макроданных
       </Button>
-      <Button
-        variant={activeTab === 'r-models' ? 'primary' : 'ghost'}
-        className="w-full justify-start"
-        onClick={() => onTabChange('r-models')}
-      >
-        Настройки R
-      </Button>
+      {/*<Button*/}
+      {/*  variant={activeTab === 'r-models' ? 'primary' : 'ghost'}*/}
+      {/*  className="w-full justify-start"*/}
+      {/*  onClick={() => onTabChange('r-models')}*/}
+      {/*>*/}
+      {/*  Настройки R*/}
+      {/*</Button>*/}
     </nav>
   )
 }

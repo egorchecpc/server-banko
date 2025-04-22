@@ -59,11 +59,13 @@ export const ProfilePage = () => {
       <ProfileHeader userData={profile} onEdit={handleProfileEdit} />
 
       <Card>
-        <CardContent className="p-6">
+        <CardContent className="mb-6 p-6">
           <div className="mb-2 text-2xl font-bold">6</div>
           <div className="text-gray-600">Созданных отчётов</div>
         </CardContent>
       </Card>
+
+      <RModelSettingsPage />
     </div>
   )
 
@@ -84,9 +86,9 @@ export const ProfilePage = () => {
               onDeleteTemplate={deleteTemplate}
             />
           </TabsContent>
-          <TabsContent value="r-models">
-            <RModelSettingsPage />
-          </TabsContent>
+          {/*<TabsContent value="r-models">*/}
+          {/*  <RModelSettingsPage />*/}
+          {/*</TabsContent>*/}
         </Tabs>
       </div>
 

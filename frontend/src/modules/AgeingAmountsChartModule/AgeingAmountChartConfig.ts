@@ -17,7 +17,7 @@ export const CONFIG = {
     'var(--chart40)',
     'var(--chart60)',
     'var(--chart80)',
-    '#241454',
+    '#140653', //'#241454'
   ],
 }
 

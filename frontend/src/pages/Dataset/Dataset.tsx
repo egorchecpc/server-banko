@@ -8,10 +8,9 @@ export const DatasetPage = () => {
     strict: false,
   })
 
-  // Используем состояние для хранения текущего датасета
   const [currentDataset, setCurrentDataset] = useState({
     id: 'ds-2025-04-03-981465',
-    name: 'Загруженные данные',
+    name: 'Финансовый отчет Q4 2024',
     date: '03.04.2025',
   })
 

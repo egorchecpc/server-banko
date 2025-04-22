@@ -5,6 +5,7 @@ import { ReportIdProvider } from '@/context/ReportIdContext'
 import { ReportProvider } from '@/context/DateContext'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { LoadingProvider } from '@/context/LoadingContext'
+import { DatasetProvider } from '@/context/DatasetContext'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -12,17 +13,19 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <ReportIdProvider>
-      <ReportProvider>
-        <LoadingProvider>
-          <div className="app mx-auto flex min-h-screen w-full">
-            <Outlet />
-            {/*<TanStackRouterDevtools position="bottom-right" />*/}
-            <ScrollToTop />
-            <Toaster expand={true} position="bottom-right" richColors />
-          </div>
-        </LoadingProvider>
-      </ReportProvider>
-    </ReportIdProvider>
+    <DatasetProvider>
+      <ReportIdProvider>
+        <ReportProvider>
+          <LoadingProvider>
+            <div className="app mx-auto flex min-h-screen w-full">
+              <Outlet />
+              {/*<TanStackRouterDevtools position="bottom-right" />*/}
+              <ScrollToTop />
+              <Toaster expand={true} position="bottom-right" richColors />
+            </div>
+          </LoadingProvider>
+        </ReportProvider>
+      </ReportIdProvider>
+    </DatasetProvider>
   )
 }

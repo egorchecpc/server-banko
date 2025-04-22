@@ -61,7 +61,7 @@ export const Header: FC<HeaderProps> = ({
   const [isDatasetModalOpen, setIsDatasetModalOpen] = useState(false)
   const [currentDataset, setCurrentDataset] = useState({
     id: 'ds-2025-04-03-981465',
-    name: 'Загруженные данные',
+    name: 'Финансовый отчет Q4 2024',
     date: '03.04.2025',
   })
 
@@ -78,13 +78,6 @@ export const Header: FC<HeaderProps> = ({
   const basicReportDate = new Date(report?.debtorData.date || '01.01.2024')
   const reportDate =
     basicReportDate.toLocaleDateString('ru-RU') || 'Дата не найдена'
-
-  const handleCreditTypeClick = () => {
-    navigate({
-      to: `/reports/${reportId}/credit-type`,
-      search: { id: reportId },
-    })
-  }
 
   // Проверяем, находимся ли мы на странице /reports
   const isReportsPage = location.pathname === '/reports'

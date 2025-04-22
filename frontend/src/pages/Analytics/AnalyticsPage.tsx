@@ -203,7 +203,6 @@ const monthData2022 = [
   { period: 'Декабрь', vbs: 10.2, oky: 7.7 },
 ]
 
-// Данные для кварталов (2023)
 const quarterData2023 = [
   { period: 'Q4 2022', vbs: 9.3, oky: 7.2 },
   { period: 'Q1 2023', vbs: 9.8, oky: 7.6 },
@@ -439,17 +438,17 @@ const VbsChart = () => {
               />
               <Bar
                 dataKey="vbs"
-                fill="#6940d1"
+                fill="#166FF6"
                 yAxisId="left"
                 className="hover:fill-opacity-70 transition-all"
               />
               <Line
                 type="monotone"
                 dataKey="oky"
-                stroke="#dbd5f9"
+                stroke="#1E88F5"
                 yAxisId="right"
                 strokeWidth={2}
-                dot={{ fill: '#bdaff9', r: 4 }}
+                dot={{ fill: '#73A8FA', r: 4 }}
                 activeDot={{ r: 6 }}
               />
             </ComposedChart>
@@ -1338,21 +1337,21 @@ const CreditTypesSunburstChart: React.FC = () => {
 
   // Color palettes
   const COLORS_INNER: string[] = [
-    '#6940d1', // Vibrant Purple
-    '#45169a', // Deep Purple
-    '#241454', // Very Dark Purple
-    '#231552', // Near Black Purple
+    '#1e90ff', // Dodger Blue
+    '#4169e1', // Royal Blue
+    '#0000cd', // Medium Blue
+    '#00008b', // Dark Blue
   ]
 
   const COLORS_OUTER: string[] = [
-    '#dbd5f9', // Light Lavender
-    '#bdaff9', // Soft Purple
-    '#7dddd2', // Mint Pastel
-    '#00b3af', // Teal
-    '#6940d1', // Reuse for transition
-    '#45169a', // Reuse for continuity
-    '#00b3af', // Reuse for balance
-    '#bdaff9', // Reuse to fill 8 items
+    '#87cefa', // Light Sky Blue
+    '#87ceeb', // Sky Blue
+    '#6495ed', // Cornflower Blue
+    '#4682b4', // Steel Blue
+    '#5f9ea0', // Cadet Blue
+    '#4169e1', // Royal Blue
+    '#0080ff', // Azure
+    '#1e4d8c', // Dark Slate Blue
   ]
 
   // Рендер меток для внутреннего кольца с постоянным отображением значений

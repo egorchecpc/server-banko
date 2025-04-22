@@ -11,6 +11,8 @@ import {
 import { toast } from 'sonner'
 import { useFileUpload } from '@/hooks/useFileUpload'
 import { FileUploadButton } from '@/modules/ImportModalModule/FileUploadBtn/FileUploadBtn'
+import { useDatasetReport } from '@/context/DatasetContext'
+import { Input } from '@/components/ui/input'
 
 // Тип для описания датасета
 interface Dataset {
@@ -34,8 +36,6 @@ export interface FilesState {
   cashflow: FileState
   macro: FileState
 }
-
-export const ACCEPTED_FILE_TYPES = '.xlsx,.xls,.csv'
 
 export const FILE_UPLOAD_CONFIG = {
   portfolio: {
@@ -82,6 +82,8 @@ export const DatasetModal: React.FC<DatasetModalProps> = ({
 }) => {
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
   const { files, handleFileChange, isAllFilesUploaded } = useFileUpload()
+  const [datasetName, setDatasetName] = useState('')
+  const { setDatasetReport } = useDatasetReport()
 
   // Обработчик загрузки дополнительных данных
   const handleUploadAdditionalData = () => {
@@ -93,12 +95,16 @@ export const DatasetModal: React.FC<DatasetModalProps> = ({
       const year = now.getFullYear()
       const formattedDate = `${day}.${month}.${year}`
 
-      // Создаем обновленный датасет с текущей датой
+      // Создаем обновленный датасет с текущей датой и новым именем
       const updatedDataset = {
         ...currentDataset,
+        name: datasetName || currentDataset.name,
         date: formattedDate,
         id: `ds-${year}-${month}-${day}-${Math.floor(Math.random() * 1000000)}`, // Генерируем новый ID с текущей датой
       }
+
+      // Сохраняем данные в контексте
+      setDatasetReport(updatedDataset)
 
       // Вызываем функцию обновления датасета, если она предоставлена
       if (onDatasetUpdate) {
@@ -163,6 +169,19 @@ export const DatasetModal: React.FC<DatasetModalProps> = ({
       {/* Вложенный диалог для дозагрузки файлов */}
       <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Название</DialogTitle>
+          </DialogHeader>
+
+          <div className="my-4">
+            <Input
+              placeholder="Введите название датасета"
+              value={datasetName}
+              onChange={(e) => setDatasetName(e.target.value)}
+              className="w-full"
+            />
+          </div>
+
           <DialogHeader>
             <DialogTitle>Загрузка файлов</DialogTitle>
           </DialogHeader>

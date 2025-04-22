@@ -71,7 +71,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
       </div>
 
       <div className="mb-6 space-y-2">
-        <Label htmlFor="dataset">Выберите датасет</Label>
+        <Label htmlFor="dataset">Выберите данные</Label>
         <Select
           value={reportDetails.datasetId}
           onValueChange={(value) =>
@@ -79,7 +79,7 @@ export const ReportForm: React.FC<ReportFormProps> = ({
           }
         >
           <SelectTrigger id="dataset">
-            <SelectValue placeholder="Выберите датасет" />
+            <SelectValue placeholder="Выберите данные" />
           </SelectTrigger>
           <SelectContent>
             {availableDatasets.map((dataset) => (

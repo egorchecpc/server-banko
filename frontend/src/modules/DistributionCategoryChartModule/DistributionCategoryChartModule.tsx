@@ -209,7 +209,7 @@ export const DistributionCategoryChartModule: React.FC<
               <Bar
                 dataKey="moreThen90"
                 name="90+ дней"
-                fill="#241454"
+                fill="#140653" // #241454
                 stackId="a"
                 barSize={30}
               />
