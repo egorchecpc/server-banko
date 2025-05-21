@@ -7,7 +7,9 @@ export const useGetLGDData = () => {
   return useQuery<LGDItem[], Error>({
     queryKey: ['LGDData'],
     queryFn: async () => {
-      const { data } = await axiosConfigMock.get(API_ENDPOINTS.GET_LGD_DATA)
+      const { data } = await axiosConfigMock.get(
+        API_ENDPOINTS.DASHBOARD.LGD.GET_LGD
+      )
 
       await new Promise((resolve) => setTimeout(resolve, 50))
 

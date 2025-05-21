@@ -53,7 +53,7 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
 
   // Искусственная задержка для имитации обработки
   const addDelay = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms))
+    new Promise((resolve) => setTimeout(resolve, ms))
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -135,12 +135,12 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
       try {
         const data = JSON.parse(message.content)
         return (
-            <div className="font-mono text-sm">
-              <div className="mb-1 font-semibold">Результат функции:</div>
-              <pre className="overflow-x-auto whitespace-pre-wrap">
+          <div className="font-mono text-sm">
+            <div className="mb-1 font-semibold">Результат функции:</div>
+            <pre className="overflow-x-auto whitespace-pre-wrap">
               {JSON.stringify(data, null, 2)}
             </pre>
-            </div>
+          </div>
         )
       } catch (e) {
         return message.content
@@ -150,8 +150,8 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
     // Форматируем текст ассистента с Markdown-подобным синтаксисом
     if (message.role === 'assistant') {
       const formattedContent = message.content
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
-          .replace(/\n/g, '<br/>') // Newlines
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+        .replace(/\n/g, '<br/>') // Newlines
 
       return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
     }
@@ -160,99 +160,99 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onClose }) => {
   }
 
   return (
-      <>
-        {
-          <Button
-              onClick={openChat}
-              className="fixed bottom-14 right-3 h-12 w-12 rounded-full p-0 shadow-lg"
-              size="icon"
-          >
-            <MessageCircle size={24} />
-          </Button>
-        }
+    <>
+      {
+        <Button
+          onClick={openChat}
+          className="fixed bottom-14 right-3 h-12 w-12 rounded-full p-0 shadow-lg"
+          size="icon"
+        >
+          <MessageCircle size={24} />
+        </Button>
+      }
 
-        {/* Chat Window */}
-        {isOpen && (
-            <Card className="fixed bottom-6 right-6 z-50 flex h-96 w-80 flex-col px-2 py-2 shadow-lg sm:w-96">
-              <CardHeader className="bg-primary text-primary-foreground py-2">
-                <div className="flex justify-between py-2 text-base">
-                  <span>Финансовый Ассистент</span>
-                  <div className="flex gap-2">
-                    <Trash2
-                        className="cursor-pointer"
-                        size={20}
-                        onClick={clearChat}
-                    />
-                    <X className="cursor-pointer" size={20} onClick={onClose} />
-                  </div>
+      {/* Chat Window */}
+      {isOpen && (
+        <Card className="fixed bottom-6 right-6 z-50 flex h-96 w-80 flex-col px-2 py-2 shadow-lg sm:w-96">
+          <CardHeader className="bg-primary text-primary-foreground py-2">
+            <div className="flex justify-between py-2 text-base">
+              <span>Финансовый Ассистент</span>
+              <div className="flex gap-2">
+                <Trash2
+                  className="cursor-pointer"
+                  size={20}
+                  onClick={clearChat}
+                />
+                <X className="cursor-pointer" size={20} onClick={onClose} />
+              </div>
+            </div>
+          </CardHeader>
+
+          <CardContent className="flex-grow overflow-hidden p-0">
+            <ScrollArea className="h-full p-4" ref={scrollAreaRef}>
+              {messages.length === 0 ? (
+                <div className="text-muted-foreground flex h-full items-center justify-center">
+                  Начните разговор
                 </div>
-              </CardHeader>
-
-              <CardContent className="flex-grow overflow-hidden p-0">
-                <ScrollArea className="h-full p-4" ref={scrollAreaRef}>
-                  {messages.length === 0 ? (
-                      <div className="text-muted-foreground flex h-full items-center justify-center">
-                        Начните разговор
-                      </div>
-                  ) : (
-                      messages.map((message, index) => (
-                          <div
-                              key={index}
-                              className={cn(
-                                  'mb-4 max-w-[80%] break-words rounded-lg p-3',
-                                  message.role === 'user'
-                                      ? 'bg-primary text-primary-foreground ml-auto'
-                                      : message.role === 'function'
-                                          ? 'mr-auto w-full bg-slate-200'
-                                          : 'bg-muted mr-auto'
-                              )}
-                          >
-                            {formatContent(message)}
-                            <div
-                                className={cn(
-                                    'mt-1 text-xs',
-                                    message.role === 'user'
-                                        ? 'text-primary-foreground/70'
-                                        : 'text-muted-foreground'
-                                )}
-                            >
-                              {message.timestamp.toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}
-                            </div>
-                          </div>
-                      ))
-                  )}
-                  <div ref={messagesEndRef} />
-                </ScrollArea>
-              </CardContent>
-
-              <CardFooter className="p-2">
-                <form onSubmit={handleSubmit} className="flex w-full gap-2">
-                  <Input
-                      ref={inputRef}
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder="Введите сообщение..."
-                      disabled={isLoading}
-                      className="flex-grow"
-                  />
-                  <Button
-                      type="submit"
-                      size="icon"
-                      disabled={isLoading || !input.trim()}
-                  >
-                    {isLoading ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                        <Send className="h-4 w-4" />
+              ) : (
+                messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={cn(
+                      'mb-4 max-w-[80%] break-words rounded-lg p-3',
+                      message.role === 'user'
+                        ? 'bg-primary text-primary-foreground ml-auto'
+                        : message.role === 'function'
+                          ? 'mr-auto w-full bg-slate-200'
+                          : 'bg-muted mr-auto'
                     )}
-                  </Button>
-                </form>
-              </CardFooter>
-            </Card>
-        )}
-      </>
+                  >
+                    {formatContent(message)}
+                    <div
+                      className={cn(
+                        'mt-1 text-xs',
+                        message.role === 'user'
+                          ? 'text-primary-foreground/70'
+                          : 'text-muted-foreground'
+                      )}
+                    >
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </div>
+                  </div>
+                ))
+              )}
+              <div ref={messagesEndRef} />
+            </ScrollArea>
+          </CardContent>
+
+          <CardFooter className="p-2">
+            <form onSubmit={handleSubmit} className="flex w-full gap-2">
+              <Input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Введите сообщение..."
+                disabled={isLoading}
+                className="flex-grow"
+              />
+              <Button
+                type="submit"
+                size="icon"
+                disabled={isLoading || !input.trim()}
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+              </Button>
+            </form>
+          </CardFooter>
+        </Card>
+      )}
+    </>
   )
 }

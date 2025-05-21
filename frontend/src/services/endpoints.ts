@@ -1,6 +1,6 @@
 export const API_ENDPOINTS = {
   GET_PD_DATA: '/pddata',
-  GET_LGD_DATA: '/lgddata',
+
   GET_ECL_DATA_V1: '/ecldata1',
   GET_ECL_DATA_V2: '/ecldata2',
   GET_GBV_DATA: '/gbvdata',
@@ -39,5 +39,32 @@ export const API_ENDPOINTS = {
     },
   },
 
-  DASHBOARD: {},
+  DASHBOARD: {
+    CONTRACTS: {
+      GET_CONTRACTS_FILE: '/excel/contracts',
+    },
+    REPORTS: {
+      GET_REPORTS_FILE: '/excel/stats',
+    },
+    ECL: {
+      GET_ECL_SUMMARY: (date: string) => `/ecl/summary?date=${date}`,
+      GET_ECL_PORTFOLIO_SUMMARY: (date: string) =>
+        `/ecl/portfolio/summary?date=${date}`,
+      RISK_GROUP_SUM: (date: string) => `/ecl/sum?date=${date}`,
+      RISK_GROUP_RESERVATION_SUM: (date: string) =>
+        `/ecl/reservation/sum?date=${date}`,
+      RISK_GROUP_WBS_SUM: (date: string) => `/ecl/WBS/sum?date=${date}`,
+    },
+    KPI: {
+      GET_KPI: '/kpi',
+    },
+    LGD: {
+      GET_LGD: '/lgddata',
+    },
+    PD: {
+      GET_FORECAST_PD: '/probabilityDefault/forecast',
+      GET_QUARTERLY_PD: '/probabilityDefault/quarterly',
+      GET_YEARLY_PD: '/probabilityDefault/yearly',
+    },
+  },
 }

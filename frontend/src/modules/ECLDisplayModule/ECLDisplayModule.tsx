@@ -91,7 +91,7 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
           </div>
         </div>
       </ContainerHeader>
-      <ContainerBody isScrolling={true} orientation="horizontal">
+      <ContainerBody isScrolling={true}>
         <ECLTable
           data={eclDataV1}
           isFirst={true}
@@ -100,7 +100,7 @@ const ECLDisplayModule: FC<ECLDisplayModuleProps> = ({
         />
       </ContainerBody>
       <div className="my-4"></div>
-      <ContainerBody isScrolling={true} orientation="horizontal">
+      <ContainerBody isScrolling={true}>
         <ECLTable
           data={eclDataV2}
           isFirst={false}
