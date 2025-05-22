@@ -15,7 +15,10 @@ export function processYearlyData(
   const processedData = JSON.parse(JSON.stringify(data)) as YearlyDataResponse
 
   for (const year in processedData) {
-    if (processedData.hasOwnProperty(year) && processedData[year].cpd) {
+    if (
+      Object.prototype.hasOwnProperty.call(processedData, year) &&
+      processedData[year].cpd
+    ) {
       const pdItem = processedData[year].cpd
 
       // Обрабатываем числовые поля, кроме moreThen90

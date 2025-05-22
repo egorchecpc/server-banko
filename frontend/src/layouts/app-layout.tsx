@@ -21,7 +21,9 @@ export const AppLayout = () => {
             </div>
           </main>
           <div className="mt-12"></div>
-          <Footer />
+          <div className="mt-auto">
+            <Footer />
+          </div>
         </div>
       </ChatProvider>
     </SidebarProvider>

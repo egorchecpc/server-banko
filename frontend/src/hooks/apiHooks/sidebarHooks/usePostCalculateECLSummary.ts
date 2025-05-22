@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { calculateECLDiff } from '@/utils/calculateECLDif'
 import { ECLData } from '@/models/ECL'
 import axiosConfigFinal from '@/services/axiosConfigFinal'
+import { API_ENDPOINTS } from '@/services/endpoints'
 
 interface SummaryResponse {
   success: boolean
@@ -16,14 +17,16 @@ export const usePostSummary = (date: string) => {
     Error
   >({
     mutationFn: async () => {
-      const { data } = await axiosConfigFinal.post(`/ecl/summary?date=${date}`)
+      const { data } = await axiosConfigFinal.post(
+        API_ENDPOINTS.SIDEBAR.ECL.GET_ECL_SUMMARY(date)
+      )
       return data
     },
     onSuccess: async () => {
-      const previousData = queryClient.getQueryData<ECLData>(queryKey)
+      const previousData = queryClient.getQueryData<ECLData[]>(queryKey)
       await queryClient.invalidateQueries({ queryKey })
 
-      const newData = queryClient.getQueryData<ECLData>(queryKey)
+      const newData = queryClient.getQueryData<ECLData[]>(queryKey)
 
       if (!previousData || !newData) return
 

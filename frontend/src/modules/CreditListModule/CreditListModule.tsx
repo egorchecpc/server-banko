@@ -6,71 +6,41 @@ import {
   stage_types,
   titles,
 } from '@/modules/CreditListModule/CreditListConfig'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { ExportCreditList } from '@/components/ExportCreditListComponent/ExportCreditList'
-import { useGetCreditListData } from '@/hooks/apiHooks/commonHooks/useGetCreditListData'
 import { DataTable } from '@/components/CustomTableComponentTimeless/DataTable'
 import { SortingState, ColumnFiltersState } from '@tanstack/react-table'
+import { PaginatedResponse, CreditListData } from '@/models/CreditListTest'
 
-export const CreditListModule: FC = () => {
-  const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(20)
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+interface CreditListModuleProps {
+  data: PaginatedResponse<CreditListData>
+  currentPage: number
+  pageSize: number
+  totalPages: number
+  sorting: SortingState
+  columnFilters: ColumnFiltersState
+  onPageChange: (page: number) => void
+  onPageSizeChange: (pageSize: number) => void
+  onSortingChange: (sorting: SortingState) => void
+  onFiltersChange: (filters: ColumnFiltersState) => void
+}
 
-  const sortField = sorting.length > 0 ? sorting[0].id : undefined
-  const sortDirection =
-    sorting.length > 0 ? (sorting[0].desc ? 'DESC' : 'ASC') : undefined
-
-  // Handle different types of filters
-  const activeFilter = columnFilters.find((filter) =>
-    ['ownerType', 'creditType', 'product', 'stage'].includes(filter.id)
-  )
-
-  // Check if we have a search filter for contractId
-  const searchFilter = columnFilters.find((filter) => filter.id === 'clientId')
-
-  // Determine filter property and value
-  let filterProperty: string | undefined
-  let filterValue: string | undefined
-
-  if (activeFilter) {
-    filterProperty = activeFilter.id
-    filterValue =
-      Array.isArray(activeFilter.value) && activeFilter.value.length
-        ? activeFilter.value[0]
-        : (activeFilter.value as string)
-  }
-
-  let searchText: string | undefined
-  if (searchFilter) {
-    searchText = searchFilter.value as string
-  }
-
-  const { data, isLoading } = useGetCreditListData(
-    page,
-    pageSize,
-    sortField,
-    sortDirection,
-    filterProperty,
-    filterValue,
-    searchText
-  )
-
-  const handleSortingChange = (newSorting: SortingState) => {
-    setSorting(newSorting)
-    setPage(0)
-  }
-
-  const handleFiltersChange = (newFilters: ColumnFiltersState) => {
-    setColumnFilters(newFilters)
-    setPage(0)
-  }
-
+export const CreditListModule: FC<CreditListModuleProps> = ({
+  data,
+  currentPage,
+  pageSize,
+  totalPages,
+  sorting,
+  columnFilters,
+  onPageChange,
+  onPageSizeChange,
+  onSortingChange,
+  onFiltersChange,
+}) => {
   return (
     <div className="hidden h-full w-full flex-1 flex-col md:flex">
       <div className="flex items-center justify-between">
-        <div className="text-black-1000 mb-5 text-2xl font-bold leading-38">
+        <div className="mb-5 text-2xl font-bold leading-38 text-black-1000">
           Список всех кредитов
         </div>
         <ExportCreditList />
@@ -104,15 +74,15 @@ export const CreditListModule: FC = () => {
         searchPlaceholder="Поиск по клиенту"
         searchColumn="clientId"
         withContainer={true}
-        currentPage={page}
+        currentPage={currentPage}
         pageSize={pageSize}
-        totalPages={data?.totalPages ?? 0}
-        onPageChange={setPage}
-        onPageSizeChange={setPageSize}
+        totalPages={totalPages}
+        onPageChange={onPageChange}
+        onPageSizeChange={onPageSizeChange}
         initialSorting={sorting}
-        onSortingChange={handleSortingChange}
+        onSortingChange={onSortingChange}
         initialFilters={columnFilters}
-        onFiltersChange={handleFiltersChange}
+        onFiltersChange={onFiltersChange}
       />
     </div>
   )

@@ -1,13 +1,5 @@
 export const API_ENDPOINTS = {
-  GET_PD_DATA: '/pddata',
-
-  GET_ECL_DATA_V1: '/ecldata1',
-  GET_ECL_DATA_V2: '/ecldata2',
-  GET_GBV_DATA: '/gbvdata',
-  GET_RISK_METRIC_DATA: '/riskmetricdata',
-  GET_CREDIT_LIST_DATA: '/creditlistdata',
   POST_MACRO_SETTINGS_DATA: '/macro',
-  POST_FORM_DATA: '/debtor-form-data',
   BI: {
     ECL_CHARTS: {
       GET_GROSS_CARRYING_AMOUNT: '/ecl/grossCarryingAmount/sumByDelay',
@@ -65,6 +57,13 @@ export const API_ENDPOINTS = {
       GET_FORECAST_PD: '/probabilityDefault/forecast',
       GET_QUARTERLY_PD: '/probabilityDefault/quarterly',
       GET_YEARLY_PD: '/probabilityDefault/yearly',
+    },
+  },
+  SIDEBAR: {
+    ECL: {
+      GET_ECL_SUMMARY: (date: string) => `/ecl/summary?date=${date}`,
+      GET_ECL_PORTFOLIO_SUMMARY: (date: string) =>
+        `/ecl/portfolio/summary?date=${date}`,
     },
   },
 }

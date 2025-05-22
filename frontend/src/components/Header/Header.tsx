@@ -57,7 +57,6 @@ export const Header: FC<HeaderProps> = ({
   const search: { type: string } = useSearch({ strict: false })
   const breadcrumbs = getBreadcrumbsFromPath(location.pathname)
 
-  // Состояние для модального окна загрузки данных
   const [isDatasetModalOpen, setIsDatasetModalOpen] = useState(false)
   const [currentDataset, setCurrentDataset] = useState({
     id: 'ds-2025-04-03-981465',
@@ -79,7 +78,6 @@ export const Header: FC<HeaderProps> = ({
   const reportDate =
     basicReportDate.toLocaleDateString('ru-RU') || 'Дата не найдена'
 
-  // Проверяем, находимся ли мы на странице /reports
   const isReportsPage = location.pathname === '/reports'
 
   return (
@@ -105,7 +103,6 @@ export const Header: FC<HeaderProps> = ({
             )}
             {!withoutSidebar && <SidebarTrigger />}
 
-            {/* Хлебные крошки */}
             {breadcrumbs.length > 0 && (
               <Breadcrumb className="hidden md:block">
                 <BreadcrumbList>
@@ -128,13 +125,10 @@ export const Header: FC<HeaderProps> = ({
             )}
           </div>
 
-          {/* Правая часть */}
           {!withoutNav && navItems && <Navbar navItems={navItems} />}
         </div>
 
-        {/* Дополнительные элементы справа */}
         <div className="flex items-center gap-8">
-          {/* Кнопка "Загрузить данные" только на странице /reports */}
           {isReportsPage && (
             <Button
               variant="primary"
@@ -180,7 +174,6 @@ export const Header: FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Модальное окно для загрузки данных */}
       <DatasetModal
         isOpen={isDatasetModalOpen}
         onClose={() => setIsDatasetModalOpen(false)}

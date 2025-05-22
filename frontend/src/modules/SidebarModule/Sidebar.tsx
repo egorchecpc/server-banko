@@ -41,7 +41,7 @@ export const AppSidebar: FC = () => {
     usePostMacroSettingsData()
   const { mutate: postSummary, isPending: isPendingSummary } =
     usePostSummary(date)
-  const { mutate: postPortfolio, isPending: isPendingPortfolio } =
+  const { postPortfolio, isPending: isPendingPortfolio } =
     usePostPortfolio(date)
   const queryClient = useQueryClient()
 
