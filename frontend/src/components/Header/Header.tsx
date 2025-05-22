@@ -98,7 +98,7 @@ export const Header: FC<HeaderProps> = ({
             )}
             {withLogo && (
               <Link to="/apps">
-                <img src="/img/logo.png" alt="BANKO" className="w-[26rem]" />
+                <img src="/img/logo.png" alt="BANKO" className="w-[20rem]" />
               </Link>
             )}
             {!withoutSidebar && <SidebarTrigger />}

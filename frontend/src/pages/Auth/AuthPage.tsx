@@ -60,7 +60,7 @@ const AuthPage = () => {
       <img
         src="/img/logo.png"
         alt="BANKO"
-        className="absolute left-12 top-8 w-[28rem]"
+        className="absolute left-10 top-5 w-[20rem]"
       />
       <div className="w-full max-w-md">
         <div className="flex justify-center">
