@@ -3,7 +3,7 @@ import { BIAnalyticsPage } from '@/pages/BIAnalytics/BIAnalytics'
 import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute(
-  '/_layout-without-sidebar/reports/$reportId/bi-analytics',
+  '/_basic-layout/reports/$reportId/bi-analytics'
 )({
   beforeLoad: () => {
     if (!isAuthenticated()) {
@@ -15,6 +15,11 @@ export const Route = createFileRoute(
       })
     }
   },
+  loader: () => ({
+    headerProps: {
+      withoutSidebar: true,
+    },
+  }),
   component: BIAnalyticsPage,
 })
 

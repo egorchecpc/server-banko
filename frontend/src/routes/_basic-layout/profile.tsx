@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { ProfilePage } from '@/pages/Profile/Profile'
 import { isAuthenticated } from '@/utils/auth'
 
-export const Route = createFileRoute('/_clear-layout/profile')({
+export const Route = createFileRoute('/_basic-layout/profile')({
   beforeLoad: () => {
     if (!isAuthenticated()) {
       throw redirect({
@@ -13,6 +13,14 @@ export const Route = createFileRoute('/_clear-layout/profile')({
       })
     }
   },
+  loader: () => ({
+    headerProps: {
+      withoutNav: true,
+      withoutSidebar: true,
+      withoutExportBtn: true,
+      withBackBtn: true,
+    },
+  }),
   component: ProfilePage,
 })
 

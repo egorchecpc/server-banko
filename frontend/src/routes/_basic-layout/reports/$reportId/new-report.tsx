@@ -1,8 +1,8 @@
-import { createFileRoute, redirect, useSearch } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute(
-  '/_custom-layout/reports/$reportId/new-report'
+  '/_basic-layout/reports/$reportId/new-report'
 )({
   beforeLoad: () => {
     if (!isAuthenticated()) {
@@ -14,6 +14,12 @@ export const Route = createFileRoute(
       })
     }
   },
+  loader: () => ({
+    headerProps: {
+      withoutNav: true,
+      isNewReport: true,
+    },
+  }),
   component: NewReportComponent,
 })
 

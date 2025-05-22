@@ -3,7 +3,7 @@ import { CreditListPage } from '@/pages/CreditList/CreditList'
 import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute(
-  '/_clear-layout/reports/$reportId/credit-list'
+  '/_basic-layout/reports/$reportId/credit-list'
 )({
   beforeLoad: () => {
     if (!isAuthenticated()) {
@@ -15,6 +15,14 @@ export const Route = createFileRoute(
       })
     }
   },
+  loader: () => ({
+    headerProps: {
+      withoutNav: true,
+      withoutSidebar: true,
+      withoutExportBtn: true,
+      withBackBtn: true,
+    },
+  }),
   component: CreditListPage,
 })
 

@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { AppsPage } from '@/pages/Apps/AppsPage'
 import { isAuthenticated } from '@/utils/auth'
 
-export const Route = createFileRoute('/_main-layout/apps')({
+export const Route = createFileRoute('/_basic-layout/apps')({
   beforeLoad: () => {
     if (!isAuthenticated()) {
       throw redirect({
@@ -13,6 +13,14 @@ export const Route = createFileRoute('/_main-layout/apps')({
       })
     }
   },
+  loader: () => ({
+    headerProps: {
+      withoutNav: true,
+      withoutSidebar: true,
+      withoutExportBtn: true,
+      withLogo: true,
+    },
+  }),
   component: Apps,
 })
 

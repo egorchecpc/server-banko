@@ -3,7 +3,7 @@ import { StressTestingPage } from '@/pages/StressTesting/StressTesting'
 import { isAuthenticated } from '@/utils/auth'
 
 export const Route = createFileRoute(
-  '/_layout-without-sidebar/reports/$reportId/stress-testing',
+  '/_basic-layout/reports/$reportId/stress-testing'
 )({
   beforeLoad: () => {
     if (!isAuthenticated()) {
@@ -15,6 +15,11 @@ export const Route = createFileRoute(
       })
     }
   },
+  loader: () => ({
+    headerProps: {
+      withoutSidebar: true,
+    },
+  }),
   component: StressTestingPage,
 })
 

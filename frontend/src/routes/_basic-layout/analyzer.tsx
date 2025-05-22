@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { isAuthenticated } from '@/utils/auth'
 import FinancialDashboard from '@/pages/Analytics/AnalyticsPage'
 
-export const Route = createFileRoute('/_main-layout/analyzer')({
+export const Route = createFileRoute('/_basic-layout/analyzer')({
   beforeLoad: () => {
     if (!isAuthenticated()) {
       throw redirect({
@@ -13,6 +13,14 @@ export const Route = createFileRoute('/_main-layout/analyzer')({
       })
     }
   },
+  loader: () => ({
+    headerProps: {
+      withoutNav: true,
+      withoutSidebar: true,
+      withoutExportBtn: true,
+      withLogo: true,
+    },
+  }),
   component: Analytics,
 })
 
