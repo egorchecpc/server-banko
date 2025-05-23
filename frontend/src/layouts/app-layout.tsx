@@ -55,7 +55,7 @@ export const AppLayout = () => {
               </div>
             </main>
             <div className="mt-12"></div>
-            {headerProps.isNewReport && <div className="mt-[19rem]"></div>}
+            {headerProps.isNewReport && <div className="mt-[26rem]"></div>}
             <div className="mt-auto">{!isLoading && <Footer />}</div>
           </div>
         </ChatProvider>
